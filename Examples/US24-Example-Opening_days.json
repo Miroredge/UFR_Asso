@@ -1,16 +1,50 @@
+
+Obtenir les horaires d'ouverture de l'ABEI
+@get -> /api/bde/opening-hours
 {
     "openingHoursSpecification":[
         {
-            "dayOfWeek": "Monday", "opens": "09:00", "closes": "12:00"
+            "id" : 0, "dayOfWeek": "Monday", "opens": "09:00", "closes": "12:00"
         },
         {
-            "dayOfWeek": "Monday", "opens": "13:00", "closes": "17:00"
+            "id" : 1, "dayOfWeek": "Monday", "opens": "13:00", "closes": "17:00"
         },
         {
-            "dayOfWeek": "Thursday", "opens": "07:00", "closes": "17:00"
+            "id" : 2, "dayOfWeek": "Thursday", "opens": "07:00", "closes": "17:00"
         },
         {
-            "dayOfWeek": "Friday", "opens": "07:00", "closes": "17:00"
+            "id" : 3, "dayOfWeek": "Friday", "opens": "07:00", "closes": "17:00"
         }
     ]
 }
+
+ajouter un nouvel horaire d'ouverture
+@post -> /api/bde/opening-hours/
+{
+    "dayOfWeek": "Monday",
+    "opens": "09:00",
+    "closes": "12:00"
+}
+-> Response : 201 - id de l'horaire ajouté
+{
+    "id" : 5, "dayOfWeek": "Monday", "opens": "09:00", "closes": "12:00"
+}
+
+modifier un horaire d'ouverture
+@put -> api/bde/opening-hours/1
+{
+    "dayOfWeek": "Monday",
+    "opens": "09:00", // horaires modifiés
+    "closes": "12:30"
+}
+-> Response : 200
+{
+    "dayOfWeek": "Monday",
+    "opens": "09:00", // horaires modifiés
+    "closes": "12:30"
+}
+ou
+// -> 204, si l'horaire n'a pas été modifié
+
+@delete -> api/bde/opening-hours/1
+-> Response : 204 
