@@ -19,23 +19,23 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ROW_IDT")
     private long id;
-    @Column(name = "STU_NBR", unique = true, nullable = false)
+    @Column(name = "STU_NBR", unique = true, nullable = false, length = 10)
     private String student_number;
     @Column(name = "PRF_PIC")
     private Blob profile_picture;
-    @Column(name = "FST_NAM")
+    @Column(name = "FST_NAM", length = 20)
     private String first_name;
-    @Column(name = "LST_NAM")
+    @Column(name = "LST_NAM", length = 25)
     private String last_name;
-    @Column(name = "SEX")
+    @Column(name = "SEX", length = 20)
     private String sex;
     @Column(name = "EML", nullable = false)
     private String email;
-    @Column(name = "PHN_NBR")
+    @Column(name = "PHN_NBR", length = 15)
     private String phone_number;
     @Column(name = "PHN_BOK")
     private int phone_book;
-    @Column(name = "PWD", nullable = false)
+    @Column(name = "PWD", nullable = false, length = 64)
     private String password;
     @Column(name = "TMP_PWD")
     private int temporary_password;

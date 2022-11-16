@@ -19,11 +19,11 @@ public class Asso {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ROW_IDT")
     private long id;
-    @Column(name = "NAM", nullable = false)
+    @Column(name = "NAM", nullable = false, length = 45)
     private String name;
     @Column(name = "LGO")
     private Blob logo;
-    @Column(name = "SIR_NBR", nullable = false)
+    @Column(name = "SIR_NBR", nullable = false, length = 14)
     private String siret_number;
     @Column(name = "MBR_PCE", nullable = false)
     private double member_price;

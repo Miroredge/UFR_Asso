@@ -1,5 +1,7 @@
 package com.ufrAsso.entity;
 
+import java.time.LocalTime;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,12 +19,12 @@ public class OpeningHours {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ROW_IDT")
     private long id;
-    @Column(name = "DAY_WEK", nullable = false)
+    @Column(name = "DAY_WEK", nullable = false, length = 10)
     private String day_of_week;
-    @Column(name = "OPN", nullable = false)
-    private String opening_time;
-    @Column(name = "CLO", nullable = false)
-    private String closing_time;
+    @Column(name = "OPN", nullable = false) // format HH:MM
+    private LocalTime opening_time;
+    @Column(name = "CLO", nullable = false) // format HH:MM
+    private LocalTime closing_time;
 
     // Getters with @JsonProperty("name").
 
@@ -37,12 +39,12 @@ public class OpeningHours {
     }
 
     @JsonProperty("opening_time")
-    public String getOpening_time() {
+    public LocalTime getOpening_time() {
         return opening_time;
     }
 
     @JsonProperty("closing_time")
-    public String getClosing_time() {
+    public LocalTime getClosing_time() {
         return closing_time;
     }
 
@@ -56,11 +58,11 @@ public class OpeningHours {
         this.day_of_week = day_of_week;
     }
 
-    public void setOpening_time(String opening_time) {
+    public void setOpening_time(LocalTime opening_time) {
         this.opening_time = opening_time;
     }
 
-    public void setClosing_time(String closing_time) {
+    public void setClosing_time(LocalTime closing_time) {
         this.closing_time = closing_time;
     }
 
@@ -70,7 +72,7 @@ public class OpeningHours {
         super();
     }
 
-    public OpeningHours(long id, String day_of_week, String opening_time, String closing_time) {
+    public OpeningHours(long id, String day_of_week, LocalTime opening_time, LocalTime closing_time) {
         super();
         this.id = id;
         this.day_of_week = day_of_week;

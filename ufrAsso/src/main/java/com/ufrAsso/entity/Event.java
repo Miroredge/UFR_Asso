@@ -1,5 +1,7 @@
 package com.ufrAsso.entity;
 
+import java.time.LocalDateTime;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,15 +19,15 @@ public class Event {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ROW_IDT")
     private long id;
-    @Column(name = "NAM", nullable = false)
+    @Column(name = "NAM", nullable = false, length = 45)
     private String name;
     @Column(name = "STT_DAT_TIM", nullable = false)
-    private String start_date_time;
+    private LocalDateTime start_date_time;
     @Column(name = "END_DAT_TIM", nullable = false)
-    private String end_date_time;
-    @Column(name = "ORG_NAM", nullable = false)
+    private LocalDateTime end_date_time;
+    @Column(name = "ORG_NAM", nullable = false, length = 45)
     private String organizer_name;
-    @Column(name = "PLC", nullable = false)
+    @Column(name = "PLC", nullable = false, length = 45)
     private String place;
     @Column(name = "PCE")
     private double price;
@@ -45,12 +47,12 @@ public class Event {
     }
 
     @JsonProperty("start_date_time")
-    public String getStart_date_time() {
+    public LocalDateTime getStart_date_time() {
         return start_date_time;
     }
 
     @JsonProperty("end_date_time")
-    public String getEnd_date_time() {
+    public LocalDateTime getEnd_date_time() {
         return end_date_time;
     }
 
@@ -83,11 +85,11 @@ public class Event {
         this.name = name;
     }
 
-    public void setStart_date_time(String start_date_time) {
+    public void setStart_date_time(LocalDateTime start_date_time) {
         this.start_date_time = start_date_time;
     }
 
-    public void setEnd_date_time(String end_date_time) {
+    public void setEnd_date_time(LocalDateTime end_date_time) {
         this.end_date_time = end_date_time;
     }
 
@@ -113,9 +115,8 @@ public class Event {
         super();
     }
 
-    public Event(long id, String name, String start_date_time, String end_date_time, String organizer_name,
-            String place,
-            double price, String description) {
+    public Event(long id, String name, LocalDateTime start_date_time, LocalDateTime end_date_time,
+            String organizer_name, String place, double price, String description) {
         super();
         this.id = id;
         this.name = name;
