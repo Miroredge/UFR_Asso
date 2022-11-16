@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 @Table(name = "OPN_HRS")
-public class Opening_Hours {
+public class OpeningHours {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -66,11 +66,11 @@ public class Opening_Hours {
 
     // constructor
 
-    public Opening_Hours() {
+    public OpeningHours() {
         super();
     }
 
-    public Opening_Hours(long id, String day_of_week, String opening_time, String closing_time) {
+    public OpeningHours(long id, String day_of_week, String opening_time, String closing_time) {
         super();
         this.id = id;
         this.day_of_week = day_of_week;

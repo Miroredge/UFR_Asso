@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 @Table(name = "NWS_LTR")
-public class News_Letter {
+public class NewsLetter {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -64,11 +64,11 @@ public class News_Letter {
     }
 
     // constructor
-    public News_Letter() {
+    public NewsLetter() {
         super();
     }
 
-    public News_Letter(long id, String name, String creation_date, String description) {
+    public NewsLetter(long id, String name, String creation_date, String description) {
         super();
         this.id = id;
         this.name = name;
