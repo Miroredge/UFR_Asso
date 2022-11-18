@@ -2,11 +2,13 @@ package com.ufrAsso.entity;
 
 import java.sql.Blob;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -27,6 +29,14 @@ public class Asso {
     private String siret_number;
     @Column(name = "MBR_PCE", nullable = false)
     private double member_price;
+
+    // @OneToOne(mappedBy = "aso", targetEntity = NewsLetter.class, optional = true,
+    // cascade = { CascadeType.REMOVE })
+    // private NewsLetter newsLetter; FIXME
+
+    // @OneToOne(mappedBy = "aso", targetEntity = OpeningHours.class, optional =
+    // true, cascade = { CascadeType.REMOVE })
+    // private OpeningHours openingHours; FIXME
 
     // Getters with @JsonProperty("name").
 

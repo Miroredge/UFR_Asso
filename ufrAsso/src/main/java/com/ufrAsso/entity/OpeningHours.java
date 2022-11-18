@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -25,6 +26,9 @@ public class OpeningHours {
     private LocalTime opening_time;
     @Column(name = "CLO", nullable = false) // format HH:MM
     private LocalTime closing_time;
+
+    // @OneToOne(optional = false)
+    // private Asso aso; FIXME
 
     // Getters with @JsonProperty("name").
 

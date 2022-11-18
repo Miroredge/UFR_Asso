@@ -1,13 +1,24 @@
 package com.ufrAsso.entity;
 
+// import java.io.Serializable;
 import java.sql.Blob;
+import java.util.HashSet;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinTable;
+import javax.persistence.Lob;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.NotFoundAction;
+
+import javax.persistence.JoinColumn;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -21,6 +32,7 @@ public class User {
     private long id;
     @Column(name = "STU_NBR", unique = true, nullable = false, length = 10)
     private String student_number;
+    @Lob
     @Column(name = "PRF_PIC")
     private Blob profile_picture;
     @Column(name = "FST_NAM", length = 20)
@@ -41,6 +53,16 @@ public class User {
     private int temporary_password;
     @Column(name = "NTF")
     private int notification;
+
+    // 0 to n associations with Asso entity. (JPA)
+    @ManyToMany(targetEntity = Asso.class, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @JoinTable(name = "USR_HAS_ASO", joinColumns = @JoinColumn(name = "USR_ROW_IDT", referencedColumnName = "ROW_IDT"), inverseJoinColumns = @JoinColumn(name = "ASO_ROW_IDT", referencedColumnName = "ROW_IDT"))
+    private Set<Asso> assoSet = new HashSet<Asso>();
+
+    // 0 to n associations with Role entity. (JPA)
+    @ManyToMany(targetEntity = Role.class, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @JoinTable(name = "USR_HAS_ROL", joinColumns = @JoinColumn(name = "USR_ROW_IDT", referencedColumnName = "ROW_IDT"), inverseJoinColumns = @JoinColumn(name = "ROL_ROW_IDT", referencedColumnName = "ROW_IDT"))
+    private Set<Role> roleSet = new HashSet<Role>();
 
     // Getters with @JsonProperty("name").
 
