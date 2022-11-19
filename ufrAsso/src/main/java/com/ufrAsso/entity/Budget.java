@@ -13,6 +13,13 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+/**
+ * Budget entity.
+ * 
+ * @author Miroredge
+ * @version 1.0
+ */
+
 @Entity
 @Table(name = "BDG")
 public class Budget {

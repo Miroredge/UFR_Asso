@@ -13,6 +13,13 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+/**
+ * NewsLetter entity.
+ * 
+ * @author Miroredge
+ * @version 1.0
+ */
+
 @Entity
 @Table(name = "NWS_LTR")
 public class NewsLetter {

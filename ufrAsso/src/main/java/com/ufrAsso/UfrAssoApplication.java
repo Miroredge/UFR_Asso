@@ -3,6 +3,13 @@ package com.ufrAsso;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+/**
+ * Main class.
+ * 
+ * @author Miroredge
+ * @version 1.0
+ */
+
 @SpringBootApplication
 public class UfrAssoApplication {
 

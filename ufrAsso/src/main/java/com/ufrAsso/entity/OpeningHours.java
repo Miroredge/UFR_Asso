@@ -13,6 +13,13 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+/**
+ * OpeningHours entity.
+ * 
+ * @author Miroredge
+ * @version 1.0
+ */
+
 @Entity
 @Table(name = "OPN_HRS")
 public class OpeningHours {

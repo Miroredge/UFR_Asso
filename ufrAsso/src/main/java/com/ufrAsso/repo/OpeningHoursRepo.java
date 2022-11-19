@@ -4,6 +4,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.ufrAsso.entity.OpeningHours;
 
+/**
+ * OpeningHours repository.
+ * 
+ * @author Miroredge
+ * @version 1.0
+ */
+
 public interface OpeningHoursRepo extends JpaRepository<OpeningHours, Long> {
 
 }

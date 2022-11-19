@@ -17,6 +17,13 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ufrAsso.entity.User;
 import com.ufrAsso.repo.UserRepo;
 
+/**
+ * User controller.
+ * 
+ * @author Miroredge
+ * @version 1.0
+ */
+
 @RestController
 public class UserController {
 

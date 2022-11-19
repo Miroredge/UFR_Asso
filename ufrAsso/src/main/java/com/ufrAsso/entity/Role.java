@@ -9,6 +9,13 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+/**
+ * Role entity.
+ * 
+ * @author Miroredge
+ * @version 1.0
+ */
+
 @Entity
 @Table(name = "ROL")
 public class Role {

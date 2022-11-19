@@ -13,6 +13,13 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ufrAsso.entity.Role;
 import com.ufrAsso.repo.RoleRepo;
 
+/**
+ * Role controller.
+ * 
+ * @author Miroredge
+ * @version 1.0
+ */
+
 @RestController
 public class RoleController {
 

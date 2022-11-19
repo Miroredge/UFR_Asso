@@ -20,6 +20,13 @@ import javax.persistence.JoinColumn;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+/**
+ * Asso entity.
+ * 
+ * @author Miroredge
+ * @version 1.0
+ */
+
 @Entity
 @Table(name = "USR")
 public class User {
