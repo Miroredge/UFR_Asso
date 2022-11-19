@@ -16,8 +16,6 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.NotFoundAction;
-
 import javax.persistence.JoinColumn;
 
 import com.fasterxml.jackson.annotation.JsonProperty;

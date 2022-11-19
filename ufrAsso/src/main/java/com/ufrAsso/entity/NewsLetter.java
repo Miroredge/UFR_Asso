@@ -7,7 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -29,8 +30,10 @@ public class NewsLetter {
     @Column(name = "DSC", nullable = false)
     private String description;
 
-    // @OneToOne(optional = false)
-    // private Asso aso; FIXME
+    // Many to One with Asso entity.
+    @ManyToOne(optional = true)
+    @JoinColumn(name = "ASO_ROW_IDT", nullable = false)
+    private Asso asso;
 
     // Getters with @JsonProperty("name").
 

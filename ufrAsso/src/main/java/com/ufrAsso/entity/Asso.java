@@ -1,14 +1,19 @@
 package com.ufrAsso.entity;
 
 import java.sql.Blob;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.JoinTable;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -30,13 +35,11 @@ public class Asso {
     @Column(name = "MBR_PCE", nullable = false)
     private double member_price;
 
-    // @OneToOne(mappedBy = "aso", targetEntity = NewsLetter.class, optional = true,
-    // cascade = { CascadeType.REMOVE })
-    // private NewsLetter newsLetter; FIXME
-
-    // @OneToOne(mappedBy = "aso", targetEntity = OpeningHours.class, optional =
-    // true, cascade = { CascadeType.REMOVE })
-    // private OpeningHours openingHours; FIXME
+    // n to m association with Event entity (JPA).
+    @ManyToMany(targetEntity = Event.class, cascade = { CascadeType.PERSIST,
+            CascadeType.MERGE }, fetch = FetchType.LAZY)
+    @JoinTable(name = "ASO_HAS_EVT", joinColumns = @JoinColumn(name = "ASO_ROW_IDT", referencedColumnName = "ROW_IDT"), inverseJoinColumns = @JoinColumn(name = "EVT_ROW_IDT", referencedColumnName = "ROW_IDT"))
+    private Set<Event> eventSet = new HashSet<Event>();
 
     // Getters with @JsonProperty("name").
 
