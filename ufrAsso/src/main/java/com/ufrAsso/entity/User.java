@@ -12,6 +12,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ufrAsso.constants.GenderType;
@@ -25,45 +27,54 @@ import com.ufrAsso.functions.Utils;
  */
 
 @Entity
-@Table(name = "USR")
+@Table(name = "USR", uniqueConstraints = { @UniqueConstraint(name = "UK_USR_1", columnNames = { "STU_NBR" }),
+        @UniqueConstraint(name = "UK_USR_2", columnNames = { "FST_NAM", "LST_NAM", "EML" }) })
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ROW_IDT")
     private long id;
-    @Column(name = "STU_NBR", unique = true, nullable = true, length = 10)
+    @Size(min = 8, max = 10)
+    @Column(name = "STU_NBR", nullable = true, length = 10)
     private String student_number;
     @Lob
     @Column(name = "PRF_PIC")
     private Blob profile_picture;
+    @Size(min = 1, max = 20)
     @Column(name = "FST_NAM", length = 20, nullable = false)
+    @Size(min = 1, max = 25)
     private String first_name;
-    @Column(name = "LST_NAM", length = 25)
+    @Column(name = "LST_NAM", length = 25, nullable = false)
     private String last_name;
-    @Column(name = "GDR", length = 20, nullable = false)
+    @Column(name = "GDR", columnDefinition = "ENUM('M', 'F', 'O')")
     @Enumerated(EnumType.STRING)
     private GenderType gender;
+    @Size(min = 1, max = 255)
     @Column(name = "EML", nullable = false)
     private String email;
+    @Size(min = 5, max = 15)
     @Column(name = "PHN_NBR", length = 15)
     private String phone_number;
-    @Column(name = "PHN_BOK")
+    @Column(name = "PHN_BOK", nullable = false)
     private Boolean phone_book;
+    @Size(min = 64, max = 64)
     @Column(name = "PWD", nullable = false, length = 64)
     private String password;
-    @Column(name = "TMP_PWD")
+    @Column(name = "TMP_PWD", nullable = false)
     private Boolean temporary_password;
-    @Column(name = "NTF")
+    @Column(name = "NTF", nullable = false)
     private Boolean notification;
-    @Column(name = "CRE_DAT")
+    @Column(name = "CRE_DAT", nullable = false)
     private OffsetDateTime creation_date;
-    @Column(name = "CRE_ID", length = 45)
+    @Column(name = "CRE_ID", length = 45, nullable = false)
     private String creation_id;
-    @Column(name = "UPD_DAT")
+    @Column(name = "UPD_DAT", nullable = false)
     private OffsetDateTime update_date;
-    @Column(name = "UPD_ID")
+    @Column(name = "UPD_ID", nullable = false)
     private String update_id;
+
+    // create a unique key (student_number, )
 
     // TODO 0 to n associations with Asso entity. (JPA)
     // @ManyToMany(targetEntity = Asso.class, cascade = { CascadeType.PERSIST,

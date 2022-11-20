@@ -5,14 +5,18 @@ import java.time.OffsetDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.ufrAsso.constants.OperationMeans;
 import com.ufrAsso.functions.Utils;
 
 /**
@@ -32,19 +36,21 @@ public class Budget {
     private long id;
     @Column(name = "OPT_DAT", nullable = false)
     private Date operation_date;
-    @Column(name = "TYP", nullable = false, length = 45)
-    private String type;
+    @Column(name = "MNS", nullable = false, columnDefinition = "ENUM('CASH', 'CHECK', 'BANK_TRANSFER', 'CREDIT_CARD', 'DEBIT_CARD', 'PAYPAL', 'BITCOIN', 'OTHER')")
+    @Enumerated(EnumType.STRING)
+    private OperationMeans mean;
+    @Size(min = 1, max = 255)
     @Column(name = "NAM", nullable = false)
     private String name;
     @Column(name = "AMT", nullable = false)
     private double amount;
-    @Column(name = "CRE_DAT")
+    @Column(name = "CRE_DAT", nullable = false)
     private OffsetDateTime creation_date;
-    @Column(name = "CRE_ID")
+    @Column(name = "CRE_ID", nullable = false)
     private String creation_id;
-    @Column(name = "UPD_DAT")
+    @Column(name = "UPD_DAT", nullable = false)
     private OffsetDateTime update_date;
-    @Column(name = "UPD_ID")
+    @Column(name = "UPD_ID", nullable = false)
     private String update_id;
 
     // Many to One with Asso entity.
@@ -64,9 +70,9 @@ public class Budget {
         return operation_date;
     }
 
-    @JsonProperty("type")
-    public String getType() {
-        return type;
+    @JsonProperty("mean")
+    public OperationMeans getMean() {
+        return mean;
     }
 
     @JsonProperty("name")
@@ -111,8 +117,8 @@ public class Budget {
         this.update_id = "API - Budget - Setters";
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setMean(OperationMeans mean) {
+        this.mean = mean;
         this.update_date = Utils.getOffsetDateTimeNow();
         this.update_id = "API - Budget - Setters";
     }
@@ -135,11 +141,12 @@ public class Budget {
         super();
     }
 
-    public Budget(long id, Date operation_date, String type, String name, double amount) {
+    public Budget(long id, Date operation_date, OperationMeans mean, String name,
+            double amount) {
         super();
         this.id = id;
         this.operation_date = operation_date;
-        this.type = type;
+        this.mean = mean;
         this.name = name;
         this.amount = amount;
         this.creation_date = Utils.getOffsetDateTimeNow();
@@ -151,8 +158,8 @@ public class Budget {
     // toString
     @Override
     public String toString() {
-        return "Budget [id=" + id + ", operation_date=" + operation_date + ", type=" + type + ", name=" + name
-                + ", amount=" + amount + ", asso=" + asso + ", creation_date=" + creation_date + ", creation_id="
-                + creation_id + ", update_date=" + update_date + ", update_id=" + update_id + "]";
+        return "Budget [id=" + id + ", operation_date=" + operation_date + ", mean=" + mean
+                + ", name=" + name + ", amount=" + amount + ", asso=" + asso + ", creation_date=" + creation_date
+                + ", creation_id=" + creation_id + ", update_date=" + update_date + ", update_id=" + update_id + "]";
     }
 }

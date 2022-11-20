@@ -38,13 +38,13 @@ public class UserHasAssoAndRole {
     @ManyToOne()
     @JoinColumn(name = "ROL_ROW_IDT", nullable = false)
     private Role role;
-    @Column(name = "CRE_DAT")
+    @Column(name = "CRE_DAT", nullable = false)
     private OffsetDateTime creation_date;
-    @Column(name = "CRE_ID")
+    @Column(name = "CRE_ID", nullable = false)
     private String creation_id;
-    @Column(name = "UPD_DAT")
+    @Column(name = "UPD_DAT", nullable = false)
     private OffsetDateTime update_date;
-    @Column(name = "UPD_ID")
+    @Column(name = "UPD_ID", nullable = false)
     private String update_id;
 
     // Getters with @JsonProperty("name").

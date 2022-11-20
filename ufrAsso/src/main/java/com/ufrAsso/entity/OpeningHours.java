@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ufrAsso.functions.Utils;
@@ -30,19 +31,20 @@ public class OpeningHours {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ROW_IDT")
     private long id;
+    @Size(min = 1, max = 10)
     @Column(name = "DAY_WEK", nullable = false, length = 10)
     private String day_of_week;
     @Column(name = "OPN", nullable = false) // format HH:MM
     private LocalTime opening_time;
     @Column(name = "CLO", nullable = false) // format HH:MM
     private LocalTime closing_time;
-    @Column(name = "CRE_DAT")
+    @Column(name = "CRE_DAT", nullable = false)
     private OffsetDateTime creation_date;
-    @Column(name = "CRE_ID")
+    @Column(name = "CRE_ID", nullable = false)
     private String creation_id;
-    @Column(name = "UPD_DAT")
+    @Column(name = "UPD_DAT", nullable = false)
     private OffsetDateTime update_date;
-    @Column(name = "UPD_ID")
+    @Column(name = "UPD_ID", nullable = false)
     private String update_id;
 
     // Many to One with Asso entity.
