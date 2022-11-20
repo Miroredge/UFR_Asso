@@ -1,15 +1,20 @@
 package com.ufrAsso.entity;
 
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.ufrAsso.functions.Utils;
 
 /**
  * NewsLetter entity.
@@ -40,7 +45,18 @@ public class Event {
     private double price;
     @Column(name = "DSC")
     private String description;
+    @Column(name = "CRE_DAT")
+    private OffsetDateTime creation_date;
+    @Column(name = "CRE_ID")
+    private String creation_id;
+    @Column(name = "UPD_DAT")
+    private OffsetDateTime update_date;
+    @Column(name = "UPD_ID")
+    private String update_id;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "CRE_ASO_ROW_IDT", nullable = false, referencedColumnName = "ROW_IDT")
+    private Asso asso;
     // Getters with @JsonProperty("name").
 
     @JsonProperty("id")
@@ -83,6 +99,26 @@ public class Event {
         return description;
     }
 
+    public Asso getAsso() {
+        return asso;
+    }
+
+    public OffsetDateTime getCreation_date() {
+        return creation_date;
+    }
+
+    public String getCreation_id() {
+        return creation_id;
+    }
+
+    public OffsetDateTime getUpdate_date() {
+        return update_date;
+    }
+
+    public String getUpdate_id() {
+        return update_id;
+    }
+
     // Setters without @JsonProperty("name").
     public void setId(long id) {
         this.id = id;
@@ -90,30 +126,45 @@ public class Event {
 
     public void setName(String name) {
         this.name = name;
+        this.update_date = Utils.getOffsetDateTimeNow();
+        this.update_id = "API - Event - Setters";
+
     }
 
     public void setStart_date_time(LocalDateTime start_date_time) {
         this.start_date_time = start_date_time;
+        this.update_date = Utils.getOffsetDateTimeNow();
+        this.update_id = "API - Event - Setters";
     }
 
     public void setEnd_date_time(LocalDateTime end_date_time) {
         this.end_date_time = end_date_time;
+        this.update_date = Utils.getOffsetDateTimeNow();
+        this.update_id = "API - Event - Setters";
     }
 
     public void setOrganizer_name(String organizer_name) {
         this.organizer_name = organizer_name;
+        this.update_date = Utils.getOffsetDateTimeNow();
+        this.update_id = "API - Event - Setters";
     }
 
     public void setPlace(String place) {
         this.place = place;
+        this.update_date = Utils.getOffsetDateTimeNow();
+        this.update_id = "API - Event - Setters";
     }
 
     public void setPrice(double price) {
         this.price = price;
+        this.update_date = Utils.getOffsetDateTimeNow();
+        this.update_id = "API - Event - Setters";
     }
 
     public void setDescription(String description) {
         this.description = description;
+        this.update_date = Utils.getOffsetDateTimeNow();
+        this.update_id = "API - Event - Setters";
     }
 
     // constructor
@@ -133,6 +184,10 @@ public class Event {
         this.place = place;
         this.price = price;
         this.description = description;
+        this.creation_date = Utils.getOffsetDateTimeNow();
+        this.creation_id = "API - Event - Constructor";
+        this.update_date = Utils.getOffsetDateTimeNow();
+        this.update_id = "API - Event - Constructor";
     }
 
     // toString
@@ -140,6 +195,7 @@ public class Event {
     public String toString() {
         return "Event [id=" + id + ", name=" + name + ", start_date_time=" + start_date_time + ", end_date_time="
                 + end_date_time + ", organizer_name=" + organizer_name + ", place=" + place + ", price=" + price
-                + ", description=" + description + "]";
+                + ", description=" + description + ", asso=" + asso + ", creation_date=" + creation_date
+                + ", creation_id=" + creation_id + ", update_date=" + update_date + ", update_id=" + update_id + "]";
     }
 }

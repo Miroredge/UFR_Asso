@@ -7,28 +7,34 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ufrAsso.functions.Utils;
 
 /**
- * Role entity.
+ * AssoHasEvent link entity.
  * 
  * @author Miroredge
  * @version 1.0
  */
 
 @Entity
-@Table(name = "ROL")
-public class Role {
+@Table(name = "ASO_HAS_EVT")
+public class AssoHasEvent {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ROW_IDT")
     private long id;
-    @Column(name = "NAM", nullable = false, length = 25, unique = true)
-    private String name;
+    @ManyToOne()
+    @JoinColumn(name = "ASO_ROW_IDT", nullable = false)
+    private Asso asso;
+    @ManyToOne()
+    @JoinColumn(name = "EVT_ROW_IDT", nullable = false)
+    private Event event;
     @Column(name = "CRE_DAT")
     private OffsetDateTime creation_date;
     @Column(name = "CRE_ID")
@@ -40,14 +46,14 @@ public class Role {
 
     // Getters with @JsonProperty("name").
 
-    @JsonProperty("id")
-    public long getId() {
-        return id;
+    @JsonProperty("asso")
+    public Asso getAsso() {
+        return asso;
     }
 
-    @JsonProperty("name")
-    public String getName() {
-        return name;
+    @JsonProperty("event")
+    public Event getEvent() {
+        return event;
     }
 
     public OffsetDateTime getCreation_date() {
@@ -67,34 +73,41 @@ public class Role {
     }
 
     // Setters without @JsonProperty("name").
-    public void setId(long id) {
-        this.id = id;
+
+    public void setAsso(Asso asso) {
+        this.asso = asso;
+        this.update_date = Utils.getOffsetDateTimeNow();
+        this.update_id = "API - AssoHasEvent - Setters";
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setEvent(Event event) {
+        this.event = event;
         this.update_date = Utils.getOffsetDateTimeNow();
-        this.update_id = "API - Role - Setters";
+        this.update_id = "API - AssoHasEvent - Setters";
+
     }
 
     // constructor
-    public Role() {
+
+    public AssoHasEvent() {
         super();
     }
 
-    public Role(long id, String name) {
+    public AssoHasEvent(Asso asso, Event event) {
         super();
-        this.id = id;
-        this.name = name;
+        this.asso = asso;
+        this.event = event;
         this.creation_date = Utils.getOffsetDateTimeNow();
-        this.creation_id = "API - Role - Constructor";
+        this.creation_id = "API - AssoHasEvent - Constructor";
         this.update_date = Utils.getOffsetDateTimeNow();
-        this.update_id = "API - Role - Constructor";
+        this.update_id = "API - AssoHasEvent - Constructor";
     }
 
+    // toString()
     @Override
     public String toString() {
-        return "Role [id=" + id + ", name=" + name + ", creation_date=" + creation_date + ", creation_id=" + creation_id
-                + ", update_date=" + update_date + ", update_id=" + update_id + "]";
+        return "AssoHasEvent [asso=" + asso + ", event=" + event + ", creation_date=" + creation_date + ", creation_id="
+                + creation_id + ", update_date=" + update_date + ", update_id=" + update_id + "]";
     }
+
 }

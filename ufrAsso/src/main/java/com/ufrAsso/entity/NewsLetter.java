@@ -1,6 +1,7 @@
 package com.ufrAsso.entity;
 
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,6 +13,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.ufrAsso.functions.Utils;
 
 /**
  * NewsLetter entity.
@@ -30,12 +32,18 @@ public class NewsLetter {
     private long id;
     @Column(name = "NAM", nullable = false, length = 45)
     private String name;
-    @Column(name = "CRA_DAT", nullable = false)
-    private LocalDateTime creation_date;
     @Column(name = "TXT", nullable = false)
     private String text;
     @Column(name = "DSC", nullable = false)
     private String description;
+    @Column(name = "CRE_DAT")
+    private OffsetDateTime creation_date;
+    @Column(name = "CRE_ID")
+    private String creation_id;
+    @Column(name = "UPD_DAT")
+    private OffsetDateTime update_date;
+    @Column(name = "UPD_ID")
+    private String update_id;
 
     // Many to One with Asso entity.
     @ManyToOne(optional = true)
@@ -54,11 +62,6 @@ public class NewsLetter {
         return name;
     }
 
-    @JsonProperty("creation_date")
-    public LocalDateTime getCreation_date() {
-        return creation_date;
-    }
-
     @JsonProperty("text")
     public String getText() {
         return text;
@@ -69,6 +72,26 @@ public class NewsLetter {
         return description;
     }
 
+    public Asso getAsso() {
+        return asso;
+    }
+
+    public OffsetDateTime getCreation_date() {
+        return creation_date;
+    }
+
+    public String getCreation_id() {
+        return creation_id;
+    }
+
+    public OffsetDateTime getUpdate_date() {
+        return update_date;
+    }
+
+    public String getUpdate_id() {
+        return update_id;
+    }
+
     // Setters without @JsonProperty("name").
     public void setId(long id) {
         this.id = id;
@@ -76,18 +99,20 @@ public class NewsLetter {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public void setCreation_date(LocalDateTime creation_date) {
-        this.creation_date = creation_date;
+        this.update_date = Utils.getOffsetDateTimeNow();
+        this.update_id = "API - NewsLetter - Setters";
     }
 
     public void setText(String text) {
         this.text = text;
+        this.update_date = Utils.getOffsetDateTimeNow();
+        this.update_id = "API - NewsLetter - Setters";
     }
 
     public void setDescription(String description) {
         this.description = description;
+        this.update_date = Utils.getOffsetDateTimeNow();
+        this.update_id = "API - NewsLetter - Setters";
     }
 
     // constructor
@@ -99,15 +124,18 @@ public class NewsLetter {
         super();
         this.id = id;
         this.name = name;
-        this.creation_date = creation_date;
         this.text = text;
         this.description = description;
+        this.creation_date = Utils.getOffsetDateTimeNow();
+        this.creation_id = "API - NewsLetter - Constructor";
+        this.update_date = Utils.getOffsetDateTimeNow();
+        this.update_id = "API - NewsLetter - Constructor";
     }
 
     @Override
     public String toString() {
         return "NewsLetter [id=" + id + ", name=" + name + ", creation_date=" + creation_date + ", text=" + text
-                + ", description=" + description + "]";
+                + ", description=" + description + ", asso=" + asso + ", creation_id=" + creation_id + ", update_date="
+                + update_date + ", update_id=" + update_id + "]";
     }
-
 }

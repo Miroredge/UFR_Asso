@@ -1,6 +1,7 @@
 package com.ufrAsso.entity;
 
 import java.sql.Date;
+import java.time.OffsetDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,6 +13,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.ufrAsso.functions.Utils;
 
 /**
  * Budget entity.
@@ -36,6 +38,14 @@ public class Budget {
     private String name;
     @Column(name = "AMT", nullable = false)
     private double amount;
+    @Column(name = "CRE_DAT")
+    private OffsetDateTime creation_date;
+    @Column(name = "CRE_ID")
+    private String creation_id;
+    @Column(name = "UPD_DAT")
+    private OffsetDateTime update_date;
+    @Column(name = "UPD_ID")
+    private String update_id;
 
     // Many to One with Asso entity.
     @ManyToOne(optional = true)
@@ -69,6 +79,26 @@ public class Budget {
         return amount;
     }
 
+    public Asso getAsso() {
+        return asso;
+    }
+
+    public OffsetDateTime getCreation_date() {
+        return creation_date;
+    }
+
+    public String getCreation_id() {
+        return creation_id;
+    }
+
+    public OffsetDateTime getUpdate_date() {
+        return update_date;
+    }
+
+    public String getUpdate_id() {
+        return update_id;
+    }
+
     // Setters without @JsonProperty("name").
 
     public void setId(long id) {
@@ -77,18 +107,26 @@ public class Budget {
 
     public void setOperation_date(Date operation_date) {
         this.operation_date = operation_date;
+        this.update_date = Utils.getOffsetDateTimeNow();
+        this.update_id = "API - Budget - Setters";
     }
 
     public void setType(String type) {
         this.type = type;
+        this.update_date = Utils.getOffsetDateTimeNow();
+        this.update_id = "API - Budget - Setters";
     }
 
     public void setName(String name) {
         this.name = name;
+        this.update_date = Utils.getOffsetDateTimeNow();
+        this.update_id = "API - Budget - Setters";
     }
 
     public void setAmount(double amount) {
         this.amount = amount;
+        this.update_date = Utils.getOffsetDateTimeNow();
+        this.update_id = "API - Budget - Setters";
     }
 
     // constructor
@@ -104,13 +142,17 @@ public class Budget {
         this.type = type;
         this.name = name;
         this.amount = amount;
+        this.creation_date = Utils.getOffsetDateTimeNow();
+        this.creation_id = "API - Budget - Constructor";
+        this.update_date = Utils.getOffsetDateTimeNow();
+        this.update_id = "API - Budget - Constructor";
     }
 
     // toString
     @Override
     public String toString() {
         return "Budget [id=" + id + ", operation_date=" + operation_date + ", type=" + type + ", name=" + name
-                + ", amount="
-                + amount + "]";
+                + ", amount=" + amount + ", asso=" + asso + ", creation_date=" + creation_date + ", creation_id="
+                + creation_id + ", update_date=" + update_date + ", update_id=" + update_id + "]";
     }
 }

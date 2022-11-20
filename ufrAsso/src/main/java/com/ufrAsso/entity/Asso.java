@@ -1,22 +1,18 @@
 package com.ufrAsso.entity;
 
 import java.sql.Blob;
-import java.util.HashSet;
-import java.util.Set;
+import java.time.OffsetDateTime;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
+
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinTable;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.ufrAsso.functions.Utils;
 
 /**
  * Asso entity.
@@ -37,16 +33,18 @@ public class Asso {
     private String name;
     @Column(name = "LGO")
     private Blob logo;
-    @Column(name = "SIR_NBR", nullable = false, length = 14)
+    @Column(name = "SIR_NBR", nullable = false, length = 14, unique = true)
     private String siret_number;
     @Column(name = "MBR_PCE", nullable = false)
     private double member_price;
-
-    // n to m association with Event entity (JPA).
-    @ManyToMany(targetEntity = Event.class, cascade = { CascadeType.PERSIST,
-            CascadeType.MERGE }, fetch = FetchType.LAZY)
-    @JoinTable(name = "ASO_HAS_EVT", joinColumns = @JoinColumn(name = "ASO_ROW_IDT", referencedColumnName = "ROW_IDT"), inverseJoinColumns = @JoinColumn(name = "EVT_ROW_IDT", referencedColumnName = "ROW_IDT"))
-    private Set<Event> eventSet = new HashSet<Event>();
+    @Column(name = "CRE_DAT")
+    private OffsetDateTime creation_date;
+    @Column(name = "CRE_ID")
+    private String creation_id;
+    @Column(name = "UPD_DAT")
+    private OffsetDateTime update_date;
+    @Column(name = "UPD_ID")
+    private String update_id;
 
     // Getters with @JsonProperty("name").
 
@@ -75,6 +73,22 @@ public class Asso {
         return member_price;
     }
 
+    public OffsetDateTime getCreation_date() {
+        return creation_date;
+    }
+
+    public String getCreation_id() {
+        return creation_id;
+    }
+
+    public OffsetDateTime getUpdate_date() {
+        return update_date;
+    }
+
+    public String getUpdate_id() {
+        return update_id;
+    }
+
     // Setters without @JsonProperty("name").
 
     public void setId(long id) {
@@ -83,18 +97,26 @@ public class Asso {
 
     public void setName(String name) {
         this.name = name;
+        this.update_date = Utils.getOffsetDateTimeNow();
+        this.update_id = "API - Asso - Setters";
     }
 
     public void setLogo(Blob logo) {
         this.logo = logo;
+        this.update_date = Utils.getOffsetDateTimeNow();
+        this.update_id = "API - Asso - Setters";
     }
 
     public void setSiret_number(String siret_number) {
         this.siret_number = siret_number;
+        this.update_date = Utils.getOffsetDateTimeNow();
+        this.update_id = "API - Asso - Setters";
     }
 
     public void setMember_price(double member_price) {
         this.member_price = member_price;
+        this.update_date = Utils.getOffsetDateTimeNow();
+        this.update_id = "API - Asso - Setters";
     }
 
     // constructor
@@ -109,12 +131,16 @@ public class Asso {
         this.logo = logo;
         this.siret_number = siret_number;
         this.member_price = member_price;
+        this.creation_date = Utils.getOffsetDateTimeNow();
+        this.creation_id = "API - Asso - Constructor";
+        this.update_date = Utils.getOffsetDateTimeNow();
+        this.update_id = "API - Asso - Constructor";
     }
 
     @Override
     public String toString() {
         return "Asso [id=" + id + ", name=" + name + ", logo=" + logo + ", siret_number=" + siret_number
-                + ", member_price="
-                + member_price + "]";
+                + ", member_price=" + member_price + ", creation_date=" + creation_date + ", creation_id=" + creation_id
+                + ", update_date=" + update_date + ", update_id=" + update_id + "]";
     }
 }

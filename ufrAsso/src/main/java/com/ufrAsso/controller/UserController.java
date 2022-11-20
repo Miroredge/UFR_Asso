@@ -57,11 +57,14 @@ public class UserController {
         Optional<User> userData = userRepo.findById(id);
         if (userData.isPresent()) {
             User _user = userData.get();
+            // if (user.getFirst_name() != null) { TODO
+            // _user.setFirst_name(user.getFirst_name());
+            // }
             _user.setStudent_number(user.getStudent_number());
             _user.setProfile_picture(user.getProfile_picture());
             _user.setFirst_name(user.getFirst_name());
             _user.setLast_name(user.getLast_name());
-            _user.setSex(user.getSex());
+            _user.setGender(user.getGender());
             _user.setEmail(user.getEmail());
             _user.setPhone_number(user.getPhone_number());
             _user.setPhone_book(user.getPhone_book());
