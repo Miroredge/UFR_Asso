@@ -1,4 +1,4 @@
--- Active: 1668639301205@@localhost@3306@ufr_asso
+-- Active: 1668187026354@@localhost@3306@ufr_asso
 -- MySQL Workbench Forward Engineering
 
 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
@@ -8,6 +8,7 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,N
 -- -----------------------------------------------------
 -- Schema ufr_asso
 -- -----------------------------------------------------
+DROP SCHEMA ufr_asso;
 CREATE SCHEMA IF NOT EXISTS ufr_asso DEFAULT CHARACTER SET utf8 ;
 SHOW WARNINGS;
 -- -----------------------------------------------------
@@ -124,40 +125,6 @@ CREATE UNIQUE	INDEX uk_evt_1_idx		ON ufr_asso.evt		(NAM ASC, STT_DAT_TIM ASC, PL
 
 SHOW WARNINGS;
 
--- -----------------------------------------------------SHOW
--- Table ufr_asso.evt_has_aso
--- -----------------------------------------------------
-DROP TABLE IF EXISTS ufr_asso.evt_has_aso ;
-
-SHOW WARNINGS;
-CREATE TABLE IF NOT EXISTS ufr_asso.evt_has_aso (
-   EVT_ROW_IDT		BIGINT		(20)	NOT NULL
-,  ASO_ROW_IDT		BIGINT		(20)	NOT NULL
---
-,  CRE_ID		VARCHAR		(255)	NOT NULL
-,  CRE_DAT		TIMESTAMP		NOT NULL
-,  UPD_ID		VARCHAR		(255)	NOT NULL
-,  UPD_DAT		TIMESTAMP		NOT NULL
---
-, PRIMARY KEY (EVT_ROW_IDT, ASO_ROW_IDT)
-, CONSTRAINT fk_evt_has_aso_aso1
-    FOREIGN KEY (ASO_ROW_IDT)
-    REFERENCES ufr_asso.aso (ROW_IDT)
-, CONSTRAINT fk_evt_has_aso_evt1
-    FOREIGN KEY (EVT_ROW_IDT)
-    REFERENCES ufr_asso.evt (ROW_IDT)
-)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
-
-SHOW WARNINGS;
-CREATE 		INDEX fk_evt_has_aso_aso_1_idx	ON ufr_asso.evt_has_aso (ASO_ROW_IDT ASC) VISIBLE;
-
-SHOW WARNINGS;
-CREATE 		INDEX fk_evt_has_aso_evt_1_idx	ON ufr_asso.evt_has_aso (EVT_ROW_IDT ASC) VISIBLE;
-
-SHOW WARNINGS;
-
 -- -----------------------------------------------------
 -- Table ufr_asso.nws_ltr
 -- -----------------------------------------------------
@@ -258,6 +225,7 @@ SHOW WARNINGS;
 CREATE TABLE IF NOT EXISTS ufr_asso.usr (
    ROW_IDT		BIGINT		(20)	NOT NULL AUTO_INCREMENT
 --
+, USR_ID    VARCHAR(8) NOT NULL
 , STU_NBR VARCHAR(10) NULL
 , PRF_PIC BLOB NULL DEFAULT NULL
 , FST_NAM VARCHAR(20) NOT NULL
@@ -281,7 +249,8 @@ ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
 SHOW WARNINGS;
-CREATE UNIQUE	INDEX uk_usr_1_idx		ON ufr_asso.usr (STU_NBR ASC) VISIBLE;
+CREATE UNIQUE	INDEX uk_usr_1_idx		ON ufr_asso.usr (USR_ID ASC) VISIBLE;
+CREATE UNIQUE	INDEX uk_usr_2_idx		ON ufr_asso.usr (STU_NBR ASC) VISIBLE;
 
 SHOW WARNINGS;
 
@@ -294,6 +263,7 @@ SHOW WARNINGS;
 CREATE TABLE IF NOT EXISTS ufr_asso.aso (
    ROW_IDT		BIGINT		(20)	NOT NULL AUTO_INCREMENT
 --
+, loc VARCHAR(45) DEFAULT NULL
 , lgo LONGBLOB NULL DEFAULT NULL
 , mbr_pce DOUBLE NOT NULL
 , nam VARCHAR(45) NOT NULL

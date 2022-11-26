@@ -11,8 +11,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
+import javax.persistence.Query;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityManager;
+import javax.persistence.Persistence;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -35,6 +39,8 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ROW_IDT")
     private long id;
+    @Column(name = "USR_ID", nullable = false, length = 8)
+    private String user_id;
     @Size(min = 8, max = 10)
     @Column(name = "STU_NBR", nullable = true, length = 10)
     private String student_number;
@@ -97,6 +103,11 @@ public class User {
     @JsonProperty("id")
     public long getId() {
         return id;
+    }
+
+    @JsonProperty("user_id")
+    public String getUser_id() {
+        return user_id;
     }
 
     @JsonProperty("student_number")
@@ -180,6 +191,10 @@ public class User {
         this.id = id;
     }
 
+    public void setUser_id(String user_id) {
+        this.user_id = user_id;
+    }
+
     public void setStudent_number(String student_number) {
         this.student_number = student_number;
         this.update_date = Utils.getOffsetDateTimeNow();
@@ -246,6 +261,26 @@ public class User {
         this.update_id = "API - User - Setters";
     }
 
+    // next max user id in database (Base 36) with JPA query
+    public static String getNextUserId() {
+        EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("persistence");
+        EntityManager em = entityManagerFactory.createEntityManager();
+        String nextUserId = null;
+        try {
+            Query q = em.createNativeQuery("SELECT MAX(USR_ID) FROM USR");
+            nextUserId = (String) q.getSingleResult();
+            if (nextUserId == null) {
+                nextUserId = "0";
+            }
+            nextUserId = Long.toString(Long.parseLong(nextUserId, 36) + 1, 36);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            em.close();
+        }
+        return nextUserId;
+    }
+
     // Constructors
 
     public User() {
@@ -255,7 +290,7 @@ public class User {
             GenderType gender, String email, String phone_number, Boolean phone_book, String password,
             Boolean temporary_password, Boolean notification) {
         this.id = id;
-        this.student_number = student_number;
+        this.user_id = getNextUserId();
         this.profile_picture = profile_picture;
         this.first_name = first_name;
         this.last_name = last_name;
@@ -274,12 +309,12 @@ public class User {
 
     @Override
     public String toString() {
-        return "User [id=" + id + ", student_number=" + student_number + ", profile_picture=" + profile_picture
-                + ", first_name=" + first_name + ", last_name=" + last_name + ", gender=" + gender + ", email=" + email
-                + ", phone_number=" + phone_number + ", phone_book=" + phone_book + ", password=" + password
-                + ", temporary_password=" + temporary_password + ", notification=" + notification + ", creation_date="
-                + creation_date + ", creation_id=" + creation_id + ", update_date=" + update_date + ", update_id="
-                + update_id + "]";
+        return "User [id=" + id + ", user_id=" + user_id + ", student_number=" + student_number + ", profile_picture="
+                + profile_picture + ", first_name=" + first_name + ", last_name=" + last_name + ", gender=" + gender
+                + ", email=" + email + ", phone_number=" + phone_number + ", phone_book=" + phone_book + ", password="
+                + password + ", temporary_password=" + temporary_password + ", notification=" + notification
+                + ", creation_date=" + creation_date + ", creation_id=" + creation_id + ", update_date=" + update_date
+                + ", update_id=" + update_id + "]";
     }
 
 }

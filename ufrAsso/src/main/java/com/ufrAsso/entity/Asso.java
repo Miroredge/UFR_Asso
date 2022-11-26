@@ -34,6 +34,8 @@ public class Asso {
     @Size(min = 1, max = 45)
     @Column(name = "NAM", nullable = false, length = 45)
     private String name;
+    @Column(name = "LOC", length = 45)
+    private String location;
     @Column(name = "LGO")
     private Blob logo;
     @Size(min = 9, max = 14)
@@ -61,6 +63,11 @@ public class Asso {
     @JsonProperty("name")
     public String getName() {
         return name;
+    }
+
+    @JsonProperty("location")
+    public String getLocation() {
+        return location;
     }
 
     @JsonProperty("logo")
@@ -106,6 +113,12 @@ public class Asso {
         this.update_id = "API - Asso - Setters";
     }
 
+    public void setLocation(String location) {
+        this.location = location;
+        this.update_date = Utils.getOffsetDateTimeNow();
+        this.update_id = "API - Asso - Setters";
+    }
+
     public void setLogo(Blob logo) {
         this.logo = logo;
         this.update_date = Utils.getOffsetDateTimeNow();
@@ -129,10 +142,11 @@ public class Asso {
         super();
     }
 
-    public Asso(long id, String name, Blob logo, String siret_number, double member_price) {
+    public Asso(long id, String name, String location, Blob logo, String siret_number, double member_price) {
         super();
         this.id = id;
         this.name = name;
+        this.location = location;
         this.logo = logo;
         this.siret_number = siret_number;
         this.member_price = member_price;
@@ -144,8 +158,8 @@ public class Asso {
 
     @Override
     public String toString() {
-        return "Asso [id=" + id + ", name=" + name + ", logo=" + logo + ", siret_number=" + siret_number
-                + ", member_price=" + member_price + ", creation_date=" + creation_date + ", creation_id=" + creation_id
-                + ", update_date=" + update_date + ", update_id=" + update_id + "]";
+        return "Asso [id=" + id + ", name=" + name + ", location=" + location + ", logo=" + logo + ", siret_number="
+                + siret_number + ", member_price=" + member_price + ", creation_date=" + creation_date
+                + ", creation_id=" + creation_id + ", update_date=" + update_date + ", update_id=" + update_id + "]";
     }
 }
