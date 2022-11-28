@@ -1,9 +1,10 @@
--- Active: 1668187026354@@localhost@3306@ufr_asso
--- MySQL Workbench Forward Engineering
-
 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
+
+-- ------------------------------------------------------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------------------------------------------------------
 
 -- -----------------------------------------------------
 -- Schema ufr_asso
@@ -32,9 +33,10 @@ SHOW WARNINGS;
 CREATE TABLE IF NOT EXISTS ufr_asso.aso (
    ROW_IDT		BIGINT		(20)	NOT NULL AUTO_INCREMENT
 --
-,  NAM 			VARCHAR		(45)	NOT NULL
-,  LGO 			BLOB 			NOT NULL
 ,  SIR_NBR 		VARCHAR		(14)	NOT NULL
+,  NAM 			VARCHAR		(45)	NOT NULL
+,  LOC			VARCHAR		(45)	    NULL	DEFAULT NULL
+,  LGO 			BLOB 			NOT NULL
 ,  MBR_PCE 		DOUBLE			NOT NULL
 --
 ,  CRE_ID		VARCHAR		(255)	NOT NULL
@@ -110,7 +112,7 @@ CREATE TABLE IF NOT EXISTS ufr_asso.evt (
 , PRIMARY KEY (ROW_IDT)
 , CONSTRAINT fk_evt_aso_1
     FOREIGN KEY (CRE_ASO_ROW_IDT)
-    REFERENCES ufr_asso.aso (ROW_IDT)
+    REFERENCES ufr_asso.a            o (ROW_IDT)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION
 )
@@ -157,8 +159,6 @@ CREATE 		INDEX fk_nws_ltr_aso_1_idx 	ON ufr_asso.nws_ltr	(ASO_ROW_IDT ASC) VISIB
 
 SHOW WARNINGS;
 
--- TODO : Clean the script below
-
 -- -----------------------------------------------------
 -- Table ufr_asso.opn_hrs
 -- -----------------------------------------------------
@@ -168,10 +168,10 @@ SHOW WARNINGS;
 CREATE TABLE IF NOT EXISTS ufr_asso.opn_hrs (
    ROW_IDT		BIGINT		(20)	NOT NULL AUTO_INCREMENT
 --
-, DAY_WEK VARCHAR(10) NOT NULL
-, OPN TIME NOT NULL
-, CLO TIME NOT NULL
-, ASO_ROW_IDT BIGINT		(20) NOT NULL
+,  DAY_WEK		VARCHAR		(10)	NOT NULL
+,  OPN			TIME			NOT NULL
+,  CLO 			TIME			NOT NULL
+,  ASO_ROW_IDT		BIGINT		(20)	NOT NULL
 --
 ,  CRE_ID		VARCHAR		(255)	NOT NULL
 ,  CRE_DAT		TIMESTAMP		NOT NULL
@@ -181,7 +181,8 @@ CREATE TABLE IF NOT EXISTS ufr_asso.opn_hrs (
 , PRIMARY KEY (ROW_IDT)
 , CONSTRAINT fk_opn_hrs_aso_1
     FOREIGN KEY (ASO_ROW_IDT)
-    REFERENCES ufr_asso.aso (ROW_IDT))
+    REFERENCES ufr_asso.aso (ROW_IDT)
+)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
@@ -199,7 +200,7 @@ SHOW WARNINGS;
 CREATE TABLE IF NOT EXISTS ufr_asso.rol (
    ROW_IDT		BIGINT		(20)	NOT NULL AUTO_INCREMENT
 --
-, NAM VARCHAR(25) NULL DEFAULT NULL
+,  NAM			VARCHAR		(25)	    NULL DEFAULT NULL
 --
 ,  CRE_ID		VARCHAR		(255)	NOT NULL
 ,  CRE_DAT		TIMESTAMP		NOT NULL
@@ -213,113 +214,6 @@ DEFAULT CHARACTER SET = utf8;
 
 SHOW WARNINGS;
 CREATE UNIQUE	INDEX uk_rol_1_idx		ON ufr_asso.rol (NAM ASC) VISIBLE;
-
-SHOW WARNINGS;
-
--- -----------------------------------------------------
--- Table ufr_asso.usr
--- -----------------------------------------------------
-DROP TABLE IF EXISTS ufr_asso.usr ;
-
-SHOW WARNINGS;
-CREATE TABLE IF NOT EXISTS ufr_asso.usr (
-   ROW_IDT		BIGINT		(20)	NOT NULL AUTO_INCREMENT
---
-, USR_ID    VARCHAR(8) NOT NULL
-, STU_NBR VARCHAR(10) NULL
-, PRF_PIC BLOB NULL DEFAULT NULL
-, FST_NAM VARCHAR(20) NOT NULL
-, LST_NAM VARCHAR(25) NOT NULL
-, GDR ENUM('M', 'F', 'O') NULL DEFAULT NULL
-, EML TEXT NOT NULL
-, PHN_NBR VARCHAR(15) NULL DEFAULT NULL
-, PHN_BOK TINYINT(3) UNSIGNED ZEROFILL NULL DEFAULT NULL
-, PWD CHAR(64) NOT NULL
-, TMP_PWD TINYINT NOT NULL DEFAULT 0
-, NTF TINYINT NULL DEFAULT NULL
---
-,  CRE_ID		VARCHAR		(255)	NOT NULL
-,  CRE_DAT		TIMESTAMP		NOT NULL
-,  UPD_ID		VARCHAR		(255)	NOT NULL
-,  UPD_DAT		TIMESTAMP		NOT NULL
---
-, PRIMARY KEY (ROW_IDT)
-)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
-
-SHOW WARNINGS;
-CREATE UNIQUE	INDEX uk_usr_1_idx		ON ufr_asso.usr (USR_ID ASC) VISIBLE;
-CREATE UNIQUE	INDEX uk_usr_2_idx		ON ufr_asso.usr (STU_NBR ASC) VISIBLE;
-
-SHOW WARNINGS;
-
--- -----------------------------------------------------
--- Table ufr_asso.aso
--- -----------------------------------------------------
-DROP TABLE IF EXISTS ufr_asso.aso ;
-
-SHOW WARNINGS;
-CREATE TABLE IF NOT EXISTS ufr_asso.aso (
-   ROW_IDT		BIGINT		(20)	NOT NULL AUTO_INCREMENT
---
-, loc VARCHAR(45) DEFAULT NULL
-, lgo LONGBLOB NULL DEFAULT NULL
-, mbr_pce DOUBLE NOT NULL
-, nam VARCHAR(45) NOT NULL
-, sir_nbr VARCHAR(14) NOT NULL
---
-,  CRE_ID		VARCHAR		(255)	NOT NULL
-,  CRE_DAT		TIMESTAMP		NOT NULL
-,  UPD_ID		VARCHAR		(255)	NOT NULL
-,  UPD_DAT		TIMESTAMP		NOT NULL
---
-, PRIMARY KEY (row_idt))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
-
-SHOW WARNINGS;
-CREATE UNIQUE	INDEX uk_aso_1_idx	ON ufr_asso.aso (sir_nbr ASC) VISIBLE;
-
-SHOW WARNINGS;
-
--- -----------------------------------------------------
--- Table ufr_asso.evt
--- -----------------------------------------------------
-DROP TABLE IF EXISTS ufr_asso.evt ;
-
-SHOW WARNINGS;
-CREATE TABLE IF NOT EXISTS ufr_asso.evt (
-   ROW_IDT		BIGINT		(20)	NOT NULL AUTO_INCREMENT
---
-, dsc VARCHAR(255) NULL DEFAULT NULL
-, end_dat_tim DATETIME NOT NULL
-, nam VARCHAR(45) NOT NULL
-, plc VARCHAR(45) NOT NULL
-, pce DOUBLE NULL DEFAULT NULL
-, stt_dat_tim DATETIME NOT NULL
-, cre_aso_row_idt BIGINT(20) NOT NULL
---
-,  CRE_ID		VARCHAR		(255)	NOT NULL
-,  CRE_DAT		TIMESTAMP		NOT NULL
-,  UPD_ID		VARCHAR		(255)	NOT NULL
-,  UPD_DAT		TIMESTAMP		NOT NULL
---
-, PRIMARY KEY (ROW_IDT)
-, CONSTRAINT fk_evt_aso_1
-    FOREIGN KEY (CRE_ASO_ROW_IDT)
-    REFERENCES ufr_asso.aso (ROW_IDT)
-)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
-
-SHOW WARNINGS;
-CREATE UNIQUE	INDEX uk_evt_1_idx		ON ufr_asso.evt (NAM ASC, STT_DAT_TIM ASC, PLC ASC, CRE_ASO_ROW_IDT ASC) VISIBLE;
-
-SHOW WARNINGS;
-CREATE		INDEX fk_evt_aso_1_idx		ON ufr_asso.evt (CRE_ASO_ROW_IDT ASC) VISIBLE;
 
 SHOW WARNINGS;
 
@@ -404,100 +298,6 @@ CREATE		INDEX fk_bdg_aso_1_idx		ON ufr_asso.bdg (ASO_ROW_IDT ASC) VISIBLE;
 SHOW WARNINGS;
 
 -- -----------------------------------------------------
--- Table ufr_asso.nws_ltr
--- -----------------------------------------------------
-DROP TABLE IF EXISTS ufr_asso.nws_ltr ;
-
-SHOW WARNINGS;
-CREATE TABLE IF NOT EXISTS ufr_asso.nws_ltr (
-   ROW_IDT		BIGINT		(20)	NOT NULL AUTO_INCREMENT
---
-, dsc VARCHAR(255) NULL DEFAULT NULL
-, nam VARCHAR(45) NOT NULL
-, txt VARCHAR(255) NOT NULL
-, aso_row_idt BIGINT(20) NOT NULL
---
-,  CRE_ID		VARCHAR		(255)	NOT NULL
-,  CRE_DAT		TIMESTAMP		NOT NULL
-,  UPD_ID		VARCHAR		(255)	NOT NULL
-,  UPD_DAT		TIMESTAMP		NOT NULL
---
-  , PRIMARY KEY (row_idt)
-  , CONSTRAINT fk_nws_ltr_aso_1
-    FOREIGN KEY (aso_row_idt)
-    REFERENCES ufr_asso.aso (row_idt)
-)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8
-;
-
-SHOW WARNINGS;
-CREATE		INDEX fk_nws_ltr_aso_1_idx	 ON ufr_asso.nws_ltr (aso_row_idt ASC) VISIBLE;
-
-SHOW WARNINGS;
-
--- -----------------------------------------------------
--- Table ufr_asso.opn_hrs
--- -----------------------------------------------------
-DROP TABLE IF EXISTS ufr_asso.opn_hrs ;
-
-SHOW WARNINGS;
-CREATE TABLE IF NOT EXISTS ufr_asso.opn_hrs (
-   ROW_IDT		BIGINT		(20)	NOT NULL AUTO_INCREMENT
---
-,  CLO			TIME			NOT NULL
-,  DAY_WEK		VARCHAR		(10)	NOT NULL
-,  OPN			TIME			NOT NULL
-,  ASO_ROW_IDT		BIGINT		(20)	NOT NULL
---
-,  CRE_ID		VARCHAR		(255)	NOT NULL
-,  CRE_DAT		TIMESTAMP		NOT NULL
-,  UPD_ID		VARCHAR		(255)	NOT NULL
-,  UPD_DAT		TIMESTAMP		NOT NULL
---
-, PRIMARY KEY (ROW_IDT)
-, CONSTRAINT fk_opn_hrs_aso_1
-    FOREIGN KEY (ASO_ROW_IDT)
-    REFERENCES ufr_asso.aso (ROW_IDT)
-)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8
-;
-
-SHOW WARNINGS;
-CREATE		INDEX	fk_opn_hrs_aso_1_idx		ON ufr_asso.opn_hrs (aso_row_idt ASC) VISIBLE;
-
-SHOW WARNINGS;
-
--- -----------------------------------------------------
--- Table ufr_asso.rol
--- -----------------------------------------------------
-DROP TABLE IF EXISTS ufr_asso.rol ;
-
-SHOW WARNINGS;
-CREATE TABLE IF NOT EXISTS ufr_asso.rol (
-   ROW_IDT		BIGINT		(20)	NOT NULL AUTO_INCREMENT
---
-,  NAM			VARCHAR		(25)	NOT NULL
---
-,  CRE_ID		VARCHAR		(255)	NOT NULL
-,  CRE_DAT		TIMESTAMP		NOT NULL
-,  UPD_ID		VARCHAR		(255)	NOT NULL
-,  UPD_DAT		TIMESTAMP		NOT NULL
---
-, PRIMARY KEY (ROW_IDT)
-)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8
-;
-
-
-SHOW WARNINGS;
-CREATE UNIQUE	INDEX uk_rol_1_idx	ON ufr_asso.rol (nam ASC) VISIBLE;
-
-SHOW WARNINGS;
-
--- -----------------------------------------------------
 -- Table ufr_asso.usr
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS ufr_asso.usr ;
@@ -506,6 +306,7 @@ SHOW WARNINGS;
 CREATE TABLE IF NOT EXISTS ufr_asso.usr (
    ROW_IDT		BIGINT		(20)	NOT NULL AUTO_INCREMENT
 --
+,  USR_ID		VARCHAR		(8)	NOT NULL
 ,  STU_NBR		VARCHAR		(10)	    NULL	DEFAULT NULL
 ,  FST_NAM		VARCHAR		(20)	NOT NULL
 ,  LST_NAM		VARCHAR		(25)	NOT NULL
@@ -536,6 +337,10 @@ CREATE UNIQUE	INDEX uk_usr_1_idx	ON ufr_asso.usr (FST_NAM ASC, LST_NAM ASC, EML 
 
 SHOW WARNINGS;
 CREATE UNIQUE	INDEX uk_usr_2_idx	ON ufr_asso.usr (STU_NBR ASC) VISIBLE;
+
+
+SHOW WARNINGS;
+CREATE UNIQUE	INDEX uk_usr_3_idx	ON ufr_asso.usr (USR_ID ASC) VISIBLE;
 
 SHOW WARNINGS;
 
@@ -573,19 +378,106 @@ DEFAULT CHARACTER SET = utf8
 ;
 
 SHOW WARNINGS;
-CREATE		INDEX	fk_usr_has_aso_and_rol_usr_1_idx	ON ufr_asso.usr_has_aso_and_rol (usr_row_idt ASC) VISIBLE;
+CREATE		INDEX	fk_usr_has_aso_and_rol_usr_1_idx	ON ufr_asso.usr_has_aso_and_rol (USR_ROW_IDT ASC) VISIBLE;
 
 SHOW WARNINGS;
-CREATE		INDEX	fk_usr_has_aso_and_rol_aso_1_idx	ON ufr_asso.usr_has_aso_and_rol	(aso_row_idt ASC) VISIBLE;
+CREATE		INDEX	fk_usr_has_aso_and_rol_aso_1_idx	ON ufr_asso.usr_has_aso_and_rol	(ASO_ROW_IDT ASC) VISIBLE;
 
 SHOW WARNINGS;
-CREATE		INDEX	fk_usr_has_aso_and_rol_rol_1_idx	ON ufr_asso.usr_has_aso_and_rol (rol_row_idt ASC) VISIBLE;
+CREATE		INDEX	fk_usr_has_aso_and_rol_rol_1_idx	ON ufr_asso.usr_has_aso_and_rol (ROL_ROW_IDT ASC) VISIBLE;
 
 SHOW WARNINGS;
 
-CREATE UNIQUE	INDEX uk_usr_has_aso_and_rol_1_idx	ON ufr_asso.usr_has_aso_and_rol 	(USR_ROW_IDT ASC, ASO_ROW_IDT ASC, ROL_ROW_IDT ASC) VISIBLE;
+CREATE UNIQUE	INDEX uk_usr_has_aso_and_rol_1_idx		ON ufr_asso.usr_has_aso_and_rol	(USR_ROW_IDT ASC, ASO_ROW_IDT ASC, ROL_ROW_IDT ASC) VISIBLE;
 
 SHOW WARNINGS;
+
+-- -----------------------------------------------------
+-- Table ufr_asso.usr_has_evt
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS ufr_asso.usr_has_evt ;
+
+SHOW WARNINGS;
+CREATE TABLE IF NOT EXISTS ufr_asso.usr_has_evt
+
+ (
+   ROW_IDT		BIGINT		(20)	NOT NULL AUTO_INCREMENT
+--
+,  USR_ROW_IDT		BIGINT		(20)	NOT NULL
+,  EVT_ROW_IDT		BIGINT		(20)	NOT NULL
+--
+,  CRE_ID		VARCHAR		(255)	NOT NULL
+,  CRE_DAT		TIMESTAMP		NOT NULL
+,  UPD_ID		VARCHAR		(255)	NOT NULL
+,  UPD_DAT		TIMESTAMP		NOT NULL
+--
+, PRIMARY KEY (ROW_IDT)
+, CONSTRAINT fk_usr_has_evt_usr_1
+    FOREIGN KEY (USR_ROW_IDT)
+    REFERENCES ufr_asso.usr (ROW_IDT)
+, CONSTRAINT fk_usr_has_evt_evt_1
+    FOREIGN KEY (EVT_ROW_IDT)
+    REFERENCES ufr_asso.evt (ROW_IDT)
+)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8
+;
+
+SHOW WARNINGS;
+CREATE		INDEX	fk_usr_has_evt_usr_1_idx		ON ufr_asso.usr_has_evt (USR_ROW_IDT ASC) VISIBLE;
+
+SHOW WARNINGS;
+CREATE		INDEX	fk_usr_has_evt_evt_1_idx		ON ufr_asso.usr_has_evt (EVT_ROW_IDT ASC) VISIBLE;
+
+SHOW WARNINGS;
+
+CREATE UNIQUE	INDEX uk_usr_has_evt_1_idx		ON ufr_asso.usr_has_evt	(USR_ROW_IDT ASC, EVT_ROW_IDT ASC) VISIBLE;
+
+SHOW WARNINGS;
+
+-- -----------------------------------------------------
+-- Sequence ufr_asso.seq_usr
+-- -----------------------------------------------------
+
+DROP TABLE IF EXISTS ufr_asso.seq_usr;
+
+SHOW WARNINGS;
+CREATE TABLE IF NOT EXISTS ufr_asso.seq_usr (
+   SEQ_NUM		BIGINT		(20)	NOT NULL AUTO_INCREMENT
+   NAM			ENUM('NAM')		NOT NULL
+, PRIMARY KEY (SEQ_NUM)
+)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8
+;
+
+CREATE UNIQUE	INDEX uk_seq_usr_1_idx	ON ufr_asso.seq_usr	 	(SEQ_NUM) VISIBLE;
+
+SHOW WARNINGS;
+
+-- INSERT INTO `ufr_asso`.`seq_usr`	(NAM, SEQ_NUM) VALUES ('USR', LAST_INSERT_ID(1)) ON DUPLICATE KEY UPDATE seq_num = LAST_INSERT_ID(seq_num + 1);
+
+DELIMITER $$
+
+USE `temp` $$
+
+DROP PROCEDURE IF EXISTS `generateId`$$
+
+CREATE FUNCTION `generateId`(IN tableName VARCHAR(255), IN type VARCHAR(255)) 
+RETURNS	BIGINT	(20)
+BEGIN
+        SET @query=CONCAT('INSERT INTO `ufr_asso`.`',tableName,'` (NAM, SEQ_NUM) VALUES (''',type,''', LAST_INSERT_ID(1)) ON DUPLICATE KEY UPDATE seq_num = LAST_INSERT_ID(seq_num + 1));
+        PREPARE stmt FROM  @query;
+        EXECUTE stmt;
+        DEALLOCATE PREPARE stmt;
+    RETURN LAST_INSERT_ID();
+    END$$
+
+DELIMITER ;
+
+-- ------------------------------------------------------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------------------------------------------------------
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;

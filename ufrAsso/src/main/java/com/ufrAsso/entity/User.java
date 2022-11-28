@@ -80,26 +80,6 @@ public class User {
     @Column(name = "UPD_ID", nullable = false)
     private String update_id;
 
-    // create a unique key (student_number, )
-
-    // TODO 0 to n associations with Asso entity. (JPA)
-    // @ManyToMany(targetEntity = Asso.class, cascade = { CascadeType.PERSIST,
-    // CascadeType.MERGE })
-    // @JoinTable(name = "USR_HAS_ASO", joinColumns = @JoinColumn(name =
-    // "USR_ROW_IDT", referencedColumnName = "ROW_IDT"), inverseJoinColumns =
-    // @JoinColumn(name = "ASO_ROW_IDT", referencedColumnName = "ROW_IDT"))
-    // private Set<Asso> assoSet = new HashSet<Asso>();
-
-    // // 0 to n associations with Role entity. (JPA)
-    // @ManyToMany(targetEntity = Role.class, cascade = { CascadeType.PERSIST,
-    // CascadeType.MERGE })
-    // @JoinTable(name = "USR_HAS_ROL", joinColumns = @JoinColumn(name =
-    // "USR_ROW_IDT", referencedColumnName = "ROW_IDT"), inverseJoinColumns =
-    // @JoinColumn(name = "ROL_ROW_IDT", referencedColumnName = "ROW_IDT"))
-    // private Set<Role> roleSet = new HashSet<Role>();
-
-    // Getters with @JsonProperty("name")
-
     @JsonProperty("id")
     public long getId() {
         return id;

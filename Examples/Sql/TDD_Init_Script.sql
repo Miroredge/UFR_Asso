@@ -22,7 +22,7 @@ DELETE FROM  `ufr_asso`.`usr`;
 
 -- ALTER TABLE `ufr_asso`.`usr` ADD CONSTRAINT `CHK_USR_EML` CHECK (`EML` REGEXP "^[a-zA-Z0-9][a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]*?[a-zA-Z0-9._-]?@[a-zA-Z0-9][a-zA-Z0-9._-]*?[a-zA-Z0-9]?\\.[a-zA-Z]{2,63}$");
 
-INSERT INTO `ufr_asso`.`usr` (LST_NAM, FST_NAM, STU_NBR, GDR, EML, PHN_NBR, PHN_BOK, PWD, TMP_PWD, NTF, PRF_PIC, CRE_ID, CRE_DAT, UPD_ID, UPD_DAT) VALUES
+INSERT INTO `ufr_asso`.`usr`		(USR_ID, LST_NAM, FST_NAM, STU_NBR, GDR, EML, PHN_NBR, PHN_BOK, PWD, TMP_PWD, NTF, PRF_PIC, CRE_ID, CRE_DAT, UPD_ID, UPD_DAT) VALUES
 
 -- Happy flow
 -- ~~~~~~~~~~~~
@@ -30,62 +30,51 @@ INSERT INTO `ufr_asso`.`usr` (LST_NAM, FST_NAM, STU_NBR, GDR, EML, PHN_NBR, PHN_
 -- NOT A STUDENT
 -- =============
 
--- Minimal User 01 : Not a Student / No Gender / Email 1 / No Phone Number / Not in Facebook / Password / Temporary password / Refuse notification / No Picture
-	('MU01-NS', 'NO_PIC'	, null,	null	, 'email_01@gmail.com', null, FALSE, '0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF', TRUE	, FALSE	, null	, 'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+-- Minimal User 01 : Not a Student / No Gender / Email 1 / No Phone Number / Not in facebook / Password / Temporary password / Refuse notification / No Picture
+	(CONV(LAST_UPDATE_ID(), 10, 36), 'MU01-NS', 'NO_PIC'	, null,	null	, 'email_01@gmail.com', null, FALSE, '0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF', TRUE	, FALSE	, null	, 'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
 
--- Minimal User 02 : Not a Student / Female / Email 1 / No Phone Number / Not in Facebook / Password / Temporary password / Refuse notification / No Picture
+-- Minimal User 02 : Not a Student / Female / Email 1 / No Phone Number / Not in facebook / Password / Temporary password / Refuse notification / No Picture
 ,	('MU02-NS', 'NO_PIC'	, null,	'F'	, 'email_01@gmail.com', null, FALSE, '0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF', TRUE	, FALSE	, null	, 'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
 
--- Minimal User 03 : Not a Student / Male / Email 1 / No Phone Number / Not in Facebook / Password / Temporary password / Refuse notification / Picture
+-- Minimal User 03 : Not a Student / Male / Email 1 / No Phone Number / Not in facebook / Password / Temporary password / Refuse notification / Picture
 ,	('MU03-NS', 'WITH_PIC'	, null,	'M'	, 'email_01@gmail.com', null, FALSE, '0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF', TRUE	, FALSE	, LOAD_FILE('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\images\\profiles\\Not_Student_Default.png')	,'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
 
--- Minimal User 04 : Not a Student / Other / Email 1 / No Phone Number / Not in Facebook / Password / Permament password / Refuse notification / Picture
+-- Minimal User 04 : Not a Student / Other / Email 1 / No Phone Number / Not in facebook / Password / Permament password / Refuse notification / Picture
 ,	('MU04-NS', 'WITH_PIC'	, null,	'O'	, 'email_01@gmail.com', null, FALSE, '0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF', FALSE	, FALSE	, LOAD_FILE('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\images\\profiles\\Not_Student_Default.png')	,'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
-
--- Minimal User 05 : Not a Student / Male / Email 2 / No Phone Number / Not in Facebook / Password / Permament password / Refuse notification / Picture
+v
+-- Minimal User 05 : Not a Student / Male / Email 2 / No Phone Number / Not in facebook / Password / Permament password / Refuse notification / Picture
 ,	('MU05-NS', 'WITH_PIC'	, null,	'M'	, 'email_02@gmail.com', null, FALSE, '0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF', FALSE	, FALSE	, LOAD_FILE('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\images\\profiles\\Not_Student_Default.png')	,'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
 
--- Minimal User 06 : : Not a Student / Male / (variable) / No Phone Number / Not in Facebook / Password / Permament password / (variable) notification / No Picture
--- Same family, First Name A - Email 3 
-,	('MU06-NS', 'First Name - A'	, null,	'M'	, 'email_03@gmail.com', null, FALSE, '0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF', FALSE	, TRUE	, null	,'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
--- Same family, First Name B - Email 3 
-,	('MU06-NS', 'First Name - B'	, null,	'M'	, 'email_03@gmail.com', null, FALSE, '0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF', FALSE	, TRUE	, null	,'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
--- Same family, First Name B - Email 4 
-,	('MU06-NS', 'First Name - B'	, null,	'M'	, 'email_04@gmail.com', null, FALSE, '0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF', FALSE	, FALSE	, null	,'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+-- Users with the same Last Name : Not a Student / Male / (variable) / No Phone Number / Not in facebook / Password / Permament password / (variable) notification / No Picture
+-- Same family, First Name A - Email 01 
+,	('SAME-NS', 'First Name - A'	, null,	'M'	, 'email_same_01@gmail.com', null, FALSE, '0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF', FALSE	, TRUE	, null	,'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+-- Same family, First Name B - Email 01 
+,	('SAME-NS', 'First Name - B'	, null,	'M'	, 'email_same_01@gmail.com', null, FALSE, '0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF', FALSE	, TRUE	, null	,'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+-- Same family, First Name B - Email 02 
+,	('SAME-NS', 'First Name - B'	, null,	'M'	, 'email_same_02@gmail.com', null, FALSE, '0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF', FALSE	, FALSE	, null	,'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
 
--- Minimal User 40 : Not a Student / Other / Email 90 / '+330102030405' / In Facebook / Accept notification / Password / Temporary password / Accept notification / Picture
-,	('FU40-NS', 'FULL USER'	, null, 'O'	, 'email_40@gmail.com', '+330102030405', TRUE, '0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF', TRUE	, TRUE	, LOAD_FILE('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\images\\profiles\\Not_Student_Default.png')	,'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
-
--- Minimal User 07 - 14 : Not a Student / Male / Email 7 / No Phone Number / Not in Facebook / Password / Permament password / Refuse notification / Picture
-,	('MU07-NS', 'WITH_PIC'	, null,	'M'	, 'email_07@gmail.com', null, FALSE, '0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF', FALSE	, FALSE	, LOAD_FILE('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\images\\profiles\\Not_Student_Default.png')	,'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
-,	('MU08-NS', 'WITH_PIC'	, null,	'M'	, 'email_08@gmail.com', null, FALSE, '0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF', FALSE	, FALSE	, LOAD_FILE('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\images\\profiles\\Not_Student_Default.png')	,'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
-,	('MU09-NS', 'WITH_PIC'	, null,	'M'	, 'email_09@gmail.com', null, FALSE, '0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF', FALSE	, FALSE	, LOAD_FILE('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\images\\profiles\\Not_Student_Default.png')	,'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
-,	('MU10-NS', 'WITH_PIC'	, null,	'M'	, 'email_10@gmail.com', null, FALSE, '0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF', FALSE	, FALSE	, LOAD_FILE('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\images\\profiles\\Not_Student_Default.png')	,'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
-,	('MU11-NS', 'WITH_PIC'	, null,	'M'	, 'email_11@gmail.com', null, FALSE, '0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF', FALSE	, FALSE	, LOAD_FILE('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\images\\profiles\\Not_Student_Default.png')	,'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
-,	('MU12-NS', 'WITH_PIC'	, null,	'M'	, 'email_12@gmail.com', null, FALSE, '0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF', FALSE	, FALSE	, LOAD_FILE('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\images\\profiles\\Not_Student_Default.png')	,'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
-,	('MU13-NS', 'WITH_PIC'	, null,	'M'	, 'email_13@gmail.com', null, FALSE, '0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF', FALSE	, FALSE	, LOAD_FILE('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\images\\profiles\\Not_Student_Default.png')	,'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
-,	('MU14-NS', 'WITH_PIC'	, null,	'M'	, 'email_14@gmail.com', null, FALSE, '0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF', FALSE	, FALSE	, LOAD_FILE('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\images\\profiles\\Not_Student_Default.png')	,'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
-;
+-- Minimal User 40 : Not a Student / Other / Email 90 / '+330102030405' / In facebook / Accept notification / Password / Temporary password / Accept notification / Picture
+,	('FU40-NS', 'FULL USER'	, null, 'O'	, 'email_FU40@gmail.com', '+330102030405', TRUE, '0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF', TRUE	, TRUE	, LOAD_FILE('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\images\\profiles\\Not_Student_Default.png')	,'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
 
 -- STUDENT
 -- =============
 
--- Minimal User 51 : Student nbr 001 / No Gender / Email 51 / No Phone Number / Not in Facebook / Password / Temporary Password / Refuse notification / No Picture
+-- Minimal User 51 : Student nbr 001 / No Gender / Email 51 / No Phone Number / Not in facebook / Password / Temporary Password / Refuse notification / No Picture
 ,	('MU51-S', 'NO_PIC'	, '001', null	, 'email_51@gmail.com', null, FALSE, '0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF', TRUE	, FALSE	, null	, 'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
 
--- Minimal User 52 : Student nbr 002 / Female / Email 51 / No Phone Number / Not in Facebook / Password / Temporary Password / Accept notification / No Picture
+-- Minimal User 52 : Student nbr 002 / Female / Email 51 / No Phone Number / Not in facebook / Password / Temporary Password / Accept notification / No Picture
 ,	('MU52-S', 'NO_PIC'	, '002', 'F'	, 'email_51@gmail.com', null, FALSE, '0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF', TRUE	, TRUE	, null	,'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
 
--- Minimal User 53 : Student nbr 003 / Male / Email 51 / No Phone Number / Not in Facebook / Password / Temporary Password / Refuse notification / Picture
+-- Minimal User 53 : Student nbr 003 / Male / Email 51 / No Phone Number / Not in facebook / Password / Temporary Password / Refuse notification / Picture
 ,	('MU53-S', 'WITH_PIC'	, '003', 'M'	, 'email_51@gmail.com', null, FALSE, '0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF', TRUE	, FALSE	, LOAD_FILE('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\images\\profiles\\Student_Default.png')	,'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
 
--- Minimal User 54 : Student nbr 004 / Other / Email 51 / No Phone Number / Not in Facebook / Password / Permament Password / Refuse notification / Picture
+-- Minimal User 54 : Student nbr 004 / Other / Email 51 / No Phone Number / Not in facebook / Password / Permament Password / Refuse notification / Picture
 ,	('MU54-S', 'WITH_PIC'	, '004', 'O'	, 'email_51@gmail.com', null, FALSE, '0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF', FALSE	, FALSE	, LOAD_FILE('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\images\\profiles\\Student_Default.png')	,'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
 
--- Minimal User 55 : Student nbr 005 / Male / Email 52 / No Phone Number / Not in Facebook / Password / Permament Password / Refuse notification / Picture
+-- Minimal User 55 : Student nbr 005 / Male / Email 52 / No Phone Number / Not in facebook / Password / Permament Password / Refuse notification / Picture
 ,	('MU55-S', 'WITH_PIC'	, '005', 'M'	, 'email_52@gmail.com', null, FALSE, '0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF', FALSE	, FALSE	, LOAD_FILE('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\images\\profiles\\Student_Default.png')	,'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
 
--- Full User 90 : Student nbr 005 / Other / Email 90 / '+330102030405' / In Facebook / Accept notification / Password / Temporary password / Refuse notification / Picture
+-- Full User 90 : Student nbr 005 / Other / Email 90 / '+330102030405' / In facebook / Accept notification / Password / Temporary password / Refuse notification / Picture
 ,	('FU90-S', 'FULL USER'	, '999', 'O'	, 'email_90@gmail.com', '+330102030405', TRUE, '0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF', TRUE	, FALSE	, LOAD_FILE('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\images\\profiles\\Student_Default.png')	,'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
 
 ;
@@ -112,6 +101,67 @@ INSERT INTO `ufr_asso`.`usr` (LST_NAM, FST_NAM, STU_NBR, GDR, EML, PHN_NBR, PHN_
 -- Wrong field type
 
 
+-- TEST DATA SET : Users from UFR_ASSO_Tests.xlsx
+-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+INSERT INTO `ufr_asso`.`usr` (USR_ID, LST_NAM, FST_NAM, STU_NBR, GDR, EML, PHN_NBR, PHN_BOK, PWD, TMP_PWD, NTF, PRF_PIC, CRE_ID, CRE_DAT, UPD_ID, UPD_DAT) VALUES
+     ('Z0001', ''TST01-NS', 'Visiteur'  , null, 'M', 'visiteur.user@gmail.com'      , null, FALSE, '0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF', FALSE	, FALSE	, LOAD_FILE('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\images\\profiles\\Not_Student_Default.png')	,'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ('Z0002', ''TST02-NS', 'Zeus'      , null, 'M', 'zeus.user@gmail.com'          , null, FALSE, '0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF', FALSE	, FALSE	, LOAD_FILE('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\images\\profiles\\Not_Student_Default.png')	,'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ('Z0003', ''TST03-NS', 'Thor'      , null, 'M', 'thor.user@gmail.com'          , null, FALSE, '0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF', FALSE	, FALSE	, LOAD_FILE('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\images\\profiles\\Not_Student_Default.png')	,'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ('Z0004', ''TST04-NS', 'Galis'     , null, 'M', 'galis.user@gmail.com'         , null, FALSE, '0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF', FALSE	, FALSE	, LOAD_FILE('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\images\\profiles\\Not_Student_Default.png')	,'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ('Z0005', ''TST05-NS', 'Bboy'      , null, 'M', 'bboy.user@gmail.com'          , null, FALSE, '0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF', FALSE	, FALSE	, LOAD_FILE('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\images\\profiles\\Not_Student_Default.png')	,'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ('Z0006', ''TST06-NS', 'Frigiel'   , null, 'M', 'frigiel.user@gmail.com'       , null, FALSE, '0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF', FALSE	, FALSE	, LOAD_FILE('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\images\\profiles\\Not_Student_Default.png')	,'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ('Z0007', ''TST07-NS', 'Siphano'   , null, 'M', 'siphano.user@gmail.com'       , null, FALSE, '0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF', FALSE	, FALSE	, LOAD_FILE('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\images\\profiles\\Not_Student_Default.png')	,'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ('Z0008', ''TST08-NS', 'Fuze'      , null, 'M', 'fuze.user@gmail.com'          , null, FALSE, '0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF', FALSE	, FALSE	, LOAD_FILE('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\images\\profiles\\Not_Student_Default.png')	,'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ('Z0009', ''TST09-NS', 'Farine'    , null, 'M', 'farine.user@gmail.com'        , null, FALSE, '0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF', FALSE	, FALSE	, LOAD_FILE('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\images\\profiles\\Not_Student_Default.png')	,'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ('Z000A', ''TST10-NS', 'Miroredge' , null, 'M', 'miroredge.user@gmail.com'     , null, FALSE, '0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF', FALSE	, FALSE	, LOAD_FILE('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\images\\profiles\\Not_Student_Default.png')	,'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ('Z000B', ''TST11-NS', 'Corsair'   , null, 'M', 'corsair.user@gmail.com'       , null, FALSE, '0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF', FALSE	, FALSE	, LOAD_FILE('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\images\\profiles\\Not_Student_Default.png')	,'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ('Z000C', ''TST12-NS', 'Nvidia'    , null, 'M', 'nvidia.user@gmail.com'        , null, FALSE, '0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF', FALSE	, FALSE	, LOAD_FILE('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\images\\profiles\\Not_Student_Default.png')	,'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ('Z000D', ''TST13-NS', 'Ubuntu'    , null, 'M', 'ubuntu.user@gmail.com'        , null, FALSE, '0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF', FALSE	, FALSE	, LOAD_FILE('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\images\\profiles\\Not_Student_Default.png')	,'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ('Z000E', ''TST14-NS', 'Windows'   , null, 'M', 'windows.user@gmail.com'       , null, FALSE, '0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF', FALSE	, FALSE	, LOAD_FILE('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\images\\profiles\\Not_Student_Default.png')	,'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ('Z000F', ''TST15-NS', 'Unix'      , null, 'M', 'unix.user@gmail.com'          , null, FALSE, '0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF', FALSE	, FALSE	, LOAD_FILE('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\images\\profiles\\Not_Student_Default.png')	,'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ('Z000G', ''TST16-NS', 'Android'   , null, 'M', 'android.user@gmail.com'       , null, FALSE, '0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF', FALSE	, FALSE	, LOAD_FILE('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\images\\profiles\\Not_Student_Default.png')	,'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ('Z000H', ''TST17-NS', 'Ios'       , null, 'M', 'ios.user@gmail.com'           , null, FALSE, '0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF', FALSE	, FALSE	, LOAD_FILE('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\images\\profiles\\Not_Student_Default.png')	,'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ('Z000I', ''TST18-NS', 'Samsung'   , null, 'M', 'samsung.user@gmail.com'       , null, FALSE, '0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF', FALSE	, FALSE	, LOAD_FILE('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\images\\profiles\\Not_Student_Default.png')	,'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ('Z000J', ''TST19-NS', 'Apple'     , null, 'M', 'apple.user@gmail.com'         , null, FALSE, '0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF', FALSE	, FALSE	, LOAD_FILE('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\images\\profiles\\Not_Student_Default.png')	,'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ('Z000K', ''TST20-NS', 'Wiko'      , null, 'M', 'wiko.user@gmail.com'          , null, FALSE, '0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF', FALSE	, FALSE	, LOAD_FILE('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\images\\profiles\\Not_Student_Default.png')	,'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ('Z000L', ''TST21-NS', 'Xiomi'     , null, 'M', 'xiomi.user@gmail.com'         , null, FALSE, '0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF', FALSE	, FALSE	, LOAD_FILE('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\images\\profiles\\Not_Student_Default.png')	,'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ('Z000M', ''TST22-S' , 'Yanis'     , null, 'M', 'yanis.user@gmail.com'         , null, FALSE, '0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF', FALSE	, FALSE	, LOAD_FILE('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\images\\profiles\\Not_Student_Default.png')	,'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ('Z000N', ''TST23-S' , 'Oscar'     , null, 'M', 'oscar.user@gmail.com'         , null, FALSE, '0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF', FALSE	, FALSE	, LOAD_FILE('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\images\\profiles\\Not_Student_Default.png')	,'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ('Z000O', ''TST24-S' , 'Valentin'  , null, 'M', 'valentin.user@gmail.com'      , null, FALSE, '0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF', FALSE	, FALSE	, LOAD_FILE('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\images\\profiles\\Not_Student_Default.png')	,'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ('Z000P', ''TST25-S' , 'Nikola'    , null, 'M', 'nikola.user@gmail.com'        , null, FALSE, '0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF', FALSE	, FALSE	, LOAD_FILE('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\images\\profiles\\Not_Student_Default.png')	,'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ('Z000Q', ''TST26-S' , 'Maximilien', null, 'M', 'maximilien.user@gmail.com'    , null, FALSE, '0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF', FALSE	, FALSE	, LOAD_FILE('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\images\\profiles\\Not_Student_Default.png')	,'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ('Z000R', ''TST27-S' , 'Morgan'    , null, 'M', 'morgan.user@gmail.com'        , null, FALSE, '0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF', FALSE	, FALSE	, LOAD_FILE('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\images\\profiles\\Not_Student_Default.png')	,'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ('Z000S', ''TST28-S' , 'Max'       , null, 'M', 'max.user@gmail.com'           , null, FALSE, '0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF', FALSE	, FALSE	, LOAD_FILE('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\images\\profiles\\Not_Student_Default.png')	,'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ('Z000T', ''TST29-S' , 'Romuald'   , null, 'M', 'romuald.user@gmail.com'       , null, FALSE, '0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF', FALSE	, FALSE	, LOAD_FILE('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\images\\profiles\\Not_Student_Default.png')	,'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ('Z000U', ''TST30-S' , 'Nicolas'   , null, 'M', 'nicolas.user@gmail.com'       , null, FALSE, '0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF', FALSE	, FALSE	, LOAD_FILE('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\images\\profiles\\Not_Student_Default.png')	,'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ('Z000V', ''TST31-S' , 'Ryan'      , null, 'M', 'ryan.user@gmail.com'          , null, FALSE, '0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF', FALSE	, FALSE	, LOAD_FILE('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\images\\profiles\\Not_Student_Default.png')	,'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ('Z000W', ''TST32-S' , 'Michel'    , null, 'M', 'michel.user@gmail.com'        , null, FALSE, '0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF', FALSE	, FALSE	, LOAD_FILE('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\images\\profiles\\Not_Student_Default.png')	,'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ('Z000X', ''TST33-S' , 'Aureane'   , null, 'M', 'aureane.user@gmail.com'       , null, FALSE, '0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF', FALSE	, FALSE	, LOAD_FILE('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\images\\profiles\\Not_Student_Default.png')	,'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ('Z000Y', ''TST34-S' , 'Camille'   , null, 'M', 'camille.user@gmail.com'       , null, FALSE, '0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF', FALSE	, FALSE	, LOAD_FILE('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\images\\profiles\\Not_Student_Default.png')	,'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ('Z000Z', ''TST35-S' , 'Sandrine'  , null, 'M', 'sandrine.user@gmail.com'      , null, FALSE, '0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF', FALSE	, FALSE	, LOAD_FILE('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\images\\profiles\\Not_Student_Default.png')	,'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ('Z0010', ''TST36-S' , 'Aurelie'   , null, 'M', 'aurelie.user@gmail.com'       , null, FALSE, '0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF', FALSE	, FALSE	, LOAD_FILE('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\images\\profiles\\Not_Student_Default.png')	,'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ('Z0011', ''TST37-S' , 'Michael'   , null, 'M', 'michael.user@gmail.com'       , null, FALSE, '0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF', FALSE	, FALSE	, LOAD_FILE('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\images\\profiles\\Not_Student_Default.png')	,'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ('Z0012', ''TST38-S' , 'Chloe'     , null, 'M', 'chloe.user@gmail.com'         , null, FALSE, '0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF', FALSE	, FALSE	, LOAD_FILE('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\images\\profiles\\Not_Student_Default.png')	,'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ('Z0013', ''TST39-S' , 'Jb'        , null, 'M', 'jb.user@gmail.com'            , null, FALSE, '0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF', FALSE	, FALSE	, LOAD_FILE('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\images\\profiles\\Not_Student_Default.png')	,'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ('Z0014', ''TST40-S' , 'Jean'      , null, 'M', 'jean.user@gmail.com'          , null, FALSE, '0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF', FALSE	, FALSE	, LOAD_FILE('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\images\\profiles\\Not_Student_Default.png')	,'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ('Z0015', ''TST41-S' , 'Paul'      , null, 'M', 'paul.user@gmail.com'          , null, FALSE, '0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF', FALSE	, FALSE	, LOAD_FILE('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\images\\profiles\\Not_Student_Default.png')	,'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ('Z0016', ''TST42-S' , 'Estaban'   , null, 'M', 'estaban.user@gmail.com'       , null, FALSE, '0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF', FALSE	, FALSE	, LOAD_FILE('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\images\\profiles\\Not_Student_Default.png')	,'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ('Z0017', ''TST43-NS', 'Joe'       , null, 'M', 'several_org.joe@gmail.com'    , null, FALSE, '0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF', FALSE	, FALSE	, LOAD_FILE('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\images\\profiles\\Not_Student_Default.png')	,'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ('Z0018', ''TST44-S' , 'Jack'      , null, 'M', 'several_org.jack@gmail.com'   , null, FALSE, '0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF', FALSE	, FALSE	, LOAD_FILE('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\images\\profiles\\Not_Student_Default.png')	,'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ('Z0019', ''TST45-NS', 'Avrel'     , null, 'M', 'several_org.avrel@gmail.com'  , null, FALSE, '0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF', FALSE	, FALSE	, LOAD_FILE('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\images\\profiles\\Not_Student_Default.png')	,'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ('Z001A', ''TST46-S' , 'William'   , null, 'M', 'several_org.william@gmail.com', null, FALSE, '0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF', FALSE	, FALSE	, LOAD_FILE('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\images\\profiles\\Not_Student_Default.png')	,'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ('Z001B', ''TST47-NS', 'Luke'      , null, 'M', 'several_org.luke@gmail.com'   , null, FALSE, '0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF', FALSE	, FALSE	, LOAD_FILE('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\images\\profiles\\Not_Student_Default.png')	,'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ('Z001C', ''TST48-S' , 'Ma'        , null, 'M', 'several_org.ma@gmail.com'     , null, FALSE, '0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF', FALSE	, FALSE	, LOAD_FILE('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\images\\profiles\\Not_Student_Default.png')	,'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ('Z001D', ''TST49-NS', 'Gollum'    , null, 'M', 'several_org.gollum@gmail.com' , null, FALSE, '0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF', FALSE	, FALSE	, LOAD_FILE('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\images\\profiles\\Not_Student_Default.png')	,'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ('Z001E', ''TST50-S' , 'Bilbon'    , null, 'M', 'several_org.bilbon@gmail.com' , null, FALSE, '0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF', FALSE	, FALSE	, LOAD_FILE('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\images\\profiles\\Not_Student_Default.png')	,'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ('Z001F', ''TST51-NS', 'Sauron'    , null, 'M', 'several_org.sauron@gmail.com' , null, FALSE, '0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF', FALSE	, FALSE	, LOAD_FILE('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\images\\profiles\\Not_Student_Default.png')	,'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ('Z001G', ''TST52-S' , 'Aragon'    , null, 'M', 'several_org.aragon@gmail.com' , null, FALSE, '0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF', FALSE	, FALSE	, LOAD_FILE('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\images\\profiles\\Not_Student_Default.png')	,'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ('Z001H', ''TST53-NS', 'Frodon'    , null, 'M', 'several_org.frodon@gmail.com' , null, FALSE, '0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF', FALSE	, FALSE	, LOAD_FILE('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\images\\profiles\\Not_Student_Default.png')	,'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ('Z001I', ''TST54-S' , 'Sam'       , null, 'M', 'several_org.sam@gmail.com'    , null, FALSE, '0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF', FALSE	, FALSE	, LOAD_FILE('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\images\\profiles\\Not_Student_Default.png')	,'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+
+;
+
 
 
 -- ------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -125,7 +175,7 @@ INSERT INTO `ufr_asso`.`usr` (LST_NAM, FST_NAM, STU_NBR, GDR, EML, PHN_NBR, PHN_
 -- Happy flow
 -- ~~~~~~~~~~~~
 
-INSERT INTO `ufr_asso`.`aso` (NAM, MBR_PCE, SIR_NBR, LGO, CRE_ID, CRE_DAT, UPD_ID, UPD_DAT) VALUES
+INSERT INTO `ufr_asso`.`aso` (SIR_NBR, NAM, LOCATION, MBR_PCE, LGO, CRE_ID, CRE_DAT, UPD_ID, UPD_DAT) VALUES
 
 	('ASSO_00'	, 0		, '123456789'		, null												,'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
 ,	('ASSO_01'	, 1		, '12345678901230'	, LOAD_FILE('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\images\\logos\\logo_01.png')	,'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
@@ -141,6 +191,7 @@ INSERT INTO `ufr_asso`.`aso` (NAM, MBR_PCE, SIR_NBR, LGO, CRE_ID, CRE_DAT, UPD_I
 ,	('ASSO_SAME_NAME', 1		, '00000000000001'	, LOAD_FILE('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\images\\logos\\logo_05.png')	,'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
 ,	('ASSO_SAME_NAME', 110		, '00000000000002'	, LOAD_FILE('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\images\\logos\\logo_05.png')	,'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
 ,	('ASSO_SAME_NAME', 9.5		, '00000000000003'	, LOAD_FILE('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\images\\logos\\logo_06.png')	,'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+
 ;
 
 -- Failing flow
@@ -165,6 +216,17 @@ INSERT INTO `ufr_asso`.`aso` (NAM, MBR_PCE, SIR_NBR, LGO, CRE_ID, CRE_DAT, UPD_I
 -- SIRET/SIREN : With alpha characters
 
 
+-- TEST DATA SET : Organisations from UFR_ASSO_Tests.xlsx
+-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+INSERT INTO `ufr_asso`.`aso` (SIR_NBR, NAM, LOCATION, MBR_PCE, LGO, CRE_ID, CRE_DAT, UPD_ID, UPD_DAT) VALUES
+     ('73282932000074'         , 'ASSO_TST01', 'Blois'  ,3.12, LOAD_FILE('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\images\\logos\\logo_01.png')	,'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ('MONACOCONFO001'         , 'ASSO_TST02', 'Monaco' ,1   , LOAD_FILE('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\images\\logos\\logo_01.png')	,'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ('ANOTHER_ASSO'           , 'ASSO_TST03', 'Lorient',2   , LOAD_FILE('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\images\\logos\\logo_01.png')	,'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ('1_MIX_STUD_AND_NOT_STUD', 'ASSO_TST04', 'Nantes' ,5   , LOAD_FILE('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\images\\logos\\logo_01.png')	,'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ('2_MIX_STUD_AND_NOT_STUD', 'ASSO_TST05', 'Nice'   ,15  , LOAD_FILE('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\images\\logos\\logo_01.png')	,'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+
+;
 
 
 -- ------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -314,7 +376,13 @@ INSERT INTO `ufr_asso`.`usr_has_aso_and_rol` (USR_ROW_IDT, ASO_ROW_IDT, ROL_ROW_
 -- Failing flow
 -- ~~~~~~~~~~~~
 
--- ADMIN role set to a 'Student' user AND an organisation !
+-- APP_ADMIN role set several times to a user
+INSERT INTO `ufr_asso`.`usr_has_aso_and_rol` (USR_ROW_IDT, ASO_ROW_IDT, ROL_ROW_IDT, CRE_ID, CRE_DAT, UPD_ID, UPD_DAT) VALUES
+  ((SELECT ROW_IDT FROM `ufr_asso`.`usr` WHERE LST_NAM = 'MU57-S'	), null	, (SELECT ROW_IDT FROM `ufr_asso`.`rol` WHERE NAM = 'APP_ADMIN'		), 'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW() )
+, ((SELECT ROW_IDT FROM `ufr_asso`.`usr` WHERE LST_NAM = 'MU57-S'	), null	, (SELECT ROW_IDT FROM `ufr_asso`.`rol` WHERE NAM = 'APP_ADMIN'		), 'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW() )
+;
+
+-- APP_ADMIN role set to a 'Student' user AND an organisation !
 
 -- , ((SELECT ROW_IDT FROM `ufr_asso`.`usr` WHERE LST_NAM = 'MU52-S'), (SELECT ROW_IDT FROM `ufr_asso`.`aso` WHERE NAM = 'ASSO_01')	, (SELECT ROW_IDT FROM `ufr_asso`.`rol` WHERE NAM = 'ADMIN'), 'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW() )
 
@@ -349,6 +417,185 @@ INSERT INTO `ufr_asso`.`usr_has_aso_and_rol` (USR_ROW_IDT, ASO_ROW_IDT, ROL_ROW_
 
 
 
+-- TEST DATA SET : Link User-Organisations-Roles from UFR_ASSO_Tests.xlsx
+-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+INSERT INTO `ufr_asso`.`usr_has_aso_and_rol` (USR_ROW_IDT, ASO_ROW_IDT, ROL_ROW_IDT, CRE_ID, CRE_DAT, UPD_ID, UPD_DAT) VALUES
+
+     ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z0002'),null                                                                       ,(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'APP_ADMIN'),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z0003'),null                                                                       ,(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'APP_ADMIN'),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z0003'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = '73282932000074'         ),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'ADMIN'    ),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z0004'),null                                                                       ,(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'APP_ADMIN'),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z0004'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = '73282932000074'         ),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'ADMIN'    ),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z0004'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = '73282932000074'         ),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'MEMBER'   ),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z0005'),null                                                                       ,(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'APP_ADMIN'),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z0005'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = '73282932000074'         ),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'ADMIN'    ),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z0005'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = '73282932000074'         ),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'MEMBER'   ),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z0005'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = '73282932000074'         ),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'PRESIDENT'),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z0006'),null                                                                       ,(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'APP_ADMIN'),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z0006'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = '73282932000074'         ),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'ADMIN'    ),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z0006'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = '73282932000074'         ),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'MEMBER'   ),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z0006'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = '73282932000074'         ),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'VICE-PRES'),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z0007'),null                                                                       ,(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'APP_ADMIN'),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z0007'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = '73282932000074'         ),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'ADMIN'    ),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z0007'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = '73282932000074'         ),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'MEMBER'   ),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z0007'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = '73282932000074'         ),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'SECRETARY'),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z0008'),null                                                                       ,(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'APP_ADMIN'),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z0008'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = '73282932000074'         ),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'ADMIN'    ),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z0008'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = '73282932000074'         ),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'MEMBER'   ),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z0008'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = '73282932000074'         ),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'TREASURER'),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z0009'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = '73282932000074'         ),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'ADMIN'    ),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z000A'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = '73282932000074'         ),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'ADMIN'    ),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z000A'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = '73282932000074'         ),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'MEMBER'   ),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z000B'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = '73282932000074'         ),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'ADMIN'    ),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z000B'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = '73282932000074'         ),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'MEMBER'   ),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z000B'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = '73282932000074'         ),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'PRESIDENT'),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z000C'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = '73282932000074'         ),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'ADMIN'    ),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z000C'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = '73282932000074'         ),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'MEMBER'   ),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z000C'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = '73282932000074'         ),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'VICE-PRES'),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z000D'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = '73282932000074'         ),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'ADMIN'    ),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z000D'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = '73282932000074'         ),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'MEMBER'   ),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z000D'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = '73282932000074'         ),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'SECRETARY'),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z000E'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = '73282932000074'         ),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'ADMIN'    ),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z000E'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = '73282932000074'         ),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'MEMBER'   ),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z000E'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = '73282932000074'         ),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'TREASURER'),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z000F'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = '73282932000074'         ),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'MEMBER'   ),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z000G'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = '73282932000074'         ),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'MEMBER'   ),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z000G'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = '73282932000074'         ),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'PRESIDENT'),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z000H'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = '73282932000074'         ),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'MEMBER'   ),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z000H'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = '73282932000074'         ),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'VICE-PRES'),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z000I'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = '73282932000074'         ),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'MEMBER'   ),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z000I'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = '73282932000074'         ),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'SECRETARY'),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z000J'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = '73282932000074'         ),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'MEMBER'   ),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z000J'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = '73282932000074'         ),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'TREASURER'),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z000K'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = '73282932000074'         ),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'CANDIDATE'),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z000L'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = '73282932000074'         ),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'REFUSED'  ),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z000N'),null                                                                       ,(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'APP_ADMIN'),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z000O'),null                                                                       ,(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'APP_ADMIN'),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z000O'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = 'MONACOCONFO001'         ),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'ADMIN'    ),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z000P'),null                                                                       ,(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'APP_ADMIN'),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z000P'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = 'MONACOCONFO001'         ),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'ADMIN'    ),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z000P'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = 'MONACOCONFO001'         ),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'MEMBER'   ),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z000Q'),null                                                                       ,(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'APP_ADMIN'),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z000Q'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = 'MONACOCONFO001'         ),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'ADMIN'    ),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z000Q'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = 'MONACOCONFO001'         ),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'MEMBER'   ),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z000Q'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = 'MONACOCONFO001'         ),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'PRESIDENT'),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z000R'),null                                                                       ,(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'APP_ADMIN'),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z000R'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = 'MONACOCONFO001'         ),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'ADMIN'    ),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z000R'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = 'MONACOCONFO001'         ),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'MEMBER'   ),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z000R'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = 'MONACOCONFO001'         ),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'VICE-PRES'),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z000S'),null                                                                       ,(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'APP_ADMIN'),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z000S'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = 'MONACOCONFO001'         ),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'ADMIN'    ),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z000S'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = 'MONACOCONFO001'         ),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'MEMBER'   ),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z000S'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = 'MONACOCONFO001'         ),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'SECRETARY'),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z000T'),null                                                                       ,(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'APP_ADMIN'),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z000T'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = 'MONACOCONFO001'         ),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'ADMIN'    ),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z000T'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = 'MONACOCONFO001'         ),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'MEMBER'   ),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z000T'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = 'MONACOCONFO001'         ),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'TREASURER'),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z000U'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = 'MONACOCONFO001'         ),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'ADMIN'    ),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z000V'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = 'MONACOCONFO001'         ),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'ADMIN'    ),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z000V'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = 'MONACOCONFO001'         ),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'MEMBER'   ),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z000W'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = 'MONACOCONFO001'         ),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'ADMIN'    ),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z000W'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = 'MONACOCONFO001'         ),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'MEMBER'   ),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z000W'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = 'MONACOCONFO001'         ),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'PRESIDENT'),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z000X'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = 'MONACOCONFO001'         ),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'ADMIN'    ),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z000X'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = 'MONACOCONFO001'         ),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'MEMBER'   ),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z000X'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = 'MONACOCONFO001'         ),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'VICE-PRES'),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z000Y'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = 'MONACOCONFO001'         ),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'ADMIN'    ),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z000Y'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = 'MONACOCONFO001'         ),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'MEMBER'   ),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z000Y'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = 'MONACOCONFO001'         ),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'SECRETARY'),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z000Z'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = 'MONACOCONFO001'         ),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'ADMIN'    ),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z000Z'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = 'MONACOCONFO001'         ),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'MEMBER'   ),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z000Z'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = 'MONACOCONFO001'         ),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'TREASURER'),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z0010'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = 'MONACOCONFO001'         ),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'MEMBER'   ),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z0011'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = 'MONACOCONFO001'         ),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'MEMBER'   ),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z0011'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = 'MONACOCONFO001'         ),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'PRESIDENT'),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z0012'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = 'MONACOCONFO001'         ),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'MEMBER'   ),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z0012'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = 'MONACOCONFO001'         ),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'VICE-PRES'),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z0013'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = 'MONACOCONFO001'         ),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'MEMBER'   ),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z0013'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = 'MONACOCONFO001'         ),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'SECRETARY'),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z0014'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = 'MONACOCONFO001'         ),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'MEMBER'   ),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z0014'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = 'MONACOCONFO001'         ),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'TREASURER'),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z0015'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = 'MONACOCONFO001'         ),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'CANDIDATE'),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z0016'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = 'MONACOCONFO001'         ),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'REFUSED'  ),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z0017'),null                                                                       ,(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'APP_ADMIN'),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z0017'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = '1_MIX_STUD_AND_NOT_STUD'),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'ADMIN'    ),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z0017'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = '2_MIX_STUD_AND_NOT_STUD'),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'ADMIN'    ),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z0018'),null                                                                       ,(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'APP_ADMIN'),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z0018'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = '1_MIX_STUD_AND_NOT_STUD'),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'ADMIN'    ),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z0018'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = '2_MIX_STUD_AND_NOT_STUD'),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'ADMIN'    ),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z0018'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = '2_MIX_STUD_AND_NOT_STUD'),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'MEMBER'   ),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z0019'),null                                                                       ,(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'APP_ADMIN'),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z0019'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = '1_MIX_STUD_AND_NOT_STUD'),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'ADMIN'    ),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z0019'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = '2_MIX_STUD_AND_NOT_STUD'),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'ADMIN'    ),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z0019'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = '2_MIX_STUD_AND_NOT_STUD'),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'MEMBER'   ),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z0019'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = '2_MIX_STUD_AND_NOT_STUD'),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'PRESIDENT'),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z001A'),null                                                                       ,(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'APP_ADMIN'),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z001A'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = '1_MIX_STUD_AND_NOT_STUD'),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'ADMIN'    ),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z001A'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = '2_MIX_STUD_AND_NOT_STUD'),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'ADMIN'    ),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z001A'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = '2_MIX_STUD_AND_NOT_STUD'),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'MEMBER'   ),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z001A'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = '2_MIX_STUD_AND_NOT_STUD'),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'PRESIDENT'),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z001B'),null                                                                       ,(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'APP_ADMIN'),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z001B'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = '1_MIX_STUD_AND_NOT_STUD'),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'ADMIN'    ),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z001B'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = '2_MIX_STUD_AND_NOT_STUD'),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'ADMIN'    ),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z001B'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = '2_MIX_STUD_AND_NOT_STUD'),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'MEMBER'   ),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z001B'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = '2_MIX_STUD_AND_NOT_STUD'),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'PRESIDENT'),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z001C'),null                                                                       ,(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'APP_ADMIN'),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z001C'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = '1_MIX_STUD_AND_NOT_STUD'),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'ADMIN'    ),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z001C'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = '2_MIX_STUD_AND_NOT_STUD'),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'ADMIN'    ),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z001C'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = '2_MIX_STUD_AND_NOT_STUD'),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'MEMBER'   ),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z001C'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = '2_MIX_STUD_AND_NOT_STUD'),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'PRESIDENT'),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z001D'),null                                                                       ,(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'APP_ADMIN'),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z001D'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = '1_MIX_STUD_AND_NOT_STUD'),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'ADMIN'    ),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z001D'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = '2_MIX_STUD_AND_NOT_STUD'),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'ADMIN'    ),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z001D'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = '2_MIX_STUD_AND_NOT_STUD'),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'MEMBER'   ),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z001D'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = '2_MIX_STUD_AND_NOT_STUD'),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'PRESIDENT'),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z001E'),null                                                                       ,(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'APP_ADMIN'),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z001E'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = '1_MIX_STUD_AND_NOT_STUD'),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'ADMIN'    ),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z001E'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = '2_MIX_STUD_AND_NOT_STUD'),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'ADMIN'    ),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z001E'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = '2_MIX_STUD_AND_NOT_STUD'),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'MEMBER'   ),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z001E'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = '2_MIX_STUD_AND_NOT_STUD'),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'VICE-PRES'),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z001F'),null                                                                       ,(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'APP_ADMIN'),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z001F'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = '1_MIX_STUD_AND_NOT_STUD'),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'ADMIN'    ),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z001F'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = '2_MIX_STUD_AND_NOT_STUD'),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'ADMIN'    ),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z001F'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = '2_MIX_STUD_AND_NOT_STUD'),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'MEMBER'   ),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z001F'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = '2_MIX_STUD_AND_NOT_STUD'),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'SECRETARY'),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z001G'),null                                                                       ,(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'APP_ADMIN'),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z001G'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = '1_MIX_STUD_AND_NOT_STUD'),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'ADMIN'    ),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z001G'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = '2_MIX_STUD_AND_NOT_STUD'),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'ADMIN'    ),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z001G'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = '2_MIX_STUD_AND_NOT_STUD'),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'MEMBER'   ),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z001G'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = '2_MIX_STUD_AND_NOT_STUD'),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'TREASURER'),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z001H'),null                                                                       ,(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'APP_ADMIN'),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z001H'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = '1_MIX_STUD_AND_NOT_STUD'),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'ADMIN'    ),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z001H'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = '2_MIX_STUD_AND_NOT_STUD'),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'CANDIDATE'),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z001I'),null                                                                       ,(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'APP_ADMIN'),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z001I'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = '1_MIX_STUD_AND_NOT_STUD'),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'ADMIN'    ),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z001I'),(SELECT ROW_IDT `ufr_asso`.`aso` WHERE SIR_NBR = '2_MIX_STUD_AND_NOT_STUD'),(SELECT ROW_IDT `ufr_asso`.`rol` WHERE NAM = 'REFUSED'  ),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+
+-- ------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- User / Event
+-- ------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+-- Unique Key
+
+-- User, Event
+
+-- Happy flow
+-- ~~~~~~~~~~~~
+
+-- Failing flow
+-- ~~~~~~~~~~~~
+
+-- TEST DATA SET : Link User-Event from UFR_ASSO_Tests.xlsx
+-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+INSERT INTO `ufr_asso`.`usr_has_evt` (USR_ROW_IDT, EVT_ROW_IDT, CRE_ID, CRE_DAT, UPD_ID, UPD_DAT) VALUES
+     ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z0001'),(SELECT ROW_IDT `ufr_asso`.`evt` WHERE EVT_ID = 'Z0001'),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z0002'),(SELECT ROW_IDT `ufr_asso`.`evt` WHERE EVT_ID = 'Z0002'),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z0003'),(SELECT ROW_IDT `ufr_asso`.`evt` WHERE EVT_ID = 'Z0003'),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT `ufr_asso`.`usr` WHERE USR_ID = 'Z0004'),(SELECT ROW_IDT `ufr_asso`.`evt` WHERE EVT_ID = 'Z0004'),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+
+;
 
 COMMIT;

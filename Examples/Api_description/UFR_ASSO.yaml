@@ -1,0 +1,2154 @@
+openapi: 3.0.1
+
+# https://blog.readme.io/an-example-filled-guide-to-swagger-3-2/
+
+# YAML to JSON
+# https://onlineyamltools.com/convert-yaml-to-json
+
+# YAML Schema validator
+# https://editor.swagger.io/
+# https://apitools.dev/swagger-parser/online/
+# https://www.apimatic.io/
+
+# JSON 'sample' generator
+# https://www.liquid-technologies.com/online-schema-to-json-converter
+# https://app.swaggerhub.com/welcome
+
+# JSON 'sample' validator
+# https://www.jsonschemavalidator.net/
+# https://jsonschemalint.com/#!/version/draft-07/markup/json
+
+# Conditional 'Required'
+# https://stackoverflow.com/questions/40477704/json-schema-conditional-dependency-by-value
+
+# What is a ...
+# - Number   : Technical Identifier
+# - Quantity : Number of items
+# - Code     : Identifier in a limited list, available in a Master Data repository
+# - Name     : Actual name of the entity
+
+# Naming rules
+# ------------
+# The name of an API appears on the detail of a service in the Service Registry as well as in the TITLE of the associated Swagger.
+# An API should be named by its functional domain - subdomain.
+# <Domain> - <Subdomain> (exceptional: - <Backend>)
+# In the case of an API who is not the repository for the entire functional domain-subdomain on which it is involved, the scope must be defined by a perimeter. => For example: suffix the name of the provider / Backend
+# API names are:
+#  - in English
+#  - Acronym-less (except if acronym have more sense than explicit name)
+#  - both in the swagger and in the SR
+#  Ex:
+#   - Supply Chain - Parts provisionning - Logistic Parts
+#   - After sales - parts sales (formerly "PARTS Orders")
+# Description rules
+# Golden rules:
+#  - ALWAYS define acronyms
+#  - Readable for a "beginner" off the project
+#  - Not technical
+#  - In English
+#  - Functional description of the service - generic and not related to the consumer (s)
+# Description themes:
+#  - Description of the functional domain
+#  - Description of ressources
+#  - Description of the provided services
+#  - Positioning of the API in the SI (data source in functional sense, business context)
+# Optional:
+#  - Useful contacts
+#  - Service Level Agreements (eg: number of calls for time slot, opening hours of the service, availability ...)
+#  - Practical information on the versions on display (What's news, Miscellaneous, features)
+
+# /!\ In examples, if the type is String, you must give the surrounding "
+# WRONG :
+#  example: TEST
+# CORRECT :
+#  example: "TEST"
+
+# Header variables :
+# Must follow the RFC (https://www.rfc-editor.org/rfc/rfc9110.html)
+# 4.2 Message Headers
+# Each header field consists of a name followed by a colon (":") and the field value. 
+# /!\ /!\ /!\ /!\ /!\ /!\ /!\ /!\ /!\ /!\  /!\
+# /!\ The field names are case-insensitive /!\ 
+# /!\ /!\ /!\ /!\ /!\ /!\ /!\ /!\ /!\ /!\  /!\
+
+############################################################
+#                    CONTRACT INFORMATION                  #
+############################################################
+info:
+  title: Student Union manager
+  description: >-
+    - Description of the functional domain  
+    
+      A *Student Union*, aka *Bureau des Eleves* in the French-speaking world, is a student association gathering students from one or more faculties within a university or college.
+      
+      The *Student Union* is responsible for organizing extracurricular activities such as :
+      - Welcoming new students
+      - `EVENTs`
+        - Student parties
+        - Sports meetings
+        - Cultural events
+      - Other various activities, including the management of cafeterias or student cooperatives
+      
+      It often represents its members within the various faculty and university institutions.
+      
+    - Description of ressources  
+    
+      A `USER` is anybody from the univeristy (Professor, Student, ...) or somebody not directly related to the University.
+      
+      Any **User** can subscribe to the application.
+      
+      A **User** can declare a *Student Union* or register to an existing *Student Union*.
+      Its request will be then checked and it may become a member of the *Student Union* after he paid the subscription fee.
+      
+      Some **User** have specific `ROLE`s in the *Student Union* (Administrator, President, ...)  
+      
+      Here, an `ORGANISATION` is a *Student Union*, defined by its [SIRET](https://fr.wikipedia.org/wiki/Syst%C3%A8me_d%27identification_du_r%C3%A9pertoire_des_%C3%A9tablissements) number.
+      
+      On a *Student Union*, some additional information can be recorded , such as the *Opening hours*, the accounting operations and the `BUDGET`.
+      
+      Some *Student Union* are also publishing `NEWSLETTERs`. A *newsletter* is used to share relevant and valuable information with their network of subscribers.
+      
+      For example, these *Newsletters* could be used to communicate about `EVENTS`, giving their date, meeting place, registration fee, or start and end time. 
+      
+    - Documentation  
+    
+      - [Bureau des Eleves (fr)](https://fr.wikipedia.org/wiki/Association_facultaire)
+      - [GitHub](https://github.com/Miroredge/UFR_Asso)    
+
+  version: '0.1'
+  license:
+    name: (C) Unity fo Training & Research / Unité de Formation et de Recherche (UFR) - Promotion L2 2022/2023
+  contact:
+    email: maximilien.poncet@etu.univ-tours.fr
+    name: University of Blois
+    url: 'https://iut-blois.univ-tours.fr/version-francaise/le-site-universitaire-de-blois'
+
+externalDocs:
+  url: 'https://www.studyrama.com/vie-etudiante/s-engager-dans-une-association-etudiante/les-bureaux-des-eleves-bde'
+  description: Féderation Française des Bureaux des Eleves
+
+
+############################################################
+#                     S E R V E R S                        #
+############################################################
+servers:
+
+  - url: https://maximilien.poncet.free.fr/tst/{basePath}/{version}
+    description: Test
+    variables:
+      basePath:
+        default: 'usr_asso'
+      version:
+        default: 'v1'
+
+  - url: https://maximilien.poncet.free.fr/api/{basePath}/{version}
+    description: Production
+    variables:
+      basePath:
+        default: 'usr_asso'
+      version:
+        default: 'v1'
+
+################################################################################
+#                                   Tags                                       #
+################################################################################
+tags:
+  - name : User
+    externalDocs:
+      url: ''
+    description: User declared in the application identified uniquely by its userId
+  - name : Role
+    externalDocs:
+      url: ''
+    description: Role associated to a User in an Organisation
+  - name : Organisation
+    externalDocs:
+      url: 'https://en.wikipedia.org/wiki/Students%27_union'
+    description: Student Union
+  - name : Opening hour
+    externalDocs:
+      url: ''
+    description: Opening hours of the Organisation
+  - name : Newsletter
+    externalDocs:
+      url: 'https://en.wikipedia.org/wiki/Newsletter'
+    description: Newsletter published by an Organisation
+  - name : Budget
+    externalDocs:
+      url: ''
+    description: Accounting operations of an Organisation
+  - name : Event
+    externalDocs:
+      url: ''
+    description: Event organised by an Organisation
+  - name: Common
+    externalDocs:
+      url: ''
+    description: Common API
+
+############################################################
+#                       R E S O U R C E S                  #
+############################################################
+paths:
+
+# ====================================
+  '/users':
+# ====================================
+# POST  #
+# ----- #
+
+    post:
+      tags:
+        - User
+      summary: Create a 'User'
+      description: This operation allows the creation of a new 'User' with the no role
+      externalDocs:
+        url: ''
+      operationId: createUser
+      security:
+        - OauthSecurity:
+            - All
+            - Application_Admin
+            - Organisation_Admin
+            - Organisation_Member
+            - Organisation_Candidate
+            - Organisation_Refused
+            - Organisation_President
+            - Organisation_VicePresident
+            - Organisation_Secretary
+            - Organisation_Treasurer
+
+      parameters:
+
+      # HEADER
+      # -------------
+
+        # Host
+        - name: Host
+          description: Network location of the URI
+          required: true
+#          nullable: false
+          in: header
+          schema:
+            type: string
+          example: www.google.com
+
+        # transactionID
+        - name: X-Transaction-ID
+          description: Technical transaction ID for the API call
+          required: true
+#          nullable: false
+          in: header
+          schema:
+            type: string
+            format: uuid
+            minLength: 36
+            maxLength: 36
+          example: 123e4567-e89b-12d3-a456-426655440000
+
+      # PATH
+      # -------------
+
+
+      # QUERY
+      # -------------
+
+
+      # BODY
+      # -------------
+
+      # User details
+      requestBody:
+        description: User detailled content
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - user
+              properties:
+                user:
+                  $ref: '#/components/schemas/User'
+            examples:
+              CreateUser:
+                $ref: '#/components/examples/CreateUser'
+
+      # RESPONSES
+      # -------------
+
+      responses:
+        '201':
+          $ref: '#/components/responses/UserCreated'
+
+        # Definition of all error statuses
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden' 
+        '404':
+          $ref: '#/components/responses/NotFound' 
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalError'
+        '501': 
+          $ref: '#/components/responses/NotImplemented'
+        '502':
+          $ref: '#/components/responses/BadGateway'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+
+        # Definition of other error status
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errors'
+
+
+
+
+
+
+# ====================================
+  '/reception-events/{reception-event-id}':
+# ====================================
+# GET   #
+# ----- #
+
+    get:
+      tags:
+        - User
+      summary: Get a single 'User'
+      description: This operation allows to get a 'User' associated to a Delivery Note, according to its unique identifier (UID)
+      externalDocs:
+        url: ''
+      operationId: getUserByUID
+      security:
+        - OauthSecurity:
+          - read_User
+
+      parameters:
+
+      # HEADER
+      # -------------
+
+        # Host
+        - name: Host
+          description: Network location of the URI
+          required: true
+#          nullable: false
+          in: header
+          schema:
+            type: string
+          example: knp-api.ops.renault.com
+
+        # Caller IPN
+        - name: Caller-IPN
+          description: Technical IPN of the caller
+          required: true
+#          nullable: true
+          in: header
+          schema:
+            type: string
+            maxLength: 30
+          example: awknp01
+
+      # PATH
+      # -------------
+
+        # User Unique ID
+        - name: reception-event-id
+          description: Technical Unique ID of the User (Base36 encoding) (https://en.wikipedia.org/wiki/Base36)
+          required: true
+#          nullable: false
+          in: path
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 10
+          example: W23H4567
+
+      # QUERY
+      # -------------
+
+
+      # RESPONSES
+      # -------------
+
+      responses:
+        '200':
+          $ref: '#/components/responses/OK_UserFound'
+
+        # Definition of all error statuses
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden' 
+        '404':
+          $ref: '#/components/responses/NotFound' 
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalError'
+        '501': 
+          $ref: '#/components/responses/NotImplemented'
+        '502':
+          $ref: '#/components/responses/BadGateway'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+
+        # Definition of other error status
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errors'
+
+# ====================================
+  '/transactions/{x-transaction-id}/reception-events':
+# ====================================
+# GET   #
+# ----- #
+
+    get:
+      tags:
+        - User
+      summary: Get the ressources created during a transaction
+      description: (PRIVATE) This operation allows getting a User, according to the transaction number used to create it
+      externalDocs:
+        url: ''
+      operationId: getUserByTransactionID
+      security:
+        - OauthSecurity:
+          - read_User
+
+      parameters:
+
+      # HEADER
+      # -------------
+
+        # Host
+        - name: Host
+          description: Network location of the URI
+          required: true
+#          nullable: false
+          in: header
+          schema:
+            type: string
+          example: knp-api.ops.renault.com
+
+        # Caller IPN
+        - name: Caller-IPN
+          description: Technical IPN of the caller
+          required: true
+#          nullable: true
+          in: header
+          schema:
+            type: string
+            maxLength: 30
+          example: awknp01
+
+      # PATH
+      # -------------
+
+        # transactionID
+        - name: x-transaction-id
+          description: Technical transaction ID for the API call
+          required: true
+#          nullable: false
+          in: path
+          schema:
+            type: string
+            format: uuid
+            minLength: 36
+            maxLength: 36
+          example: 123e4567-e89b-12d3-a456-426655440000
+
+      # QUERY
+      # -------------
+
+
+      # RESPONSES
+      # -------------
+
+      responses:
+        '200':
+          $ref: '#/components/responses/OK_UserFound'
+
+        # Definition of all error statuses
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden' 
+        '404':
+          $ref: '#/components/responses/NotFound' 
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalError'
+        '501': 
+          $ref: '#/components/responses/NotImplemented'
+        '502':
+          $ref: '#/components/responses/BadGateway'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+
+        # Definition of other error status
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errors'
+
+############################################################
+# HIGHLY RECOMMENDED RESOURCES : ping, openapi.json        #
+############################################################
+
+# ====================================
+  '/openapi.json':
+# ====================================
+# GET   #
+# ----- #
+
+    get:
+      tags:
+        - Common
+      summary: Specifications Swagger/openapi
+      description: Information on service provided, this information is highly recommended in your API.
+      externalDocs:
+        url: ''
+      operationId: openApi
+      security:
+        - OauthSecurity: []
+
+      responses:
+        '200':
+          description: OK
+
+        # Definition of all error statuses
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound' 
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+
+        # Definition of other error status
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errors'
+
+# ====================================
+  '/ping':
+# ====================================
+# GET   #
+# ----- #
+
+    get:
+      tags:
+        - Common
+      summary: Verify if backend is up
+      description: Verify if backend is up, this information is higly recommended in your API.
+      externalDocs:
+        url: ''
+      operationId: ping
+      security:
+        - OauthSecurity: []
+
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - pong
+                properties:
+                  pong:
+                    type: string
+                    enum:
+                      - OK
+                    example: OK
+
+        # Definition of all error statuses
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+
+        # Definition of other error status
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errors'
+
+components:
+
+############################################################
+#                      E X A M P L E S                     #
+############################################################
+
+  examples:
+
+    CreateUser:
+      summary: >-
+        Example of the body of a POST of 'User'
+      value:
+        studentNumber: "22101185"
+        firstName: "Darth"
+        lastName: "Vader"
+        gender: "O"
+        profilePic: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAIAAAACDbGyAAAALnRFWHRDcmVhdGlvbiBUaW1lAGRpbS4gMjcgbm92LiAyMDIyIDE5OjU3OjI5ICswMTAwfTmqYgAAAAd0SU1FB+YLGxI7FbLMz30AAAAJcEhZcwAACvAAAArwAUKsNJgAAAAEZ0FNQQAAsY8L/GEFAAAANklEQVR42mP4n6r4nzP7H8N1IKmv9Y8BSAGFgHwgB8gGiksCEZADYTBAlIHUgzUyQJRB9AOFADGjJ3A8VQxDAAAAAElFTkSuQmCC"
+        email: "darth.vader@etu.univ-tours.fr"
+        phoneNumber: "+33605024878"
+        phoneBook: false
+        notifications: true
+        password: "1214f4-4fpiugj!"
+
+    UserCreated:
+      summary: >-
+        Example of response to a POST of 'User'
+      value:
+        userId: "54E4R"
+        studentNumber: "22101185"
+        firstName: "Darth"
+        lastName: "Vader"
+        gender: "O"
+        profilePic: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAIAAAACDbGyAAAALnRFWHRDcmVhdGlvbiBUaW1lAGRpbS4gMjcgbm92LiAyMDIyIDE5OjU3OjI5ICswMTAwfTmqYgAAAAd0SU1FB+YLGxI7FbLMz30AAAAJcEhZcwAACvAAAArwAUKsNJgAAAAEZ0FNQQAAsY8L/GEFAAAANklEQVR42mP4n6r4nzP7H8N1IKmv9Y8BSAGFgHwgB8gGiksCEZADYTBAlIHUgzUyQJRB9AOFADGjJ3A8VQxDAAAAAElFTkSuQmCC"
+        email: "darth.vader@etu.univ-tours.fr"
+        phoneNumber: "+33605024878"
+        phoneBook: false
+        notifications: true
+
+    UserFound:
+      summary: >-
+        Example of response to a GET of 'User'
+      value:
+        userId: "54E4R"
+        studentNumber: "22101185"
+        firstName: "Darth"
+        lastName: "Vader"
+        gender: "O"
+        profilePic: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAIAAAACDbGyAAAALnRFWHRDcmVhdGlvbiBUaW1lAGRpbS4gMjcgbm92LiAyMDIyIDE5OjU3OjI5ICswMTAwfTmqYgAAAAd0SU1FB+YLGxI7FbLMz30AAAAJcEhZcwAACvAAAArwAUKsNJgAAAAEZ0FNQQAAsY8L/GEFAAAANklEQVR42mP4n6r4nzP7H8N1IKmv9Y8BSAGFgHwgB8gGiksCEZADYTBAlIHUgzUyQJRB9AOFADGjJ3A8VQxDAAAAAElFTkSuQmCC"
+        email: "darth.vader@etu.univ-tours.fr"
+        phoneNumber: "+33605024878"
+        phoneBook: false
+        notifications: true
+
+############################################################
+#                        S C H E M A                       #
+############################################################
+
+  schemas:
+
+# User ---------------------------------------------------------------------------
+
+    User:
+      title: User
+      description: User - Each time a Reception is validated, an event is raised
+
+      type: object
+
+      required:
+        - firstName
+        - lastName
+        - email
+      properties:
+
+        # User Unique ID 
+        userID:
+          description: Technical Unique ID of the User (Base36 encoding) (https://en.wikipedia.org/wiki/Base36)
+          type: string
+          minLength: 1
+          maxLength: 8
+          example: "TJ56"
+
+        # Student number
+        studentNumber: "22101185"
+
+        # First Name
+        firstName:
+          description: First name of the User
+          type: string
+          minLength: 1
+          maxLength: 20
+          example: "John"
+
+        # Last Name
+        lastName:
+          description: Last name of the User
+          type: string
+          minLength: 1
+          maxLength: 25
+          example: "DOE"
+        
+        # Gender
+        gender:
+          $ref: '#/components/schemas/Gender'
+
+        # Picture
+        # https://codebeautify.org/base64-to-image-converter
+        profilePic: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAIAAAACDbGyAAAALnRFWHRDcmVhdGlvbiBUaW1lAGRpbS4gMjcgbm92LiAyMDIyIDE5OjU3OjI5ICswMTAwfTmqYgAAAAd0SU1FB+YLGxI7FbLMz30AAAAJcEhZcwAACvAAAArwAUKsNJgAAAAEZ0FNQQAAsY8L/GEFAAAANklEQVR42mP4n6r4nzP7H8N1IKmv9Y8BSAGFgHwgB8gGiksCEZADYTBAlIHUgzUyQJRB9AOFADGjJ3A8VQxDAAAAAElFTkSuQmCC"
+
+	# email
+        email: "darth.vader@etu.univ-tours.fr"
+        
+        # Phone number
+        phoneNumber: "+33605024878"
+
+        # Accept to appear in the PhoneBook
+        phoneBook: false
+
+        # Accept to receive Notifications
+        notifications: true
+
+        # Password
+	password:""
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# DespatchAdvice ---------------------------------------------------------------------------
+
+    DespatchAdvice:
+      title : Despatch Advice
+      description: Parent 'Despatch Advice' of the Advance Shipping Notice (DESADV - DESpatch ADVice) object 
+
+      required :
+        - plantCode
+        - deliveryNote
+        - declaredFinalCustomer
+        - firstSender
+        - sender
+        - finalCustomer
+
+      type: object
+
+      properties:
+
+        # Plant Engineering Code
+        plantCode:
+          description: Engineering code of the plant
+          type: string
+        #nullable: false
+          minLength: 3
+          maxLength: 3
+          example: "UGB"
+
+        # Activity code (Operation perimeter as set in the WMS)
+        activityCode:
+          description: Activity code (Operation perimeter as set in the WMS)
+          type: string
+          minLength: 3
+          maxLength: 3
+          example: "001"
+
+        # SENDER Supplier
+        sender:
+          $ref: '#/components/schemas/Supplier'
+
+        # 1st SENDER Supplier along the Supply chain (at the Item supplier factory/warehouse)
+        firstSender:
+          $ref: '#/components/schemas/Supplier'
+
+        # Final customer
+        finalCustomer:
+          $ref: '#/components/schemas/Supplier'
+
+        declaredFinalCustomer:
+          $ref: '#/components/schemas/Supplier'
+
+        # DESADV Creation Date in CSR system
+        creationDateTime:
+          description: Despatch Advice message Creation Date/Time in RENAULT system - UTC Date/Time - Format (ISO 8601) YYYY-MM-DDTHH24:MI:SSZ (BACv2 -  55,  69)
+          type: string
+          format: date-time
+          minLength: 19
+          maxLength: 29
+          example: "2019-09-18T23:56:16Z"
+
+        transport:
+          $ref: '#/components/schemas/Transport'
+
+        deliveryNote:
+          $ref: '#/components/schemas/DeliveryNote'
+
+# Transport ----------------------------------------------------------------------------
+    Transport:
+      title: Transport
+      description: 'Details on the transport of full or empty packagings between plants and suppliers : Transport Identifier, confirmed Pick-Up/Delivery Timestamp.'
+
+#      required :
+#      - 
+
+      type: object
+
+      properties:
+        declaredNumber:
+          description: >-
+            Identifier of the Transport (BACv2 -  69,  78) declared by the Sender Supplier
+            aka Transport Identifier - Reference number allotted by the haulier to the concerned mean of transport.
+          type: string
+          maxLength: 10
+          example: "P245210303"
+        actualNumber:
+          description: >-
+            Identifier of the Transport given by the Operator in the plant
+            aka Transport Identifier - Reference number allotted by the haulier to the concerned mean of transport.
+          type: string
+          maxLength: 10
+          example: "P245210303"
+        declaredLicencePlate:
+          description: >-
+            Registration plate (BACv2 -  79,  95) declared by the Sender Supplier
+            Licence plate of the trailer or the truck.
+            Data mandatory if data CONTENAIR is not feeded.
+            If segment "EQD+RR" is existing in the DESADV message,
+            So the data REGISTRATION in BAC V2 file is feeded by the content of "EQD+RR" segment
+          type: string
+          maxLength: 17
+          example: "KR3HL96"
+        actualLicencePlate:
+          description: >-
+            Registration plate given by the Operator in the plant
+            Licence plate of the trailer or the truck.
+            Data mandatory if data CONTAINER is not feeded.
+          type: string
+          maxLength: 17
+          example: "KR3HL96"
+        mean:
+          $ref: '#/components/schemas/TransportMean'
+        container:
+          description: List of Containers
+          type: array
+          uniqueItems: true
+          items:
+            $ref: '#/components/schemas/Container'
+        shippingDateTime:
+          description: >-
+            Shipping Date/Time - Sender plateform local Date/Time - Format (ISO 8601) YYYY-MM-DDTHH24:MI:SS[+/-]HH24:MI (BACv2 - 159, 170)
+            The date and time of the sending of the delivery note, which is usually the date and time of the shipment departure
+          type: string
+          format: date-time
+          minLength: 19
+          maxLength: 29
+          example: "2019-09-18T23:56:16+05:30"
+        haulierName:
+          description: >-
+            Haulier (BACv2 -  96, 107)
+            Identification of the transporter concerned with the transaction, in general by its name.
+          type: string
+          maxLength: 12
+          example: "WABERERS"
+
+# Container ----------------------------------------------------------------------------
+    Container:
+      title: Container
+      description: Container used to deliver the items. Filled from the Container field in BAC V2 by content of segment 'EQD+CN' if segment 'EQD+CN' is present in DESADV message
+
+      #      required:
+      #      -
+
+      type: object
+
+      properties:
+        number:
+          description: Identifier of the Container (BACv2 - 420, 436)
+          type: string
+          minLength: 1
+          maxLength: 17
+          example: "TGHU8564215"
+        length:
+          description: 'Length (Decimal : (4).(3))'
+          type: number
+          format: float
+          minimum: 0
+          maximum: 9999.999
+          example: 1234.567
+        width:
+          description: 'Width (Decimal : (4).(3))'
+          type: number
+          format: float
+          minimum: 0
+          maximum: 9999.999
+          example: 1234.567
+        height:
+          description: 'Height (Decimal : (4).(3))'
+          type: number
+          format: float
+          minimum: 0
+          maximum: 9999.999
+          example: 1234.567
+        sealNumber:
+          description: Seal number (BACv2 - 628, 637)
+          type: string
+          maxLength: 10
+          example: "2529912"
+        typeCode:
+          $ref: '#/components/schemas/ContainerType'
+        pickUpRequestNumber:
+          description: Picking number (BACv2 - 438, 444) used in ILNs
+          type: string
+          maxLength: 7
+          example: "9819431"
+        openingDeadlineDate:
+          description: >-
+            Opening deadline date - Format (ISO 8601) YYYY-MM-DD (BACv2 - 445, 452)
+            Date until which the parts are under warranty inside a closed container
+          type: string
+          format: date
+          minLength: 10
+          maxLength: 10
+          example: "2019-12-06"
+        handlingUnitNumbers:
+          description: List of HDU transported in the Container
+          type: array
+          minItems: 1
+          # Max limit requested by GPI
+          #maxItems: 1000
+          uniqueItems: true
+          items:
+            description: Handling Unit Package number (BACv2 - 304, 320) / Not documented on 'REDUCED' Delivery Note
+            type: string
+            maxLength: 17
+            example: "920131"
+
+# LogisticImplantation ----------------------------------------------------------------------------
+    LogisticImplantation:
+      title: LogisticImplantation
+      description: Logistic implantation of the PacKaging Unit (aka UC)
+
+      required:
+      - code
+      - type
+
+      type: object
+
+      properties:
+        code:
+          description: Destination point (BACv2 - 410, 419)
+          type: string
+          maxLength: 10
+          example: "MSE6KIT02D"
+        type:
+          $ref: '#/components/schemas/LogisticPointType'
+
+# TruckStation ----------------------------------------------------------------------------
+    TruckStation:
+      title: TruckStation
+      description: >-
+        Logistic implantation - Truck Station
+        Identifier locating the unloading point at the final customer location.
+
+      required:
+      - code
+      - type
+
+      type: object
+
+      properties:
+        code:
+          description: Truck station (BACv2 - 196, 205)
+          type: string
+          maxLength: 10
+          example: "G014B2"
+        type:
+          description: Location type
+          type: string
+          enum:
+            - TRUCK_STATION
+          example: TRUCK_STATION
+
+# Chain ----------------------------------------------------------------------------
+    Chain:
+      title: Chain
+      description: Logistic implantation - Chain
+
+      required:
+      - code
+      - type
+
+      type: object
+
+      properties:
+        code:
+          description: Chain (BACv2 - 206, 207)
+          type: string
+          maxLength: 2
+          example: "01"
+        type:
+          description: Location type
+          type: string
+          enum:
+            - CHAIN
+          example: CHAIN
+
+# Delivery Note ----------------------------------------------------------------------------
+    DeliveryNote:
+      title: DeliveryNote
+      description: A Delivery Note, aka Advance Shipping Notice, describes a part of a delivery (DESPATCH ADVICE). It list the Packages and Items shipped from a Supplier to a Customer
+
+      required:
+      - number
+      - seller
+      - destinationTruckStation
+
+      type: object
+
+      properties:
+        seller:
+          $ref: '#/components/schemas/Supplier'
+        number:
+          description: >-
+            Delivery Note number attributed to the document by the sender (BACv2 - 112, 128)
+            It's a document which must go along with the goods during the transport.
+              * Goods(references number, packaging number, administrative reception, packaging type)
+              * IT
+              * Truck number pate
+              * Shipment and delivery date
+          type: string
+          maxLength: 17
+          example: "HBL192130958"
+        shortNumber:
+          description: >-
+            Reduced Delivery Note number. It is used as a short key in some Information System - /!\ DEPRECATED
+          type: string
+          maxLength: 10
+          example: "L192130958"
+          deprecated: true
+        complement:
+          description: >-
+            BL Complement (BACv2 - 474, 490)
+            (Specific to Grand-Couronne)
+            Identification of the vehicle corresponding to the identification number FEP
+          type: string
+          maxLength: 17
+          example: "BL09763"
+        
+        type:
+          $ref: '#/components/schemas/AsnType'
+
+        estimatedDepartureDateTime:
+          description: Estimated Departure Date/Time (PSA in emission, DTM+11 in reception) - Departure Local Date/Time - Format (ISO 8601) YYYY-MM-DDTHH24:MI:SS[+/-]HH24:MI (BACv2 - 666, 679)
+          type: string
+          format: date-time
+          minLength: 19
+          maxLength: 29
+          example: "2019-09-18T23:56:16+05:30"
+        estimatedArrivalDateTime:
+          description: Estimated Date/Time of arrival (PSA in emission, DTM+132 in reception) - Arrival Local Date/Time - Format (ISO 8601) YYYY-MM-DDTHH24:MI:SS[+/-]HH24:MI (BACv2 - 614, 627)
+          type: string
+          format: date-time
+          minLength: 19
+          maxLength: 29
+          example: "2019-09-18T23:56:16+05:30"
+
+        receptionDateTime:
+          description: Reception - Final Customer Local Date/Time - Format (ISO 8601) YYYY-MM-DDTHH24:MI:SS[+/-]HH24:MI
+          type: string
+          format: date-time
+          minLength: 19
+          maxLength: 29
+          example: "2019-09-18T23:56:16+05:30"
+        receptionReason:
+          $ref: '#/components/schemas/ReceptionReason'
+        operatorIPN:
+          description: IPN of the operator who validated the Reception (cuurently not the ARCA IPN, but an internal REFLEX identifier)
+          type: string
+          minLength: 1
+          maxLength: 10
+          example: "A187585"
+
+        weight:
+          $ref: '#/components/schemas/Weight'
+
+        items:
+          description: List of received Items
+          type: array
+          minItems: 1
+          # Max limit requested by GPI
+          #maxItems: 1000
+          uniqueItems: true
+          items:
+            $ref: '#/components/schemas/Item'
+
+        HDUsDeclaredQuantity:
+          description: Number of Handling Units (HDU=UM) in the transportation described in this Delivery Note (BACv2 - 266, 271)
+          type: integer
+          format: uint32
+          maximum: 999999
+          example: 129
+          deprecated: true
+        handlingUnits:
+          description: List of HDUs in the Delivery Note / Not documented on 'REDUCED' Delivery Note
+          type: array
+          minItems: 1
+          # Max limit requested by GPI
+          #maxItems: 1000
+          uniqueItems: true
+          items:
+            $ref: '#/components/schemas/HandlingUnit'
+
+        destinationTruckStation:
+          $ref: '#/components/schemas/TruckStation'
+
+        warehouseCode:
+          description: Code of the destination Warehouse in the plant
+          type: string
+          minLength: 3
+          maxLength: 3
+          example: "G01"
+        workshopCode:
+          description: Code of the destination Workshop in the plant
+          type: string
+          minLength: 3
+          maxLength: 3
+          example: "TRK"
+
+        destinationChain:
+          $ref: '#/components/schemas/Chain'
+
+# HandlingUnit ----------------------------------------------------------------------------
+    HandlingUnit:
+      title: HandlingUnit
+      description: >-
+        List of HDUs / Not documented on 'REDUCED' Delivery Note
+        Link between Parts and Packaging Type.
+        Each Handling Unit(UM - Unite de Maintenance) contains either:
+        * Packaging Unit (UC - Unite de Conditionnement), in that case the packaging is referred to as a 'PE'(Petit Emballages, meaning Small packages), since the HDU contains many PKUs
+        * Parts (Engines, Gearbox, Front or Rear suspension, ...), in that case the packaging is referred to as a 'GE'(Gros Emballage, meaning Big package), since the HDU is also the PKU
+        Reference number of Parts in a HDU can be mixed.
+        A PKU can contain only Parts of the same Reference Number.
+        In a HDU, PKUs of different Reference Numbers can be mixed.
+
+#      required:
+#      - 
+
+      type: object
+
+      properties:
+        number:
+          description: Handling Unit Package number (BACv2 - 304, 320) / Not documented on 'REDUCED' Delivery Note
+          type: string
+          maxLength: 17
+          example: "920131"
+        SSCC:
+          description: Serial Shipping Container Code (https://en.wikipedia.org/wiki/Serial_shipping_container_code)
+          type: string
+          minLength: 18
+          maxLength: 18
+          example: "864496439974439047"
+        declaredInternalTypeCode:
+          description: HDU Packaging 'RENAULT' type (BACv2 - 352, 361)
+          type: string
+          maxLength: 10
+          example: "CAR-S*2991"
+        declaredExternalTypeCode:
+          description: HDU Packaging 'Partner' type, used only for RENAULT packagings destinated to partners, in order to identify the packaging with the partner identifier (BACv2 - 690, 699)
+          type: string
+          maxLength: 10
+          example: "CFDA--3027"
+
+        expectedInternalTypeCode:
+          description: RENAULT type for the HDU Packaging as referenced with the (Supplier Seller code / Item number / Final Customer) in the Packaging master data 
+          type: string
+          maxLength: 10
+          example: "CAR-S*2991"
+
+        receivedInternalTypeCode:
+          description: RENAULT type of the Receveid HDU Packaging 
+          type: string
+          maxLength: 10
+          example: "CAR-S*2991"
+        isReceived:
+          description: Is this Handling Unit received in the plant ?
+          type: boolean
+          example: false
+        isCompliant:
+          description: Is this Handling Unit compliant with the standard rules ?
+          type: boolean
+          example: false          
+        unConformityReason:
+          description: Reason why the Handling unit is declared not conform.
+          type: string
+          maxLength: 25
+          example: "DIRTY"
+
+        isReturnable:
+          description: Does the recipient must returned the HDU package back to the sender ? (BACv2 - 511, 511)
+          type: boolean
+          example: true
+        weight:
+          $ref: '#/components/schemas/Weight'
+        pickUpSheetNumber:
+          description: Pick Up Sheet (BACv2 - 559, 567)
+          type: string
+          maxLength: 9
+          example: "67542"
+        length:
+          description: 'Length (Decimal : (4).(3))'
+          type: number
+          format: float
+          minimum: 0
+          maximum: 9999.999
+          example: 1255.567
+        width:
+          description: 'Width (Decimal : (4).(3))'
+          type: number
+          format: float
+          minimum: 0
+          maximum: 9999.999
+          example: 1255.567
+        height:
+          description: 'Height (Decimal : (4).(3))'
+          type: number
+          format: float
+          minimum: 0
+          maximum: 9999.999
+          example: 1255.567  
+        packagingUnits:
+          description: List of PKUs in the HDU / Not documented on 'REDUCED' Delivery Note
+          type: array
+          minItems: 1
+          # Max limit requested by GPI
+          #maxItems: 1000
+          uniqueItems: true
+          items:
+            $ref: '#/components/schemas/PackagingUnit'
+
+# PackagingUnit ----------------------------------------------------------------------------
+    PackagingUnit:
+      title: PackagingUnit
+      description: List of Packaging Units (PKU=UC) contained in the Handing Unit (HDU=UM)
+
+      required:
+      - itemsDeclaredQuantity 
+
+      type: object
+
+      properties:
+        number:
+          description: >-
+            Packaging Unit number (BACv2 - 368, 385) / Not documented on 'REDUCED' Delivery Note
+            The parcel is either a unit of conditioning, or a unit of simplified handling, i.e. containing the articles directly.
+          type: string
+          maxLength: 17
+          example: "199719206"
+        SSCC:
+          description: Serial Shipping Container Code (https://en.wikipedia.org/wiki/Serial_shipping_container_code)
+          type: string
+          minLength: 18
+          maxLength: 18
+          example: "864496439974439047"
+        declaredInternalTypeCode:
+          description: >-
+            PKU 'RENAULT' type (BACv2 - 400, 409)
+            The data reference in the packaging codification defined by a mutual agreement between the partners (in theory, the packaging type of the client).
+            Note: In the case of the homogenous and identical parcels/content, the handling unit will be constituted of the PKUs.
+          type: string
+          maxLength: 10
+          example: "BAC-O-6422"
+        declaredExternalTypeCode:
+          description: PKU 'Partner' type , used only for RENAULT packagings destinated to partners, in order to identify the packaging with the partner identifier (BACv2 - 680, 689)
+          type: string
+          maxLength: 10
+          example: "MTEM--5643"
+
+        expectedInternalTypeCode:
+          description: RENAULT type for the PKU as referenced with the (Supplier Seller code / Item number / Final Customer) in the Packaging master data 
+          type: string
+          maxLength: 10
+          example: "CAR-S*2991"
+
+        receivedInternalTypeCode:
+          description: >-
+            HL53 - 'RENAULT' type of the received PKU 
+            The data reference in the packaging codification defined by a mutual agreement between the partners (in theory, the packaging type of the client).
+            Note: In the case of the homogeneous and identical parcels/content, the handling unit will be constituted of the PKUs.
+          type: string
+          maxLength: 10
+          example: "BAC-O-6422"
+        isReceived:
+          description: Is this Packaging Unit received in the plant ?
+          type: boolean
+          example: false
+        isCompliant:
+          description: Is this Packaging Unit compliant with the standard rules ?
+          type: boolean
+          example: false          
+        unConformityReason:
+          description: Reason why the Packaging unit is declared not conform.
+          type: string
+          maxLength: 25
+          example: "DIRTY"
+
+        isReturnable:
+          description: Does the recipient must returned the PKU package to the sender ? (BACv2 - 548, 548)
+          type: boolean
+          example: false
+        releaseAuthorizationNumber:
+          description: Release Authorization Number (RAN) (BACv2 - 568, 576)
+          type: string
+          maxLength: 9
+          example: "LR1S7RC5"
+        peremptionDate:
+          description: Expiration date - Format (ISO 8601) YYYY-MM-DD (BACv2 - 600, 613)
+          type: string
+          format: date
+          minLength: 10
+          maxLength: 10
+          example: "2018-10-21"
+        destinationPoint:
+          $ref: '#/components/schemas/LogisticImplantation'
+          
+        # Key to "Item"
+        itemInternalNumber:
+          description: >-
+            Item reference number (BACv2 - 213, 227) RENAULT internal Part reference number / /!\ Part reference at RENAULT are only 10 characters long
+          type: string
+          maxLength: 15
+          example: "668637157R"
+        itemRevisionLevel:
+          description: Revision level of the Item (BACv2 - 228, 230)
+          type: string
+          minLength: 3
+          maxLength: 3
+          example: "--A"
+        
+        itemsDeclaredQuantity:
+          description: 'Total number of items in this PKU (Decimal : (11).(3)) (BACv2 - 385, 399)'
+          type: number
+          format: float
+          minimum: -99999999999.999
+          maximum: 99999999999.999
+          example: 564.76
+
+        itemManufacturingCountryCode:
+          description: Identifier of the country where the part was manufactured, according to the standard ISO 3166-1 alpha-2 - (BACv2 - 302, 303)
+          type: string
+          minLength: 2
+          maxLength: 2
+          example: "FR"
+        itemDeliveryRequestNumber:
+          description: >-
+            Delivery request (DL Order '**D**emande de **L**ivraison') linked to the PKU (aka UC) (BACv2 - 171, 187)
+            Number of the contract (open order) to which the message refers, mandatory for the external clients.
+            This area is not filled in between the Renault Plants.
+          type: string
+          maxLength: 17
+          example: "DLS CLIENT"
+        manufacturingDate:
+          description: Manufacturing date - Format (ISO 8601) YYYY-MM-DD (BACv2 - 321, 334)
+          type: string
+          format: date
+          minLength: 10
+          maxLength: 10
+          example: "2019-11-23"
+          deprecated: true
+        length:
+          description: 'Length (Decimal : (4).(3)) (BACv2 - 453, 459)'
+          type: number
+          format: float
+          minimum: 0
+          maximum: 9999.999
+          example: 1234.567
+        width:
+          description: 'Width (Decimal : (4).(3)) (BACv2 - 460, 466)'
+          type: number
+          format: float
+          minimum: 0
+          maximum: 9999.999
+          example: 1234.567
+        height:
+          description: 'Height (Decimal : (4).(3)) (BACv2 - 467, 473)'
+          type: number
+          format: float
+          minimum: 0
+          maximum: 9999.999
+          example: 1234.567
+        itemExternalNumber:
+          description: >-
+            Item external reference number (BACv2 - 231, 245) RENAULT external Part reference number
+          type: string
+          maxLength: 15
+          example: 668637157R
+
+# Item ----------------------------------------------------------------------------
+    Item:
+      title: Item
+      description: Item contained in the PacKaging Unit (PKU, aka UC)
+
+      required:
+      - internalDescription
+      - itemTotalDeclaredQuantity
+
+      type: object
+
+      properties:
+        internalDescription:
+          $ref: '#/components/schemas/ItemInternalDescription'
+        externalDescriptions:
+          description: List of 'External Descriptions'
+          type: array
+          items:
+            $ref: '#/components/schemas/ItemExternalDescription'
+        PKUsTotalDeclaredQuantity:
+          description: >-
+            (BACv2 - 274, 279) Total number of PKU (aka UC) used for the transportation, declared by the Seller supplier, of the items identified by the 'itemNumber'
+            Indicates the number of PKUs as transmitted by the supplier in his despatch advice.
+            The number of PKUs can be per
+              * Reference
+              * Reference / PKU type
+              * Reference / HDU number
+              * Reference / gathering of HDU
+              * etc
+            When receiving a despatch advice from an external supplier, the packaging breaking concept is internally managed by the CSR, but not indicated in the BAC format as it is not planned in the actual BAC format.
+            The BAC format will have to evolve in order to integrate the 'packaging breaking' concept.
+          type: integer
+          format: uint32
+          maximum: 999999
+          example: 568
+          deprecated: true
+        itemTotalDeclaredQuantity:
+          description: '(BACv2 - 246, 260) Total number of the items, declared by the Seller supplier, identified by the ''itemNumber'' (Decimal : (11).(3))'
+          type: number
+          format: float
+          minimum: -99999999999.999
+          maximum: 99999999999.999
+          example: 1543.679
+
+        itemTotalReceivedQuantity:
+          description: 'HL53 - Total number of the RECEIVED items, confirmed by the operator in the plant, identified by the ''itemNumber'' (Decimal : (11).(3))'
+          type: number
+          format: float
+          minimum: -99999999999.999
+          maximum: 99999999999.999
+          example: 1543.679
+        itemTotalMissingQuantity:
+          description: 'HL53 - Total number of the MISSING items, confirmed by the operator in the plant, identified by the ''itemNumber'' (Decimal : (11).(3))'
+          type: number
+          format: float
+          minimum: -99999999999.999
+          maximum: 99999999999.999
+          example: 1543.679
+
+        unitOfCount:
+          $ref: '#/components/schemas/UnitOfCount'
+
+# ItemInternalDescription ----------------------------------------------------------------------------
+    ItemInternalDescription:
+      title: ItemInternalDescription
+      description: "'Internal' description of an item"
+
+      required:
+        - number
+
+      type: object
+
+      properties:
+        number:
+          description: >-
+            Item reference number
+            * (BACv2 - 213, 227) RENAULT internal Part reference number / /!\ Part reference at RENAULT are only 10 characters long
+            * (BACv2 - 231, 245) Supplier name for the part
+          type: string
+          maxLength: 15
+          example: "668637157R"
+        designation:
+          description: >-
+            Clear description, for commercial purposes, of the articles or the products.
+            * (BACv2 - 282, 301) French designation of the part
+            * (BACv2 - 491, 510) Supplier designation for the part
+          type: string
+          maxLength: 20
+          example: "HG-FRMT INF BOIT G"
+        languageISO639alpha2:
+          description: Language used by the Supplier for the Part designation (ISO 639-1 alpha-2)
+          type: string
+          minLength: 2
+          maxLength: 2
+          example: "fr"
+        languageISO639alpha3:
+          description: Language used by the Supplier for the Part designation (ISO 639-3 alpha-3) (BACv2 - 597, 599)
+          type: string
+          minLength: 3
+          maxLength: 3
+          example: "fra"
+
+      example:
+        number: "668637157R"
+        designation: "JK-ELEMENT ETANCHEIT"
+        languageISO639alpha2: "fr"
+        languageISO639alpha3: "fra"
+
+# ItemExternalDescription ----------------------------------------------------------------------------
+    ItemExternalDescription:
+      title: ItemExternalDescription
+      description: "'External' description of an item"
+
+#      required:
+#        - number
+
+      type: object
+
+      properties:
+        number:
+          description: >-
+            Item reference number
+            * (BACv2 - 213, 227) RENAULT internal Part reference number / /!\ Part reference at RENAULT are only 10 characters long
+            * (BACv2 - 231, 245) Supplier name for the part
+          type: string
+          maxLength: 15
+          example: "668637157R"
+        designation:
+          description: >-
+            Clear description, for commercial purposes, of the articles or the products.
+            * (BACv2 - 282, 301) French designation of the part
+            * (BACv2 - 491, 510) Supplier designation for the part
+          type: string
+          maxLength: 20
+          example: "HG-FRMT INF BOIT G"
+        languageISO639alpha2:
+          description: Language used by the Supplier for the Part designation (ISO 639-1 alpha-2)
+          type: string
+          minLength: 2
+          maxLength: 2
+          example: "fr"
+        languageISO639alpha3:
+          description: Language used by the Supplier for the Part designation (ISO 639-3 alpha-3) (BACv2 - 597, 599)
+          type: string
+          minLength: 3
+          maxLength: 3
+          example: "fra"
+
+      example:
+        number: "668637157R"
+        designation: "JK-ELEMENT ETANCHEIT"
+        languageISO639alpha2: "fr"
+        languageISO639alpha3: "fra"
+
+# Weight ----------------------------------------------------------------------------
+    Weight:
+      title: Weight
+      description: Weight details
+
+      type: object
+
+      properties:
+        gross:
+          description: >-
+            * (BACv2 - 188, 195) Gross weight of all the goods constituting a sending (Packagings + Parts) (kg)
+            * (BACv2 - 344, 351) Gross weight of the HDU
+          type: integer
+          format: uint32
+          maximum: 99999999
+          example: 20
+        net:
+          description: >-
+            * (BACv2 - 638, 645) Expedition total net weight(NISSAN) (kg)
+            * (BACv2 - 336, 343) Net weight of the HDU
+          type: integer
+          format: uint32
+          maximum: 99999999
+          example: 17
+        unit:
+          $ref: '#/components/schemas/WeightUnit'
+
+# Supplier ----------------------------------------------------------------------------
+    Supplier:
+      title: Supplier
+      description: Supplier details
+
+      required:
+        - accountCode
+
+      type: object
+
+      properties:
+        allianceCode:
+          description : Alliance Supplier code (All parameters - TO BE REDEFINED)
+          type: string
+          maxLength: 10
+          example: ???
+        accountCode:
+          description: >-
+            Account code
+              * (BACv2 - 149, 156) Receiving Account
+              * (BACv2 - 139, 146) Sender Account  - Number identifying the 'Shipping' factory, based on the internal codification of Renault
+              * (BACv2 - 129, 136) Seller Account - Number identifying the 'Selling' plant, based on the internal codification of Renault
+          type: string
+          minLength: 8
+          maxLength: 8
+          example: "00910701"
+        accountName:
+          description: Account name (maxLength - TO BE REDEFINED)
+          type: string
+          maxLength: 30
+          example: Stores of spare parts
+        siteCode:
+          description: >-
+            Site code
+              * (BACv2 - 157, 158) Receiver site code
+              * (BACv2 - 147, 148) Sender site code - Number identifying the 'shipping' institution code, based on the internal codification of Renault
+              * (BACv2 - 137, 138) Seller site code - May be empty
+          type: string
+          minLength: 2
+          maxLength: 2
+          example: "52"
+        siteName:
+          description : Site name (maxLength - TO BE REDEFINED)
+          type: string
+          maxLength: 20
+          example: "MPR FLINS"
+        countryISO3166alpha2:
+          description: >-
+            Identifier of the country in which the recipient makes a state of residence, according to the standard ISO 3166-1 alpha-2 (BACv2 - 110, 111)
+             (BACv2 - 110, 111) Declared Final Customer Country Code
+          type: string
+          minLength: 2
+          maxLength: 2
+          example: "FR"
+      example:
+        allianceCode: "???"
+        accountCode: "00900156"
+        accountName: "Stores of spare parts"
+        siteCode: "02"
+        siteName: "MPR FLINS"
+        countryISO3166alpha2: "FR"
+
+# ---------------
+# ENUMERATIONS
+# ---------------
+
+# Gender ----------------------------------------------------------------------------
+    Gender:
+      title: Gender
+      description: >-
+        Gender of a User
+          * M : Male
+          * F : Female
+          * O : Other
+
+      type: string
+
+      enum:
+      - M
+      - F
+      - O
+      example: F
+
+# Role ----------------------------------------------------------------------------
+    RoleType:
+      title: RoleType
+      description: Role that can be granted to a User
+
+      type: string
+
+      enum:
+      - APP_ADMIN
+      - ADMIN
+      - PRESIDENT
+      - VICE-PRESIDENT
+      - SECREATARY
+      - TREASURER
+      - MEMBER
+      - CANDIDATE
+      - REFUSED
+      example: MEMBER
+
+############################################################
+# Event structure                                          #
+############################################################
+
+# UserCreated ----------------------------------------------------------------------------
+    UserCreated:
+      title: UserCreated
+      description: Description of a created 'User' object
+
+      allOf:
+        - type: object
+          required:
+            - UserID
+          properties:
+            # User Unique ID
+            userID:
+              description: Technical Unique ID of the User (Base36 encoding) (https://en.wikipedia.org/wiki/Base36)
+              type: string
+              minLength: 1
+              maxLength: 8
+              example: "1AW56"
+        - $ref: '#/components/schemas/User'
+
+# UserFound ----------------------------------------------------------------------------
+    UserFound:
+      title: UserFound
+      description: Description of a 'User' object
+
+      allOf:
+        - $ref: '#/components/schemas/UserCreated'
+        - $ref: '#/components/schemas/User'
+
+# Event ----------------------------------------------------------------------------
+    Event:
+      title: Event
+      description: Description of an Event
+
+      required:
+      - X-Transaction-ID
+      - ETag
+      - lastModified
+
+      type: object
+
+      properties:
+
+        # Transaction
+        X-Transaction-ID:
+          type: string
+          format: uuid
+          minLength: 36
+          maxLength: 36
+          example: "123e4567-e89b-12d3-a456-426655440000"
+
+        # ETag
+        ETag:
+          description: ETag (https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/ETag)
+          type: string
+          format: uuid
+          minLength: 36
+          maxLength: 36
+          example: "123e4567-e89b-12d3-a456-426655440000"
+
+        # Last Modified
+        lastModified:
+          description: Last Modified date (Create/Update/Delete) (https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Last-Modified)
+          type: string
+          format: date-time
+          minLength: 19
+          maxLength: 29
+          example: "2019-09-18T23:56:16.000Z"
+
+        # Errors
+        errors:
+          description: List of errors
+          type: array
+          items: 
+            $ref: '#/components/schemas/Error'   
+
+# Link to Item ----------------------------------------------------------------------------
+    LinkToItem:
+      title: LinkToItem
+      description: Link to an item as proposed in HATEOAS
+      
+      required:
+      - href
+      - rel
+      - type
+
+      type: object
+
+      properties:
+
+        # HREF
+        href:
+          description: Link to the ressource
+          type: string
+          example: "/api/ufr_asso/v1/users/1AW56"
+
+        # Reference
+        rel:
+          description: Reference
+          type: string
+          maxLength: 50
+          example: self
+
+        # HTTP Verb
+        type:
+          $ref: '#/components/schemas/VerbHTTP'
+
+# ---------------
+# ENUMERATIONS
+# ---------------
+
+# VerbHTTP ----------------------------------------------------------------------------
+    VerbHTTP:
+      title: Type of HTTP verb
+      description: HTTP verb
+      
+      type: string
+      
+      enum:
+      - GET
+      - POST
+      - PUT
+      - DELETE
+      - PATCH
+      example: GET
+
+############################################################
+# Error structures                                         #
+############################################################
+
+# Schema for error response body
+# ----------------------------------------------
+    Errors:
+      title: Errors
+      description: List of errors
+
+      required:
+      - errors
+
+      type: object
+
+      properties:
+        errors:
+          description: List of errors
+          type: array
+          maxItems: 250
+          items: 
+            $ref: '#/components/schemas/Error'
+
+# ----------------------------------------------
+    Error:
+      title: Error
+      description: Error item
+
+      required:
+        - errorCode
+        - errorMessage
+
+      type: object
+
+      properties:
+        errorCode:
+          description: Error technical Code (can be different than the HTTP return code)
+          type: string
+          maxLength: 50
+          example : "ORA-2345"
+        errorMessage:
+          description: Message describing the error (Do not give too much information, to avoid security breach)
+          type: string
+          example : "ORACLE - Error during Creation of Updatable Snapshot"
+        errorLevel:
+          $ref: '#/components/schemas/ErrorLevel'
+        errorType:
+          $ref: '#/components/schemas/ErrorType'
+        documentationUrl:
+          description: Url of the documentation associated to the error
+          type: string
+          example : "http://www.google.fr"
+        tips:
+          description: Tips/help for adressing the error
+          type: string
+          example : "Google can help you to find how to solve this issue"
+
+# ----------------------------------------------
+    ErrorLevel:
+      title: ErrorLevel
+      description: Criticity level of error
+
+      type: string
+
+      enum:
+      - info
+      - warning
+      - error
+      - critical
+
+      example: info
+
+# ----------------------------------------------
+    ErrorType:
+      title: ErrorType
+      description: Type of error
+
+      type: string
+
+      enum:
+      - functional
+      - technical
+
+      example: functional
+
+# Schema for Response body
+# ----------------------------------------------
+  responses:
+
+############################################################
+#                      R E S P O N S E S                   #
+############################################################
+# Descriptions of common responses
+
+############################################################
+# Responses                                                #
+############################################################
+
+    # 200 - OK - User found --------------------------------
+    OK_UserFound:
+      description: Ressource 'User' found
+      headers:
+        Location: 
+          description: Location of the ressource
+          schema:
+            type: string
+          example: /api/ufr_asso/v1/users/1AW56
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UserFound'
+          examples:
+            UserFound:
+              $ref: '#/components/examples/UserFound'
+
+    #201 - Created - User created --------------------------------
+    UserCreated:
+      description: Ressource 'User' created
+      headers:
+        X-Transaction-ID:
+          description: Current transaction identifier
+          required: false
+          schema:
+            type: string
+            format: uuid
+            minLength: 36
+            maxLength: 36
+          example: 123e4567-e89b-12d3-a456-426655440000
+        ETag:
+          description: ETag (https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/ETag)
+          required: false
+          schema:
+            type: string
+            format: uuid
+            minLength: 36
+            maxLength: 36
+          example: 123e4567-e89b-12d3-a456-426655440000
+        Last-Modified:
+          description: Last Modified date (Create/Update) (https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Last-Modified)
+          required: false
+          schema:
+            type: string
+            format: date-time
+            minLength: 19
+            maxLength: 29
+          example: 2019-09-18T23:56:16.000Z
+        Location:
+          description: Location of the ressource
+          required: false
+          schema:
+            type: string
+          example: "/api/ufr_asso/v1/users/1AW56"
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - User
+            properties:
+              User:
+                $ref: '#/components/schemas/UserCreated'
+          examples:
+            UserCreated:
+              $ref: '#/components/examples/UserCreated'
+
+    # 204
+#    NoContent:
+#      description: No Content
+#      content:
+#        application/json:
+#          schema:
+#            $ref: '#/components/schemas/Errors'
+
+     # 206
+#    PartialContent:
+#      description: Partial Content
+#      content:
+#        application/json:
+#          schema:
+#            $ref: '#/components/schemas/Errors'
+
+     # 208
+#    AlreadyReported:
+#      description: Already Reported
+#      content:
+#        application/json:
+#          schema:
+#            $ref: '#/components/schemas/Errors'
+
+     # 304
+#    NotModified:
+#      description: Not Modified
+#      content:
+#        application/json:
+#          schema:
+#            $ref: '#/components/schemas/Errors'
+           
+    # 400
+    BadRequest:
+      description: BadRequest
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Errors'
+
+    # 401
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Errors'
+    # 403
+    Forbidden:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Errors'
+
+    # 404
+    NotFound:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Errors'
+          example:
+            errors:
+              - errorCode: "USR_ASSO.API.DATA_NOT_FOUND"
+                errorMessage: "API called by the User '{1}' : No data is found for Event '{2}'"
+                errorLevel: ERROR
+                errorType: TEC
+                errorParams:
+                  - "T124Z"
+                  - "G18A8"
+                documentationUrl: https://github.com/Miroredge/UFR_Asso/Documents/Errors/NOT.FOUND
+                tips: Check your URI
+
+    # 422
+    UnprocessableEntity:
+      description: Unprocessable Entity
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Errors'
+
+    # 429
+    TooManyRequests:
+      description: Too Many Requests
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Errors'
+
+    # 500
+    InternalError:
+      description: Internal Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Errors'
+
+    # 501
+    NotImplemented:
+      description: Not Implemented
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Errors'
+
+    # 502
+    BadGateway:
+      description: Bad Gateway
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Errors'
+
+    # 503
+    ServiceUnavailable:
+      description: Service Unavailable
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Errors'
+
+############################################################
+#                        S E C U R I T Y                   #
+############################################################
+
+  securitySchemes:
+  # defines the security details
+    ApiKey:
+    # mandatory values for apiKey are: type, name, in
+      description: API key
+      type: apiKey
+      in: header
+      name: apikey
+    OauthSecurity:
+    # all following values for oauth2 are mandatory
+    # https://swagger.io/docs/specification/authentication/oauth2/
+      description: This API uses OAuth 2
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: 'https://???/nidp/oauth/nam/authz'
+          tokenUrl: 'https://???/nidp/oauth/nam/token'
+          scopes: 
+            All: All caller of the API
+            Application_Admin: Global application Administrator
+            Organisation_Admin: Administrator of an Organisation
+            Organisation_Member: Member of an Organisation
+            Organisation_Candidate: Candidate to an Organisation
+            Organisation_Refused: Registration to an Organisation refused
+            Organisation_President: President of an Organisation
+            Organisation_VicePresident: Vice-President of an Organisation
+            Organisation_Secretary: Secretary of an Organisation
+            Organisation_Treasurer: Treasurer of an Organisation
+
+security:
+  # defines the security on every path. The details must be set in securityDefinitions.
+  - ApiKey: []
+  - OauthSecurity: []
