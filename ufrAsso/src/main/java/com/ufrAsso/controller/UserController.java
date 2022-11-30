@@ -30,13 +30,13 @@ public class UserController {
     @Autowired
     private UserRepo userRepo;
 
-    @GetMapping("api/users") // Get all users of the application
+    @GetMapping("api/v1/users") // Get all users of the application
     public ResponseEntity<List<User>> getAllUsers() {
         List<User> users = userRepo.findAll();
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
-    @PostMapping("api/users") // Create a new user
+    @PostMapping("api/v1/users") // Create a new user
     public ResponseEntity<User> createUser(@RequestBody User user) {
         User newUser = userRepo.save(user);
         return new ResponseEntity<>(newUser, HttpStatus.CREATED);

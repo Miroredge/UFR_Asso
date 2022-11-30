@@ -1,3 +1,4 @@
+-- Active: 1668639301205@@localhost@3306@ufr_asso
 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
@@ -36,7 +37,7 @@ CREATE TABLE IF NOT EXISTS ufr_asso.aso (
 ,  SIR_NBR 		VARCHAR		(14)	NOT NULL
 ,  NAM 			VARCHAR		(45)	NOT NULL
 ,  LOC			VARCHAR		(45)	    NULL	DEFAULT NULL
-,  LGO 			BLOB 			NOT NULL
+,  LGO 			BLOB 			  NULL
 ,  MBR_PCE 		DOUBLE			NOT NULL
 --
 ,  CRE_ID		VARCHAR		(255)	NOT NULL
@@ -96,6 +97,7 @@ SHOW WARNINGS;
 CREATE TABLE IF NOT EXISTS ufr_asso.evt (
    ROW_IDT		BIGINT		(20)	NOT NULL AUTO_INCREMENT
 --
+,  EVT_ID		VARCHAR		(8)	NOT NULL
 ,  NAM			VARCHAR		(45)	NOT NULL
 ,  STT_DAT_TIM		TIMESTAMP		NOT NULL
 ,  END_DAT_TIM		TIMESTAMP		NOT NULL
@@ -112,7 +114,7 @@ CREATE TABLE IF NOT EXISTS ufr_asso.evt (
 , PRIMARY KEY (ROW_IDT)
 , CONSTRAINT fk_evt_aso_1
     FOREIGN KEY (CRE_ASO_ROW_IDT)
-    REFERENCES ufr_asso.a            o (ROW_IDT)
+    REFERENCES ufr_asso.aso (ROW_IDT)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION
 )
@@ -126,7 +128,10 @@ SHOW WARNINGS;
 CREATE UNIQUE	INDEX uk_evt_1_idx		ON ufr_asso.evt		(NAM ASC, STT_DAT_TIM ASC, PLC ASC, CRE_ASO_ROW_IDT ASC) VISIBLE;
 
 SHOW WARNINGS;
-
+CREATE UNIQUE    INDEX uk_evt_2_idx    ON ufr_asso.evt (EVT_ID ASC) VISIBLE;
+ 
+SHOW WARNINGS;
+ 
 -- -----------------------------------------------------
 -- Table ufr_asso.nws_ltr
 -- -----------------------------------------------------
@@ -444,7 +449,7 @@ DROP TABLE IF EXISTS ufr_asso.seq_usr;
 SHOW WARNINGS;
 CREATE TABLE IF NOT EXISTS ufr_asso.seq_usr (
    SEQ_NUM		BIGINT		(20)	NOT NULL AUTO_INCREMENT
-   NAM			ENUM('NAM')		NOT NULL
+, NAM			ENUM('USR')		NOT NULL
 , PRIMARY KEY (SEQ_NUM)
 )
 ENGINE = InnoDB
@@ -455,23 +460,72 @@ CREATE UNIQUE	INDEX uk_seq_usr_1_idx	ON ufr_asso.seq_usr	 	(SEQ_NUM) VISIBLE;
 
 SHOW WARNINGS;
 
--- INSERT INTO `ufr_asso`.`seq_usr`	(NAM, SEQ_NUM) VALUES ('USR', LAST_INSERT_ID(1)) ON DUPLICATE KEY UPDATE seq_num = LAST_INSERT_ID(seq_num + 1);
+-- Default values for table ufr_asso.seq_usr
+INSERT INTO ufr_asso.seq_usr (SEQ_NUM, NAM) VALUES (1, 'USR');
+
+-- -----------------------------------------------------
+-- Sequence ufr_asso.seq_evt
+-- -----------------------------------------------------
+
+DROP TABLE IF EXISTS ufr_asso.seq_evt;
+
+SHOW WARNINGS;
+CREATE TABLE IF NOT EXISTS ufr_asso.seq_evt (
+   SEQ_NUM		BIGINT		(20)	NOT NULL AUTO_INCREMENT
+, NAM			ENUM('EVT')		NOT NULL
+, PRIMARY KEY (SEQ_NUM)
+)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8
+;
+
+CREATE UNIQUE	INDEX uk_seq_evt_1_idx	ON ufr_asso.seq_evt	 	(SEQ_NUM) VISIBLE;
+
+SHOW WARNINGS;
+
+-- default values for table ufr_asso.seq_evt
+INSERT INTO ufr_asso.seq_evt (SEQ_NUM, NAM) VALUES (1, 'EVT');
+
+-- --------------------------------------------------------
+-- Stored functions that mimic the Oracle sequence.nextval
+-- --------------------------------------------------------
 
 DELIMITER $$
 
-USE `temp` $$
+-- DROP PROCEDURE IF EXISTS `generateId`$$
 
-DROP PROCEDURE IF EXISTS `generateId`$$
+-- CREATE PROCEDURE generateId(IN i_tableName VARCHAR(255),IN i_type VARCHAR(255), OUT o_lastId BIGINT(20))
+-- BEGIN
+--         SET @query=CONCAT('INSERT INTO `ufr_asso`.`',i_tableName,'` (NAM, SEQ_NUM) VALUES (''',i_type,''', LAST_INSERT_ID(1)) ON DUPLICATE KEY UPDATE seq_num = LAST_INSERT_ID(seq_num + 1)');
+--         PREPARE stmt FROM  @query;
+--         EXECUTE stmt;
+--         DEALLOCATE PREPARE stmt;
+--         SELECT LAST_INSERT_ID() INTO o_lastId;
+-- END$$
 
-CREATE FUNCTION `generateId`(IN tableName VARCHAR(255), IN type VARCHAR(255)) 
-RETURNS	BIGINT	(20)
+DROP FUNCTION IF EXISTS `generateId_User`$$
+
+CREATE FUNCTION generateId_User()
+RETURNS BIGINT(20)
+DETERMINISTIC -- NOT TRUE (IN THE TRUE TRUTH)
 BEGIN
-        SET @query=CONCAT('INSERT INTO `ufr_asso`.`',tableName,'` (NAM, SEQ_NUM) VALUES (''',type,''', LAST_INSERT_ID(1)) ON DUPLICATE KEY UPDATE seq_num = LAST_INSERT_ID(seq_num + 1));
-        PREPARE stmt FROM  @query;
-        EXECUTE stmt;
-        DEALLOCATE PREPARE stmt;
-    RETURN LAST_INSERT_ID();
-    END$$
+        -- INSERT INTO `ufr_asso`.`seq_usr` (NAM, SEQ_NUM) VALUES ('USR', LAST_INSERT_ID(1)) ON DUPLICATE KEY UPDATE seq_num = LAST_INSERT_ID(seq_num + 1); -- V1 Deprecated
+        -- INSERT INTO `ufr_asso`.`seq_usr` (NAM, SEQ_NUM) SELECT 'USR', MAX(SEQ_NUM) AS seq_num FROM seq_usr ON DUPLICATE KEY UPDATE seq_num = LAST_INSERT_ID(seq_num + 1); -- V2 (works ?)
+        UPDATE `ufr_asso`.`seq_usr` SET seq_num = LAST_INSERT_ID(seq_num + 1) where NAM = 'USR'; -- V3
+         RETURN LAST_INSERT_ID();
+END$$
+
+DROP FUNCTION IF EXISTS `generateId_Event`$$
+
+CREATE FUNCTION generateId_Event()
+RETURNS BIGINT(20)
+DETERMINISTIC -- NOT TRUE (IN THE TRUE TRUTH)
+BEGIN
+        -- INSERT INTO `ufr_asso`.`seq_evt` (NAM, SEQ_NUM) VALUES ('EVT', LAST_INSERT_ID(1)) ON DUPLICATE KEY UPDATE seq_num = LAST_INSERT_ID(seq_num + 1); -- V1 Deprecated
+        -- INSERT INTO `ufr_asso`.`seq_evt` (NAM, SEQ_NUM) SELECT 'EVT', MAX(SEQ_NUM) AS seq_num FROM seq_evt ON DUPLICATE KEY UPDATE seq_num = LAST_INSERT_ID(seq_num + 1); -- V2 (Works ?)
+        UPDATE `ufr_asso`.`seq_evt` SET seq_num = LAST_INSERT_ID(seq_num + 1) where NAM = 'EVT'; -- V3
+         RETURN LAST_INSERT_ID();
+END$$
 
 DELIMITER ;
 

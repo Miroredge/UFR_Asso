@@ -6,11 +6,15 @@ import java.time.OffsetDateTime;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.persistence.Persistence;
+import javax.persistence.Query;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Min;
@@ -35,6 +39,8 @@ public class Event {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ROW_IDT")
     private long id;
+    @Column(name = "EVT_ID", nullable = false, length = 8)
+    private String event_id;
     @Size(min = 1, max = 45)
     @Column(name = "NAM", nullable = false, length = 45)
     private String name;
@@ -73,6 +79,11 @@ public class Event {
     @JsonProperty("name")
     public String getName() {
         return name;
+    }
+
+    @JsonProperty("event_id")
+    public String getEvent_id() {
+        return event_id;
     }
 
     @JsonProperty("start_date_time")
@@ -125,6 +136,10 @@ public class Event {
         this.id = id;
     }
 
+    public void setEventId(String event_id) {
+        this.event_id = event_id;
+    }
+
     public void setName(String name) {
         this.name = name;
         this.update_date = Utils.getOffsetDateTimeNow();
@@ -162,16 +177,37 @@ public class Event {
         this.update_id = "API - Event - Setters";
     }
 
+    // next max evt id in database (Base 36) with JPA query
+    public static String getNextEventId() {
+        EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("persistence");
+        EntityManager em = entityManagerFactory.createEntityManager();
+        String nextEventId = null;
+        try {
+            Query q = em.createNativeQuery("SELECT MAX(EVT_ID) FROM EVT");
+            nextEventId = (String) q.getSingleResult();
+            if (nextEventId == null) {
+                nextEventId = "0";
+            }
+            nextEventId = Long.toString(Long.parseLong(nextEventId, 36) + 1, 36);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            em.close();
+        }
+        return nextEventId;
+    }
+
     // constructor
 
     public Event() {
         super();
     }
 
-    public Event(long id, String name, LocalDateTime start_date_time, LocalDateTime end_date_time, String place,
-            double price, String description, Asso asso_row_idt) {
+    public Event(long id, String event_id, String name, LocalDateTime start_date_time, LocalDateTime end_date_time,
+            String place, double price, String description, Asso asso_row_idt) {
         super();
         this.id = id;
+        this.event_id = event_id;
         this.name = name;
         this.start_date_time = start_date_time;
         this.end_date_time = end_date_time;
@@ -188,9 +224,9 @@ public class Event {
     // toString
     @Override
     public String toString() {
-        return "Event [id=" + id + ", name=" + name + ", start_date_time=" + start_date_time + ", end_date_time="
-                + end_date_time + ", place=" + place + ", price=" + price
-                + ", description=" + description + ", asso=" + asso + ", creation_date=" + creation_date
-                + ", creation_id=" + creation_id + ", update_date=" + update_date + ", update_id=" + update_id + "]";
+        return "Event [id=" + id + ", name=" + name + ", event_id=" + event_id + ", start_date_time=" + start_date_time
+                + ", end_date_time=" + end_date_time + ", place=" + place + ", price=" + price + ", description="
+                + description + ", asso=" + asso + ", creation_date=" + creation_date + ", creation_id=" + creation_id
+                + ", update_date=" + update_date + ", update_id=" + update_id + "]";
     }
 }

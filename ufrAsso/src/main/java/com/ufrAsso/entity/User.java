@@ -241,6 +241,14 @@ public class User {
         this.update_id = "API - User - Setters";
     }
 
+    public void setCreation_date() {
+        this.creation_date = Utils.getOffsetDateTimeNow();
+    }
+
+    public void setCreation_id(String creation_id) {
+        this.creation_id = creation_id;
+    }
+
     // next max user id in database (Base 36) with JPA query
     public static String getNextUserId() {
         EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("persistence");
@@ -268,7 +276,7 @@ public class User {
 
     public User(long id, String student_number, Blob profile_picture, String first_name, String last_name,
             GenderType gender, String email, String phone_number, Boolean phone_book, String password,
-            Boolean temporary_password, Boolean notification) {
+            Boolean notification) {
         this.id = id;
         this.user_id = getNextUserId();
         this.profile_picture = profile_picture;
@@ -279,7 +287,7 @@ public class User {
         this.phone_number = phone_number;
         this.phone_book = phone_book;
         this.password = password;
-        this.temporary_password = temporary_password;
+        this.temporary_password = false;
         this.notification = notification;
         this.update_date = Utils.getOffsetDateTimeNow();
         this.creation_id = "API - User - Constructor";

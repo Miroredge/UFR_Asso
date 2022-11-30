@@ -108,7 +108,9 @@ info:
       
       Some *Student Union* are also publishing `NEWSLETTERs`. A *newsletter* is used to share relevant and valuable information with their network of subscribers.
       
-      For example, these *Newsletters* could be used to communicate about `EVENTS`, giving their date, meeting place, registration fee, or start and end time. 
+      For example, these *Newsletters* could be used to communicate about `EVENTS`, giving their date, meeting place, registration fee, or start and end time.
+      
+      Regardless of his organisations, any **User** can attend to an `EVENT` declared by a *Student Union* 
       
     - Documentation  
     
@@ -317,7 +319,7 @@ paths:
 
 
 # ====================================
-  '/reception-events/{reception-event-id}':
+  '/users/{user-id}':
 # ====================================
 # GET   #
 # ----- #
@@ -364,7 +366,7 @@ paths:
       # -------------
 
         # User Unique ID
-        - name: reception-event-id
+        - name: user-id
           description: Technical Unique ID of the User (Base36 encoding) (https://en.wikipedia.org/wiki/Base36)
           required: true
 #          nullable: false
@@ -417,7 +419,7 @@ paths:
                 $ref: '#/components/schemas/Errors'
 
 # ====================================
-  '/transactions/{x-transaction-id}/reception-events':
+  '/transactions/{x-transaction-id}/users':
 # ====================================
 # GET   #
 # ----- #
@@ -697,7 +699,12 @@ components:
           example: "TJ56"
 
         # Student number
-        studentNumber: "22101185"
+        studentNumber:
+          description: Unique ID of the User as given by the University
+          type: string
+          minLength: 1
+          maxLength: 10
+          example: "22101185"
 
         # First Name
         firstName:
@@ -721,30 +728,43 @@ components:
 
         # Picture
         # https://codebeautify.org/base64-to-image-converter
-        profilePic: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAIAAAACDbGyAAAALnRFWHRDcmVhdGlvbiBUaW1lAGRpbS4gMjcgbm92LiAyMDIyIDE5OjU3OjI5ICswMTAwfTmqYgAAAAd0SU1FB+YLGxI7FbLMz30AAAAJcEhZcwAACvAAAArwAUKsNJgAAAAEZ0FNQQAAsY8L/GEFAAAANklEQVR42mP4n6r4nzP7H8N1IKmv9Y8BSAGFgHwgB8gGiksCEZADYTBAlIHUgzUyQJRB9AOFADGjJ3A8VQxDAAAAAElFTkSuQmCC"
+        profilePic:
+          description: Picture on the user profile
+          type: string
+          minLength: 22
+          example: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAIAAAACDbGyAAAALnRFWHRDcmVhdGlvbiBUaW1lAGRpbS4gMjcgbm92LiAyMDIyIDE5OjU3OjI5ICswMTAwfTmqYgAAAAd0SU1FB+YLGxI7FbLMz30AAAAJcEhZcwAACvAAAArwAUKsNJgAAAAEZ0FNQQAAsY8L/GEFAAAANklEQVR42mP4n6r4nzP7H8N1IKmv9Y8BSAGFgHwgB8gGiksCEZADYTBAlIHUgzUyQJRB9AOFADGjJ3A8VQxDAAAAAElFTkSuQmCC"
 
 	# email
-        email: "darth.vader@etu.univ-tours.fr"
-        
+        email:
+          description: Picture on the user profile
+          type: string
+          example: "darth.vader@etu.univ-tours.fr"
+          
         # Phone number
-        phoneNumber: "+33605024878"
+        phoneNumber:
+          description: Phone number of the user
+          type: string
+          example: "+33605024878"
 
         # Accept to appear in the PhoneBook
-        phoneBook: false
+        phoneBook:
+          description: true, if the user accepts to be visible for other users
+          type: boolean
+          example: false
 
         # Accept to receive Notifications
-        notifications: true
+        notifications:
+          description: true, if the users accepts to receive the notification on his phone
+          type: boolean
+          example: true
 
         # Password
-	password:""
-
-
-
-
-
-
-
-
+        password:
+          description: Password used to identify the user on the plateform
+          type: string
+          minLength: 5
+          maxLength: 200
+          example: "jhqsflljhsge5136534"
 
 
 
@@ -859,8 +879,6 @@ components:
           type: string
           maxLength: 17
           example: "KR3HL96"
-        mean:
-          $ref: '#/components/schemas/TransportMean'
         container:
           description: List of Containers
           type: array
@@ -927,8 +945,6 @@ components:
           type: string
           maxLength: 10
           example: "2529912"
-        typeCode:
-          $ref: '#/components/schemas/ContainerType'
         pickUpRequestNumber:
           description: Picking number (BACv2 - 438, 444) used in ILNs
           type: string
@@ -973,8 +989,6 @@ components:
           type: string
           maxLength: 10
           example: "MSE6KIT02D"
-        type:
-          $ref: '#/components/schemas/LogisticPointType'
 
 # TruckStation ----------------------------------------------------------------------------
     TruckStation:
@@ -1068,8 +1082,6 @@ components:
           maxLength: 17
           example: "BL09763"
         
-        type:
-          $ref: '#/components/schemas/AsnType'
 
         estimatedDepartureDateTime:
           description: Estimated Departure Date/Time (PSA in emission, DTM+11 in reception) - Departure Local Date/Time - Format (ISO 8601) YYYY-MM-DDTHH24:MI:SS[+/-]HH24:MI (BACv2 - 666, 679)
@@ -1093,8 +1105,6 @@ components:
           minLength: 19
           maxLength: 29
           example: "2019-09-18T23:56:16+05:30"
-        receptionReason:
-          $ref: '#/components/schemas/ReceptionReason'
         operatorIPN:
           description: IPN of the operator who validated the Reception (cuurently not the ARCA IPN, but an internal REFLEX identifier)
           type: string
@@ -1475,8 +1485,6 @@ components:
           maximum: 99999999999.999
           example: 1543.679
 
-        unitOfCount:
-          $ref: '#/components/schemas/UnitOfCount'
 
 # ItemInternalDescription ----------------------------------------------------------------------------
     ItemInternalDescription:
@@ -1594,8 +1602,6 @@ components:
           format: uint32
           maximum: 99999999
           example: 17
-        unit:
-          $ref: '#/components/schemas/WeightUnit'
 
 # Supplier ----------------------------------------------------------------------------
     Supplier:
