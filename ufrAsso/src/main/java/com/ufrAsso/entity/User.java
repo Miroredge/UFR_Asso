@@ -11,14 +11,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
-import javax.persistence.Query;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityManager;
-import javax.persistence.Persistence;
 import javax.validation.constraints.Size;
-
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ufrAsso.constants.GenderType;
 import com.ufrAsso.functions.Utils;
@@ -31,16 +27,18 @@ import com.ufrAsso.functions.Utils;
  */
 
 @Entity
-@Table(name = "USR", uniqueConstraints = { @UniqueConstraint(name = "UK_USR_1", columnNames = { "STU_NBR" }),
-        @UniqueConstraint(name = "UK_USR_2", columnNames = { "FST_NAM", "LST_NAM", "EML" }) })
+@Table(name = "USR", uniqueConstraints = { @UniqueConstraint(name = "UK_USR_2_IDX", columnNames = { "STU_NBR" }),
+        @UniqueConstraint(name = "UK_USR_1_IDX", columnNames = { "FST_NAM", "LST_NAM", "EML" }),
+        @UniqueConstraint(name = "UK_USR_3_IDX", columnNames = { "PSD" }) })
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ROW_IDT")
     private long id;
-    @Column(name = "USR_ID", nullable = false, length = 8)
-    private String user_id;
+    @Size(min = 5, max = 50)
+    @Column(name = "PSD", nullable = false, length = 50, unique = true)
+    private String pseudo;
     @Size(min = 8, max = 10)
     @Column(name = "STU_NBR", nullable = true, length = 10)
     private String student_number;
@@ -80,32 +78,32 @@ public class User {
     @Column(name = "UPD_ID", nullable = false)
     private String update_id;
 
-    @JsonProperty("id")
+    // @JsonProperty("rowId")
     public long getId() {
         return id;
     }
 
-    @JsonProperty("user_id")
-    public String getUser_id() {
-        return user_id;
+    @JsonProperty("pseudo")
+    public String getPseudo() {
+        return pseudo;
     }
 
-    @JsonProperty("student_number")
+    @JsonProperty("studentNumber")
     public String getStudent_number() {
         return student_number;
     }
 
-    @JsonProperty("profile_picture")
+    @JsonProperty("profilePicture")
     public Blob getProfile_picture() {
         return profile_picture;
     }
 
-    @JsonProperty("first_name")
+    @JsonProperty("firstName")
     public String getFirst_name() {
         return first_name;
     }
 
-    @JsonProperty("last_name")
+    @JsonProperty("lastName")
     public String getLast_name() {
         return last_name;
     }
@@ -120,12 +118,12 @@ public class User {
         return email;
     }
 
-    @JsonProperty("phone_number")
+    @JsonProperty("phoneNumber")
     public String getPhone_number() {
         return phone_number;
     }
 
-    @JsonProperty("phone_book")
+    @JsonProperty("phoneBook")
     public Boolean getPhone_book() {
         return phone_book;
     }
@@ -135,7 +133,7 @@ public class User {
         return password;
     }
 
-    @JsonProperty("temporary_password")
+    @JsonProperty("temporaryPassword")
     public Boolean getTemporary_password() {
         return temporary_password;
     }
@@ -145,22 +143,22 @@ public class User {
         return notification;
     }
 
-    @JsonProperty("creation_date")
+    @JsonProperty("creationDate")
     public OffsetDateTime getCreation_date() {
         return creation_date;
     }
 
-    @JsonProperty("creation_id")
+    @JsonProperty("creationId")
     public String getCreation_id() {
         return creation_id;
     }
 
-    @JsonProperty("update_date")
+    @JsonProperty("updateDate")
     public OffsetDateTime getUpdate_date() {
         return update_date;
     }
 
-    @JsonProperty("update_id")
+    @JsonProperty("updateId")
     public String getUpdate_id() {
         return update_id;
     }
@@ -171,8 +169,8 @@ public class User {
         this.id = id;
     }
 
-    public void setUser_id(String user_id) {
-        this.user_id = user_id;
+    public void setPseudo(String pseudo) {
+        this.pseudo = pseudo;
     }
 
     public void setStudent_number(String student_number) {
@@ -249,36 +247,18 @@ public class User {
         this.creation_id = creation_id;
     }
 
-    // next max user id in database (Base 36) with JPA query
-    public static String getNextUserId() {
-        EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("persistence");
-        EntityManager em = entityManagerFactory.createEntityManager();
-        String nextUserId = null;
-        try {
-            Query q = em.createNativeQuery("SELECT MAX(USR_ID) FROM USR");
-            nextUserId = (String) q.getSingleResult();
-            if (nextUserId == null) {
-                nextUserId = "0";
-            }
-            nextUserId = Long.toString(Long.parseLong(nextUserId, 36) + 1, 36);
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            em.close();
-        }
-        return nextUserId;
-    }
-
     // Constructors
 
     public User() {
     }
 
-    public User(long id, String student_number, Blob profile_picture, String first_name, String last_name,
-            GenderType gender, String email, String phone_number, Boolean phone_book, String password,
+    @JsonCreator
+    public User(long id, String pseudo, String student_number, Blob profile_picture, String first_name,
+            String last_name, GenderType gender, String email, String phone_number, Boolean phone_book, String password,
             Boolean notification) {
         this.id = id;
-        this.user_id = getNextUserId();
+        this.pseudo = pseudo;
+        this.student_number = student_number;
         this.profile_picture = profile_picture;
         this.first_name = first_name;
         this.last_name = last_name;
@@ -289,20 +269,21 @@ public class User {
         this.password = password;
         this.temporary_password = false;
         this.notification = notification;
-        this.update_date = Utils.getOffsetDateTimeNow();
+        this.creation_date = Utils.getOffsetDateTimeNow();
         this.creation_id = "API - User - Constructor";
         this.update_date = Utils.getOffsetDateTimeNow();
         this.update_id = "API - User - Constructor";
     }
 
+    // To String with the camelCase names
     @Override
     public String toString() {
-        return "User [id=" + id + ", user_id=" + user_id + ", student_number=" + student_number + ", profile_picture="
-                + profile_picture + ", first_name=" + first_name + ", last_name=" + last_name + ", gender=" + gender
-                + ", email=" + email + ", phone_number=" + phone_number + ", phone_book=" + phone_book + ", password="
-                + password + ", temporary_password=" + temporary_password + ", notification=" + notification
-                + ", creation_date=" + creation_date + ", creation_id=" + creation_id + ", update_date=" + update_date
-                + ", update_id=" + update_id + "]";
+        return "User [id=" + id + ", pseudo=" + pseudo + ", studentNumber=" + student_number + ", profilePicture="
+                + profile_picture + ", firstName=" + first_name + ", lastName=" + last_name + ", gender=" + gender
+                + ", email=" + email + ", phoneNumber=" + phone_number + ", phoneBook=" + phone_book + ", password="
+                + password + ", temporaryPassword=" + temporary_password + ", notification=" + notification
+                + ", creationDate=" + creation_date + ", creationId=" + creation_id + ", updateDate=" + update_date
+                + ", updateId=" + update_id + "]";
     }
 
 }

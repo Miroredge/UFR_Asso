@@ -32,7 +32,8 @@ import com.ufrAsso.functions.Utils;
 
 @Entity
 @Table(name = "EVT", uniqueConstraints = {
-        @UniqueConstraint(columnNames = { "NAM", "STT_DAT_TIM", "PLC", "CRE_ASO_ROW_IDT" }) })
+        @UniqueConstraint(name = "uk_evt_1_idx", columnNames = { "NAM", "STT_DAT_TIM", "PLC", "CRE_ASO_ROW_IDT" }),
+        @UniqueConstraint(name = "uk_evt_2_idx", columnNames = { "EVT_ID" }) })
 public class Event {
 
     @Id

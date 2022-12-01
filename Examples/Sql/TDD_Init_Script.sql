@@ -1,4 +1,4 @@
--- Active: 1668639301205@@localhost@3306@ufr_asso
+-- Active: 1668187026354@@localhost@3306@ufr_asso
 
 DELETE FROM `ufr_asso`.`aso_has_evt`;
 DELETE FROM `ufr_asso`.`usr_has_aso_and_rol`;

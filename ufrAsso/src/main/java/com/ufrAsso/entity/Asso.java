@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
 
@@ -24,7 +25,7 @@ import com.ufrAsso.functions.Utils;
  */
 
 @Entity
-@Table(name = "ASO")
+@Table(name = "ASO", uniqueConstraints = { @UniqueConstraint(columnNames = { "SIR_NBR" }) })
 public class Asso {
 
     @Id

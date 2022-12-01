@@ -38,6 +38,9 @@ public class UserController {
 
     @PostMapping("api/v1/users") // Create a new user
     public ResponseEntity<User> createUser(@RequestBody User user) {
+
+        // TODO MDP crypté
+
         User newUser = userRepo.save(user);
         return new ResponseEntity<>(newUser, HttpStatus.CREATED);
     }

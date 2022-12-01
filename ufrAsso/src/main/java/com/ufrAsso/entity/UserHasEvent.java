@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ufrAsso.functions.Utils;
@@ -22,7 +23,8 @@ import com.ufrAsso.functions.Utils;
  */
 
 @Entity
-@Table(name = "USR_HAS_EVT")
+@Table(name = "USR_HAS_EVT", uniqueConstraints = {
+        @UniqueConstraint(name = "UK_USR_HAS_EVT_1_IDX", columnNames = { "USR_ROW_IDT", "EVT_ROW_IDT" }) })
 public class UserHasEvent {
 
     @Id

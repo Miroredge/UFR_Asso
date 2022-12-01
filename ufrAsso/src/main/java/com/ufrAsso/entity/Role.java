@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -21,7 +22,7 @@ import com.ufrAsso.functions.Utils;
  */
 
 @Entity
-@Table(name = "ROL")
+@Table(name = "ROL", uniqueConstraints = { @UniqueConstraint(name = "UK_ROL_1_IDX", columnNames = { "NAM" }) })
 public class Role {
 
     @Id
