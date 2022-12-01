@@ -37,12 +37,22 @@ public class UserController {
     }
 
     @PostMapping("api/v1/users") // Create a new user
-    public ResponseEntity<User> createUser(@RequestBody User user) {
-
+    public ResponseEntity<String> createUser(@RequestBody User user) {
+        // replace String by User
         // TODO MDP crypté
 
         User newUser = userRepo.save(user);
-        return new ResponseEntity<>(newUser, HttpStatus.CREATED);
+
+        // response vith a json format (pseudo studentNumber firstName lastName gender
+        // profilePicture email phoneNumber phoneBook notification)
+        String response = "{\"pseudo\":\"" + newUser.getPseudo() + "\",\"studentNumber\":\""
+                + newUser.getStudent_number() + "\",\"firstName\":\"" + newUser.getFirst_name() + "\",\"lastName\":\""
+                + newUser.getLast_name() + "\",\"gender\":\"" + newUser.getGender() + "\",\"profilePicture\":\""
+                + newUser.getProfile_picture() + "\",\"email\":\"" + newUser.getEmail() + "\",\"phoneNumber\":\""
+                + newUser.getPhone_number() + "\",\"phoneBook\":\"" + newUser.getPhone_book() + "\",\"notification\":\""
+                + newUser.getNotification() + "\"}";
+        return new ResponseEntity<>((response), HttpStatus.CREATED);
+        // return new ResponseEntity<>(newUser, HttpStatus.CREATED);
     }
 
     @GetMapping("api/users/{id}") // Get a user by id

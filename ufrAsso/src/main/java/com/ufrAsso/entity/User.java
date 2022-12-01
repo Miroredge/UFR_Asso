@@ -1,6 +1,5 @@
 package com.ufrAsso.entity;
 
-import java.sql.Blob;
 import java.time.OffsetDateTime;
 
 import javax.persistence.Column;
@@ -10,7 +9,6 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Lob;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Size;
@@ -42,9 +40,8 @@ public class User {
     @Size(min = 8, max = 10)
     @Column(name = "STU_NBR", nullable = true, length = 10)
     private String student_number;
-    @Lob
     @Column(name = "PRF_PIC")
-    private Blob profile_picture;
+    private String profile_picture;
     @Size(min = 1, max = 20)
     @Column(name = "FST_NAM", length = 20, nullable = false)
     @Size(min = 1, max = 25)
@@ -94,7 +91,7 @@ public class User {
     }
 
     @JsonProperty("profilePicture")
-    public Blob getProfile_picture() {
+    public String getProfile_picture() {
         return profile_picture;
     }
 
@@ -179,7 +176,7 @@ public class User {
         this.update_id = "API - User - Setters";
     }
 
-    public void setProfile_picture(Blob profile_picture) {
+    public void setProfile_picture(String profile_picture) {
         this.profile_picture = profile_picture;
         this.update_date = Utils.getOffsetDateTimeNow();
         this.update_id = "API - User - Setters";
@@ -253,7 +250,7 @@ public class User {
     }
 
     @JsonCreator
-    public User(long id, String pseudo, String student_number, Blob profile_picture, String first_name,
+    public User(long id, String pseudo, String student_number, String profile_picture, String first_name,
             String last_name, GenderType gender, String email, String phone_number, Boolean phone_book, String password,
             Boolean notification) {
         this.id = id;
