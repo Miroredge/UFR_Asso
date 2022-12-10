@@ -49,8 +49,8 @@ public class Event {
     private LocalDateTime start_date_time;
     @Column(name = "END_DAT_TIM", nullable = false)
     private LocalDateTime end_date_time;
-    @Size(min = 1, max = 45)
-    @Column(name = "PLC", nullable = false, length = 45)
+    @Size(min = 1, max = 200)
+    @Column(name = "PLC", nullable = false, length = 200)
     private String place;
     @Min(0)
     @Column(name = "PCE")

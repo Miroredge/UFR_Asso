@@ -39,25 +39,40 @@ public class UserController {
     @PostMapping("api/v1/users") // Create a new user
     public ResponseEntity<String> createUser(@RequestBody User user) {
         // replace String by User
-        // TODO MDP crypté
-
+        // check if the user already exists
+        if (userRepo.findByPseudo(user.getPseudo()).isPresent() || userRepo.findByEmail(user.getEmail()).isPresent()
+                || userRepo.findByStudentNumber(user.getStudent_number()).isPresent()) {
+            return new ResponseEntity<>("{\"error\":\"Pseudo or email or student number already exists\"}",
+                    HttpStatus.BAD_REQUEST);
+        }
         User newUser = userRepo.save(user);
 
-        // response vith a json format (pseudo studentNumber firstName lastName gender
+        // response with a json format (pseudo studentNumber firstName lastName gender
         // profilePicture email phoneNumber phoneBook notification)
-        String response = "{\"pseudo\":\"" + newUser.getPseudo() + "\",\"studentNumber\":\""
-                + newUser.getStudent_number() + "\",\"firstName\":\"" + newUser.getFirst_name() + "\",\"lastName\":\""
-                + newUser.getLast_name() + "\",\"gender\":\"" + newUser.getGender() + "\",\"profilePicture\":\""
-                + newUser.getProfile_picture() + "\",\"email\":\"" + newUser.getEmail() + "\",\"phoneNumber\":\""
-                + newUser.getPhone_number() + "\",\"phoneBook\":\"" + newUser.getPhone_book() + "\",\"notification\":\""
-                + newUser.getNotification() + "\"}";
+        String response = "{\"pseudo\":\"" + newUser.getPseudo() + "\",\"firstName\":\"" + newUser.getFirst_name()
+                + "\",\"lastName\":\"" + newUser.getLast_name() + "\",\"email\":\"" + newUser.getEmail()
+                + "\",\"phoneBook\":" + newUser.getPhone_book() + ",\"notification\":"
+                + newUser.getNotification();
+        if (newUser.getGender() != null) {
+            response += ", \"gender\":\"" + newUser.getGender() + "\"";
+        }
+        if (newUser.getStudent_number() != null) {
+            response += ", \"studentNumber\":\"" + newUser.getStudent_number() + "\"";
+        }
+        if (newUser.getProfile_picture() != null) {
+            response += ", \"profilePicture\":\"" + newUser.getProfile_picture() + "\"";
+        }
+        if (newUser.getPhone_number() != null) {
+            response += ", \"phoneNumber\":\"" + newUser.getPhone_number() + "\"";
+        }
+        response += "}";
         return new ResponseEntity<>((response), HttpStatus.CREATED);
         // return new ResponseEntity<>(newUser, HttpStatus.CREATED);
     }
 
-    @GetMapping("api/users/{id}") // Get a user by id
-    public ResponseEntity<User> getUserById(@PathVariable("id") long id) {
-        Optional<User> user = userRepo.findById(id);
+    @GetMapping("api/users/{pseudo}") // Get a user by its pseudo
+    public ResponseEntity<User> getUserById(@PathVariable("pseudo") long pseudo) {
+        Optional<User> user = userRepo.findById(pseudo);
         if (user.isPresent()) {
             return new ResponseEntity<>(user.get(), HttpStatus.OK);
         } else {

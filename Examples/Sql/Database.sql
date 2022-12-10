@@ -1,18 +1,12 @@
--- Active: 1668639301205@@localhost@3306@ufr_asso
+-- Active: 1668187026354@@localhost@3306@ufr_asso
 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
 
 -- ------------------------------------------------------------------------------------------------------------------------------------------------
--- ------------------------------------------------------------------------------------------------------------------------------------------------
+-- ----------------------------------------------------------------  --------------------------------------------------------------------------------
 -- ------------------------------------------------------------------------------------------------------------------------------------------------
 
--- -----------------------------------------------------
--- Schema ufr_asso
--- -----------------------------------------------------
-DROP SCHEMA ufr_asso;
-CREATE SCHEMA IF NOT EXISTS ufr_asso DEFAULT CHARACTER SET utf8 ;
-SHOW WARNINGS;
 -- -----------------------------------------------------
 -- Schema ufr_asso
 -- -----------------------------------------------------
@@ -101,7 +95,7 @@ CREATE TABLE IF NOT EXISTS ufr_asso.evt (
 ,  NAM			VARCHAR		(45)	NOT NULL
 ,  STT_DAT_TIM		TIMESTAMP		NOT NULL
 ,  END_DAT_TIM		TIMESTAMP		NOT NULL
-,  PLC			VARCHAR		(45)	    NULL	DEFAULT NULL -- NULLABLE ????? In the UK
+,  PLC			VARCHAR		(200)	    NULL	DEFAULT NULL -- NULLABLE ????? In the UK
 ,  PCE			DOUBLE			    NULL	DEFAULT NULL
 ,  DSC			TEXT			    NULL	DEFAULT NULL
 ,  CRE_ASO_ROW_IDT	BIGINT		(20)	NOT NULL
