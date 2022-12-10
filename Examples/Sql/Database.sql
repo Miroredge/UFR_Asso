@@ -431,8 +431,30 @@ CREATE		INDEX	fk_usr_has_evt_evt_1_idx		ON ufr_asso.usr_has_evt (EVT_ROW_IDT ASC
 SHOW WARNINGS;
 
 CREATE UNIQUE	INDEX uk_usr_has_evt_1_idx		ON ufr_asso.usr_has_evt	(USR_ROW_IDT ASC, EVT_ROW_IDT ASC) VISIBLE;
+SHOW WARNINGS;
+
+
+-- -----------------------------------------------------
+-- Sequence ufr_asso.seq_usr
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS ufr_asso.seq_usr;
 
 SHOW WARNINGS;
+CREATE TABLE IF NOT EXISTS ufr_asso.seq_usr (
+   SEQ_NUM		BIGINT		(20)	NOT NULL AUTO_INCREMENT
+, NAM			ENUM('USR')		NOT NULL
+, PRIMARY KEY (SEQ_NUM)
+)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8
+;
+
+CREATE UNIQUE	INDEX uk_seq_usr_1_idx	ON ufr_asso.seq_usr	 	(SEQ_NUM) VISIBLE;
+
+SHOW WARNINGS;
+
+-- default values for table ufr_asso.seq_usr
+INSERT INTO ufr_asso.seq_usr (SEQ_NUM, NAM) VALUES (1, 'USR');
 
 -- -----------------------------------------------------
 -- Sequence ufr_asso.seq_evt
@@ -473,6 +495,17 @@ DELIMITER $$
 --         DEALLOCATE PREPARE stmt;
 --         SELECT LAST_INSERT_ID() INTO o_lastId;
 -- END$$
+DROP FUNCTION IF EXISTS `generateId_User`$$
+
+CREATE FUNCTION generateId_User()
+RETURNS BIGINT(20)
+DETERMINISTIC -- NOT TRUE (IN THE TRUE TRUTH)
+BEGIN
+        -- INSERT INTO `ufr_asso`.`seq_evt` (NAM, SEQ_NUM) VALUES ('EVT', LAST_INSERT_ID(1)) ON DUPLICATE KEY UPDATE seq_num = LAST_INSERT_ID(seq_num + 1); -- V1 Deprecated
+        -- INSERT INTO `ufr_asso`.`seq_evt` (NAM, SEQ_NUM) SELECT 'EVT', MAX(SEQ_NUM) AS seq_num FROM seq_evt ON DUPLICATE KEY UPDATE seq_num = LAST_INSERT_ID(seq_num + 1); -- V2 (Works ?)
+        UPDATE `ufr_asso`.`seq_usr` SET seq_num = LAST_INSERT_ID(seq_num + 1) where NAM = 'USR'; -- V3
+         RETURN LAST_INSERT_ID();
+END$$
 
 DROP FUNCTION IF EXISTS `generateId_Event`$$
 
