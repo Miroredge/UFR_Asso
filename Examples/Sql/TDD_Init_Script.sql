@@ -1,13 +1,14 @@
 -- Active: 1668639301205@@localhost@3306@ufr_asso
 
+DELETE FROM `ufr_asso`.`usr_has_evt`;
 DELETE FROM `ufr_asso`.`aso_has_evt`;
 DELETE FROM `ufr_asso`.`usr_has_aso_and_rol`;
 DELETE FROM  `ufr_asso`.`rol`;
+DELETE FROM `ufr_asso`.`evt`;
 DELETE FROM  `ufr_asso`.`aso`;
 DELETE FROM  `ufr_asso`.`usr`;
-DELETE FROM `ufr_asso`.`evt`;
 
-
+COMMIT;
 
 
 -- ------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -623,7 +624,7 @@ INSERT INTO `ufr_asso`.`evt` (UNQ_ID, NAM,  STT_DAT_TIM,  END_DAT_TIM,  PLC,  PC
 ,    ('Z0004','Bowling'        , '2022-10-16 19:00:00', '2022-10-16 23:30:00', 'Blois', 50  , null     , (SELECT ROW_IDT FROM `ufr_asso`.`aso` WHERE SIR_NBR = '73282932000074'), 'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
 ;
 
-INSERT INTO `ufr_asso`.`aso_has_evt` (ASO_ROW_IDT,  EVT_ROW_IDT, CRE_ID, CRE_DAT, UPD_ID, UPD_DAT) VALUES
+INSERT INTO `ufr_asso`.`aso_has_evt` (EVT_ROW_IDT, ASO_ROW_IDT, CRE_ID, CRE_DAT, UPD_ID, UPD_DAT) VALUES
      ((SELECT ROW_IDT FROM `ufr_asso`.`evt` WHERE UNQ_ID = 'Z0001'),(SELECT ROW_IDT FROM `ufr_asso`.`aso` WHERE SIR_NBR = '73282932000074'),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
 ,    ((SELECT ROW_IDT FROM `ufr_asso`.`evt` WHERE UNQ_ID = 'Z0002'),(SELECT ROW_IDT FROM `ufr_asso`.`aso` WHERE SIR_NBR = '73282932000074'),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
 ,    ((SELECT ROW_IDT FROM `ufr_asso`.`evt` WHERE UNQ_ID = 'Z0002'),(SELECT ROW_IDT FROM `ufr_asso`.`aso` WHERE SIR_NBR = 'MONACOCONFO001'),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
