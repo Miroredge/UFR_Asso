@@ -246,7 +246,7 @@ CREATE TABLE IF NOT EXISTS ufr_asso.boo_ety (
 --
 ,  UNQ_ID		VARCHAR		(8)	NOT NULL			COMMENT 'Unique API Identifier (Base36)'
 ,  OPT_DAT		DATE			NOT NULL			COMMENT 'Date-time of the operation'
-,  MOD			ENUM('CASH'
+,  MDE			ENUM('CASH'
                            , 'CHECK'
                            , 'BANK_TRANSFER'
                            , 'CREDIT_CARD'

@@ -5,7 +5,7 @@ DELETE FROM `ufr_asso`.`usr_has_aso_and_rol`;
 DELETE FROM  `ufr_asso`.`rol`;
 DELETE FROM  `ufr_asso`.`aso`;
 DELETE FROM  `ufr_asso`.`usr`;
-
+DELETE FROM `ufr_asso`.`evt`;
 
 -- ------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- Users
@@ -581,32 +581,53 @@ INSERT INTO `ufr_asso`.`usr_has_aso_and_rol` (USR_ROW_IDT, ASO_ROW_IDT, ROL_ROW_
 
 -- Unique Key
 
--- Event
+-- Creator organisation, Name, Location, Start time 
 
 -- ~~~~~~~~~~~~
 -- Happy flow
 -- ~~~~~~~~~~~~
 
--- INSERT INTO `ufr_asso`.`evt` (EVT_ID, NAM,  STT_DAT_TIM,  END_DAT_TIM,  PLC,  PCE,  DSC,  CRE_ASO_ROW_IDT, CRE_ID, CRE_DAT, UPD_ID, UPD_DAT) VALUES
+-- Event created by an Organisation and no Partner
+
+-- Event created by an Organisation and 1 Partner
+
+-- Event created by an Organisation and 2 Partner
+
+-- INSERT INTO `ufr_asso`.`evt` (UNQ_ID, NAM,  STT_DAT_TIM,  END_DAT_TIM,  PLC,  PCE,  DSC,  CRE_ASO_ROW_IDT, CRE_ID, CRE_DAT, UPD_ID, UPD_DAT) VALUES
 --      (CONV(generateId_Event(), 10, 36), 'Bowling'        , '2022-10-16 19:00:00', '2022-10-16 23:30:00', 'Blois', 50  , null     , (SELECT ROW_IDT FROM `ufr_asso`.`aso` WHERE SIR_NBR = '73282932000074'), 'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
--- ,    (CONV(generateId_Event(), 10, 36),'Z Event'        , '2022-12-12 13:40:00', '2022-12-14 13:40:00', 'Blois', 50  , 'Event 1', (SELECT ROW_IDT FROM `ufr_asso`.`aso` WHERE SIR_NBR = '73282932000074'), 'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
--- ,    (CONV(generateId_Event(), 10, 36),'Bal de Promo'   , '2023-05-01 20:00:00', '2022-05-02 05:00:00', 'Blois', 16.2, null     , (SELECT ROW_IDT FROM `ufr_asso`.`aso` WHERE SIR_NBR = '73282932000074'), 'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
--- ,    (CONV(generateId_Event(), 10, 36),'Brocante Sep-22', '2022-09-05 07:00:00', '2022-09-05 22:00:00', null   , 2.3 , null     , (SELECT ROW_IDT FROM `ufr_asso`.`aso` WHERE SIR_NBR = '73282932000074'), 'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+-- ,    (CONV(generateId_Event(), 10, 36), 'Z Event'        , '2022-12-12 13:40:00', '2022-12-14 13:40:00', 'Blois', 50  , 'Event 1', (SELECT ROW_IDT FROM `ufr_asso`.`aso` WHERE SIR_NBR = '73282932000074'), 'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+-- ,    (CONV(generateId_Event(), 10, 36), 'Bal de Promo'   , '2023-05-01 20:00:00', '2022-05-02 05:00:00', 'Blois', 16.2, null     , (SELECT ROW_IDT FROM `ufr_asso`.`aso` WHERE SIR_NBR = '73282932000074'), 'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+-- ,    (CONV(generateId_Event(), 10, 36), 'Brocante Sep-22', '2022-09-05 07:00:00', '2022-09-05 22:00:00', null   , 2.3 , null     , (SELECT ROW_IDT FROM `ufr_asso`.`aso` WHERE SIR_NBR = '73282932000074'), 'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
 -- ;
 
 -- ~~~~~~~~~~~~
 -- Failing flow
 -- ~~~~~~~~~~~~
 
+-- Event with no Creator
+
+
 -- TEST DATA SET : Event from UFR_ASSO_Tests.xlsx
 -- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-INSERT INTO `ufr_asso`.`evt` (EVT_ID, NAM,  STT_DAT_TIM,  END_DAT_TIM,  PLC,  PCE,  DSC,  CRE_ASO_ROW_IDT, CRE_ID, CRE_DAT, UPD_ID, UPD_DAT) VALUES
+INSERT INTO `ufr_asso`.`evt` (UNQ_ID, NAM,  STT_DAT_TIM,  END_DAT_TIM,  PLC,  PCE,  DSC,  CRE_ASO_ROW_IDT, CRE_ID, CRE_DAT, UPD_ID, UPD_DAT) VALUES
      ('Z0001','Z Event'        , '2022-12-12 13:40:00', '2022-12-14 13:40:00', 'Blois', 50  , 'Event 1', (SELECT ROW_IDT FROM `ufr_asso`.`aso` WHERE SIR_NBR = '73282932000074'), 'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
 ,    ('Z0002','Bal de Promo'   , '2023-05-01 20:00:00', '2022-05-02 05:00:00', 'Blois', 16.2, null     , (SELECT ROW_IDT FROM `ufr_asso`.`aso` WHERE SIR_NBR = '73282932000074'), 'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
 ,    ('Z0003','Brocante Sep-22', '2022-09-05 07:00:00', '2022-09-05 22:00:00', null   , 2.3 , null     , (SELECT ROW_IDT FROM `ufr_asso`.`aso` WHERE SIR_NBR = '73282932000074'), 'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
 ,    ('Z0004','Bowling'        , '2022-10-16 19:00:00', '2022-10-16 23:30:00', 'Blois', 50  , null     , (SELECT ROW_IDT FROM `ufr_asso`.`aso` WHERE SIR_NBR = '73282932000074'), 'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
 ;
+
+INSERT INTO `ufr_asso`.`aso_has_evt` (ASO_ROW_IDT,  EVT_ROW_IDT, CRE_ID, CRE_DAT, UPD_ID, UPD_DAT) VALUES
+     ((SELECT ROW_IDT FROM `ufr_asso`.`evt` WHERE UNQ_ID = 'Z0001'),(SELECT ROW_IDT FROM `ufr_asso`.`aso` WHERE SIR_NBR = '73282932000074'),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT FROM `ufr_asso`.`evt` WHERE UNQ_ID = 'Z0002'),(SELECT ROW_IDT FROM `ufr_asso`.`aso` WHERE SIR_NBR = '73282932000074'),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT FROM `ufr_asso`.`evt` WHERE UNQ_ID = 'Z0002'),(SELECT ROW_IDT FROM `ufr_asso`.`aso` WHERE SIR_NBR = 'MONACOCONFO001'),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT FROM `ufr_asso`.`evt` WHERE UNQ_ID = 'Z0003'),(SELECT ROW_IDT FROM `ufr_asso`.`aso` WHERE SIR_NBR = '73282932000074'),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT FROM `ufr_asso`.`evt` WHERE UNQ_ID = 'Z0003'),(SELECT ROW_IDT FROM `ufr_asso`.`aso` WHERE SIR_NBR = 'MONACOCONFO001'),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT FROM `ufr_asso`.`evt` WHERE UNQ_ID = 'Z0004'),(SELECT ROW_IDT FROM `ufr_asso`.`aso` WHERE SIR_NBR = '73282932000074'),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT FROM `ufr_asso`.`evt` WHERE UNQ_ID = 'Z0004'),(SELECT ROW_IDT FROM `ufr_asso`.`aso` WHERE SIR_NBR = 'MONACOCONFO001'),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT FROM `ufr_asso`.`evt` WHERE UNQ_ID = 'Z0004'),(SELECT ROW_IDT FROM `ufr_asso`.`aso` WHERE SIR_NBR = 'ANOTHER_ASSO'  ),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+;
+
 -- ------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- User / Event
 -- ------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -618,16 +639,33 @@ INSERT INTO `ufr_asso`.`evt` (EVT_ID, NAM,  STT_DAT_TIM,  END_DAT_TIM,  PLC,  PC
 -- Happy flow
 -- ~~~~~~~~~~~~
 
+/*
+INSERT INTO `ufr_asso`.`usr_has_evt` (USR_ROW_IDT, EVT_ROW_IDT, CRE_ID, CRE_DAT, UPD_ID, UPD_DAT) VALUES
+
+-- User with a role into an organisation is taking part to an Event created by this organisation
+     ((SELECT ROW_IDT FROM `ufr_asso`.`usr` WHERE PSD = 'Z0001'),(SELECT ROW_IDT FROM `ufr_asso`.`evt` WHERE UNQ_ID = 'Z0001'),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+
+-- User with a role into an organisation is taking part to an Event where this organisation is a partner
+     ((SELECT ROW_IDT FROM `ufr_asso`.`usr` WHERE PSD = 'Z0001'),(SELECT ROW_IDT FROM `ufr_asso`.`evt` WHERE UNQ_ID = 'Z0001'),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+
+-- User with NO role into an organisation is taking part to an Event where this organisation is neither the creator or a partner 
+     ((SELECT ROW_IDT FROM `ufr_asso`.`usr` WHERE PSD = 'Z0001'),(SELECT ROW_IDT FROM `ufr_asso`.`evt` WHERE UNQ_ID = 'Z0001'),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+
+-- User linked with NO organisation is taking part to an Event
+     ((SELECT ROW_IDT FROM `ufr_asso`.`usr` WHERE PSD = 'Z0001'),(SELECT ROW_IDT FROM `ufr_asso`.`evt` WHERE UNQ_ID = 'Z0001'),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+;
+*/
+
 -- Failing flow
 -- ~~~~~~~~~~~~
 
 -- TEST DATA SET : Link User-Event from UFR_ASSO_Tests.xlsx
 -- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 INSERT INTO `ufr_asso`.`usr_has_evt` (USR_ROW_IDT, EVT_ROW_IDT, CRE_ID, CRE_DAT, UPD_ID, UPD_DAT) VALUES
-     ((SELECT ROW_IDT FROM `ufr_asso`.`usr` WHERE PSD = 'Z0001'),(SELECT ROW_IDT FROM `ufr_asso`.`evt` WHERE EVT_ID = 'Z0001'),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
-,    ((SELECT ROW_IDT FROM `ufr_asso`.`usr` WHERE PSD = 'Z0002'),(SELECT ROW_IDT FROM `ufr_asso`.`evt` WHERE EVT_ID = 'Z0002'),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
-,    ((SELECT ROW_IDT FROM `ufr_asso`.`usr` WHERE PSD = 'Z0003'),(SELECT ROW_IDT FROM `ufr_asso`.`evt` WHERE EVT_ID = 'Z0003'),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
-,    ((SELECT ROW_IDT FROM `ufr_asso`.`usr` WHERE PSD = 'Z0004'),(SELECT ROW_IDT FROM `ufr_asso`.`evt` WHERE EVT_ID = 'Z0004'),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+     ((SELECT ROW_IDT FROM `ufr_asso`.`usr` WHERE PSD = 'Z0001'),(SELECT ROW_IDT FROM `ufr_asso`.`evt` WHERE UNQ_ID = 'Z0001'),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT FROM `ufr_asso`.`usr` WHERE PSD = 'Z0002'),(SELECT ROW_IDT FROM `ufr_asso`.`evt` WHERE UNQ_ID = 'Z0002'),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT FROM `ufr_asso`.`usr` WHERE PSD = 'Z0003'),(SELECT ROW_IDT FROM `ufr_asso`.`evt` WHERE UNQ_ID = 'Z0003'),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+,    ((SELECT ROW_IDT FROM `ufr_asso`.`usr` WHERE PSD = 'Z0004'),(SELECT ROW_IDT FROM `ufr_asso`.`evt` WHERE UNQ_ID = 'Z0004'),'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
 
 ;
 
