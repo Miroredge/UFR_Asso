@@ -80,12 +80,7 @@ info:
     
     - _**TO DO**_ : 
       - Hash the password + Salt in the database
-      - /users/{pseudo} : PUT/PATCH on 'User' for password update
-      - /users/{pseudo} : PUT/PATCH on 'User' for 'APP_ADMIN' roles
-      - /users/{pseudo} : PUT on every other fields ?
-      - /users/{pseudo}/organisations/{siretNumber}/roles : DELETE supprimer tous les r�les
-      - /users/{pseudo}/organisations/{siretNumber}/roles : PUT pur modifier les r�les ? Cr�ation/Suppression ?
-    
+
     - Description of the functional domain  
     
       A *Student Union*, aka *Bureau des Eleves* in the French-speaking world, is a student association gathering students from one or more faculties within a university or college.
@@ -136,7 +131,7 @@ info:
 
 externalDocs:
   url: 'https://www.studyrama.com/vie-etudiante/s-engager-dans-une-association-etudiante/les-bureaux-des-eleves-bde'
-  description: F�deration Fran�aise des Bureaux des Eleves
+  description: Féderation Française des Bureaux des Eleves
 
 
 ############################################################
@@ -416,6 +411,254 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Errors'
+
+# ====================================
+# PATCH #
+# ----- #
+
+    patch:
+      tags:
+        - User
+      summary: Update a limited set of data about a 'User'
+      description: This operation allows to update some fields of a 'User', according to its unique identifier (pseudo)
+      externalDocs:
+        url: ''
+      operationId: updatePartialUserByPseudo
+      security:
+        - OauthSecurity:
+            - All
+            - Application_Admin
+            - Organisation_Admin
+            - Organisation_Member
+            - Organisation_Candidate
+            - Organisation_Refused
+            - Organisation_President
+            - Organisation_VicePresident
+            - Organisation_Secretary
+            - Organisation_Treasurer
+
+      parameters:
+
+      # HEADER
+      # -------------
+
+        # Host
+        - name: Host
+          description: Network location of the URI
+          required: true
+#          nullable: false
+          in: header
+          schema:
+            type: string
+          example: ufr-api.ops.google.com
+
+
+      # PATH
+      # -------------
+
+        # User login
+        - name: pseudo
+          description: Unique ID of the User
+          required: true
+#          nullable: false
+          in: path
+          schema:
+            type: string
+            minLength: 5
+            maxLength: 50
+          example: "MirorEdge38"
+
+      # QUERY
+      # -------------
+
+
+      # BODY
+      # -------------
+
+      # User details
+      requestBody:
+        description: User detailled content
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/User'
+                - type: object
+                  properties:
+                    # Password
+                    password:
+                      description: Password used to identify the user on the plateform
+                      type: string
+                      minLength: 5
+                      maxLength: 200
+                      example: "jhqsflljhsge5136534"
+            examples:
+              CreateUser:
+                $ref: '#/components/examples/CreateUser'
+
+
+      # RESPONSES
+      # -------------
+
+      responses:
+        '200':
+          $ref: '#/components/responses/UserFound'
+
+        # Definition of all error statuses
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden' 
+        '404':
+          $ref: '#/components/responses/NotFound' 
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalError'
+        '501': 
+          $ref: '#/components/responses/NotImplemented'
+        '502':
+          $ref: '#/components/responses/BadGateway'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+
+        # Definition of other error status
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errors'
+
+
+# ====================================
+# PUT   #
+# ----- #
+
+    put:
+      tags:
+        - User
+      summary: Overwrite the data about a 'User'
+      description: This operation allows to overwrite the details of a 'User', according to its unique identifier (pseudo)
+      externalDocs:
+        url: ''
+      operationId: overwriteUserByPseudo
+      security:
+        - OauthSecurity:
+            - All
+            - Application_Admin
+            - Organisation_Admin
+            - Organisation_Member
+            - Organisation_Candidate
+            - Organisation_Refused
+            - Organisation_President
+            - Organisation_VicePresident
+            - Organisation_Secretary
+            - Organisation_Treasurer
+
+      parameters:
+
+      # HEADER
+      # -------------
+
+        # Host
+        - name: Host
+          description: Network location of the URI
+          required: true
+#          nullable: false
+          in: header
+          schema:
+            type: string
+          example: ufr-api.ops.google.com
+
+
+      # PATH
+      # -------------
+
+        # User login
+        - name: pseudo
+          description: Unique ID of the User
+          required: true
+#          nullable: false
+          in: path
+          schema:
+            type: string
+            minLength: 5
+            maxLength: 50
+          example: "MirorEdge38"
+
+      # QUERY
+      # -------------
+
+
+      # BODY
+      # -------------
+
+      # User details
+      requestBody:
+        description: User detailled content
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/User'
+                - type: object
+                  properties:
+                    # Password
+                    password:
+                      description: Password used to identify the user on the plateform
+                      type: string
+                      minLength: 5
+                      maxLength: 200
+                      example: "jhqsflljhsge5136534"
+            examples:
+              CreateUser:
+                $ref: '#/components/examples/CreateUser'
+
+
+      # RESPONSES
+      # -------------
+
+      responses:
+        '200':
+          $ref: '#/components/responses/UserFound'
+
+        # Definition of all error statuses
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden' 
+        '404':
+          $ref: '#/components/responses/NotFound' 
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalError'
+        '501': 
+          $ref: '#/components/responses/NotImplemented'
+        '502':
+          $ref: '#/components/responses/BadGateway'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+
+        # Definition of other error status
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errors'
+
 
 # ====================================
 # DELETE #
@@ -1596,6 +1839,123 @@ paths:
                 $ref: '#/components/schemas/Errors'
 
 # ====================================
+# PUT   #
+# ----- #
+
+    put:
+      tags:
+        - Organisation
+      summary: Overwrite a single 'Organisation'
+      description: This operation allows to overwrite an 'Organisation'
+      externalDocs:
+        url: ''
+      operationId: overwriteOrganisationBySiret
+      security:
+        - OauthSecurity:
+            - All
+            - Application_Admin
+            - Organisation_Admin
+            - Organisation_Member
+            - Organisation_Candidate
+            - Organisation_Refused
+            - Organisation_President
+            - Organisation_VicePresident
+            - Organisation_Secretary
+            - Organisation_Treasurer
+
+      parameters:
+
+      # HEADER
+      # -------------
+
+        # Host
+        - name: Host
+          description: Network location of the URI
+          required: true
+#          nullable: false
+          in: header
+          schema:
+            type: string
+          example: ufr-api.ops.google.com
+
+      # PATH
+      # -------------
+
+        # SIRET
+        - name: siretNumber
+          description: Unique ID of the Organisation
+          required: true
+#          nullable: false
+          in: path
+          schema:
+            type: string
+            minLength: 14
+            maxLength: 14
+          example: "12482313546354"
+
+      # QUERY
+      # -------------
+
+
+      # BODY
+      # -------------
+
+      # Organisation details
+      requestBody:
+        description: Organisation detailled content
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - user
+              properties:
+                user:
+                  $ref: '#/components/schemas/Organisation'
+            examples:
+              CreateOrganisation:
+                $ref: '#/components/examples/CreateOrganisation'
+
+
+      # RESPONSES
+      # -------------
+
+      responses:
+        '200':
+          $ref: '#/components/responses/OrganisationFound'
+
+        # Definition of all error statuses
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden' 
+        '404':
+          $ref: '#/components/responses/NotFound' 
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalError'
+        '501': 
+          $ref: '#/components/responses/NotImplemented'
+        '502':
+          $ref: '#/components/responses/BadGateway'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+
+        # Definition of other error status
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errors'
+
+# ====================================
 # DELETE #
 # ------ #
 
@@ -1912,7 +2272,7 @@ paths:
       # BODY
       # -------------
 
-      # User details
+      # Opening hours details
       requestBody:
         description: "'OpeningHour' detailled content"
         required: true
@@ -2112,7 +2472,7 @@ paths:
       tags:
         - Opening hour
       summary: Get a single `OpeningHour`
-      description: This operation allows to get a `OpeningHour` time slot, identified by its unique identifier **openingHourId**
+      description: This operation allows to get an `OpeningHour` time slot, identified by its unique identifier **openingHourId**
       externalDocs:
         url: ''
       operationId: getOpeningHourByID
@@ -2162,6 +2522,116 @@ paths:
       # QUERY
       # -------------
 
+
+      # RESPONSES
+      # -------------
+
+      responses:
+        '200':
+          $ref: '#/components/responses/OpeningHourFound'
+
+        # Definition of all error statuses
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden' 
+        '404':
+          $ref: '#/components/responses/NotFound' 
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalError'
+        '501': 
+          $ref: '#/components/responses/NotImplemented'
+        '502':
+          $ref: '#/components/responses/BadGateway'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+
+        # Definition of other error status
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errors'
+
+# ====================================
+# PUT   #
+# ----- #
+
+    put:
+      tags:
+        - Opening hour
+      summary: Overwrite a single `OpeningHour`
+      description: This operation allows to overwrite an `OpeningHour` time slot, identified by its unique identifier **openingHourId**
+      externalDocs:
+        url: ''
+      operationId: overwriteOpeningHourByID
+      security:
+        - OauthSecurity:
+            - All
+            - Application_Admin
+            - Organisation_Admin
+            - Organisation_Member
+            - Organisation_Candidate
+            - Organisation_Refused
+            - Organisation_President
+            - Organisation_VicePresident
+            - Organisation_Secretary
+            - Organisation_Treasurer
+
+      parameters:
+
+      # HEADER
+      # -------------
+
+        # Host
+        - name: Host
+          description: Network location of the URI
+          required: true
+#          nullable: false
+          in: header
+          schema:
+            type: string
+          example: ufr-api.ops.google.com
+
+      # PATH
+      # -------------
+
+        # OpeningHour Unique ID
+        - name: openingHourId
+          description: Technical Unique ID of the 'OpeningHour' time slot (Base36 encoding) (https://en.wikipedia.org/wiki/Base36)
+          required: true
+#          nullable: false
+          in: path
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 8
+          example: "1aw56"
+
+      # QUERY
+      # -------------
+
+      # BODY
+      # -------------
+
+      # User details
+      requestBody:
+        description: "'OpeningHour' detailled content"
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OpeningHour'
+            examples:
+              CreateOpeningHour:
+                $ref: '#/components/examples/CreateOpeningHour'
 
       # RESPONSES
       # -------------
@@ -2364,7 +2834,7 @@ paths:
       # BODY
       # -------------
 
-      # User details
+      # Newsletter details
       requestBody:
         description: "'Newsletter' detailled content"
         required: true
@@ -2653,6 +3123,116 @@ paths:
                 $ref: '#/components/schemas/Errors'
 
 # ====================================
+# PUT   #
+# ----- #
+
+    put:
+      tags:
+        - Newsletter
+      summary: Overwrite a single `Newsletter`
+      description: This operation allows to overwrite a `Newsletter`, identified by its unique identifier **newsletterId**
+      externalDocs:
+        url: ''
+      operationId: overwriteNewsletterByID
+      security:
+        - OauthSecurity:
+            - All
+            - Application_Admin
+            - Organisation_Admin
+            - Organisation_Member
+            - Organisation_Candidate
+            - Organisation_Refused
+            - Organisation_President
+            - Organisation_VicePresident
+            - Organisation_Secretary
+            - Organisation_Treasurer
+
+      parameters:
+
+      # HEADER
+      # -------------
+
+        # Host
+        - name: Host
+          description: Network location of the URI
+          required: true
+#          nullable: false
+          in: header
+          schema:
+            type: string
+          example: ufr-api.ops.google.com
+
+      # PATH
+      # -------------
+
+        # Newsletter Unique ID
+        - name: newsletterId
+          description: Technical Unique ID of the `Newsletter` (Base36 encoding) (https://en.wikipedia.org/wiki/Base36)
+          required: true
+#          nullable: false
+          in: path
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 8
+          example: "nslt"
+
+      # QUERY
+      # -------------
+
+      # BODY
+      # -------------
+
+      # Newsletter details
+      requestBody:
+        description: "'Newsletter' detailled content"
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FullNewsletter'
+            examples:
+              CreateNewsletter:
+                $ref: '#/components/examples/OverwriteNewsletter'
+
+      # RESPONSES
+      # -------------
+
+      responses:
+        '200':
+          $ref: '#/components/responses/NewsletterFound'
+
+        # Definition of all error statuses
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden' 
+        '404':
+          $ref: '#/components/responses/NotFound' 
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalError'
+        '501': 
+          $ref: '#/components/responses/NotImplemented'
+        '502':
+          $ref: '#/components/responses/BadGateway'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+
+        # Definition of other error status
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errors'
+
+# ====================================
 # DELETE #
 # ------ #
 
@@ -2815,7 +3395,7 @@ paths:
       # BODY
       # -------------
 
-      # User details
+      # Book entry details
       requestBody:
         description: "'BookEntry' detailled content"
         required: true
@@ -3104,6 +3684,118 @@ paths:
                 $ref: '#/components/schemas/Errors'
 
 # ====================================
+# PUT   #
+# ----- #
+
+    put:
+      tags:
+        - BookEntry
+      summary: Overwrite a single `BookEntry`
+      description: This operation allows to overwrite a `BookEntry`, identified by its unique identifier **bookEntryId**
+      externalDocs:
+        url: ''
+      operationId: overwriteBookEntryByID
+      security:
+        - OauthSecurity:
+            - All
+            - Application_Admin
+            - Organisation_Admin
+            - Organisation_Member
+            - Organisation_Candidate
+            - Organisation_Refused
+            - Organisation_President
+            - Organisation_VicePresident
+            - Organisation_Secretary
+            - Organisation_Treasurer
+
+      parameters:
+
+      # HEADER
+      # -------------
+
+        # Host
+        - name: Host
+          description: Network location of the URI
+          required: true
+#          nullable: false
+          in: header
+          schema:
+            type: string
+          example: ufr-api.ops.google.com
+
+      # PATH
+      # -------------
+
+        # BookEntry Unique ID
+        - name: bookEntryId
+          description: Technical Unique ID of the `BookEntry` (Base36 encoding) (https://en.wikipedia.org/wiki/Base36)
+          required: true
+#          nullable: false
+          in: path
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 8
+          example: "tyf5"
+
+      # QUERY
+      # -------------
+
+
+      # BODY
+      # -------------
+
+      # Book entry details
+      requestBody:
+        description: "'BookEntry' detailled content"
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BookEntry'
+            examples:
+              CreateBookEntry:
+                $ref: '#/components/examples/CreateBookEntry'
+
+
+      # RESPONSES
+      # -------------
+
+      responses:
+        '200':
+          $ref: '#/components/responses/BookEntryFound'
+
+        # Definition of all error statuses
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden' 
+        '404':
+          $ref: '#/components/responses/NotFound' 
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalError'
+        '501': 
+          $ref: '#/components/responses/NotImplemented'
+        '502':
+          $ref: '#/components/responses/BadGateway'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+
+        # Definition of other error status
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errors'
+
+# ====================================
 # DELETE #
 # ------ #
 
@@ -3267,7 +3959,7 @@ paths:
       # BODY
       # -------------
 
-      # User details
+      # Event details
       requestBody:
         description: Event detailled content
         required: true
@@ -3278,6 +3970,7 @@ paths:
             examples:
               CreateEvent:
                 $ref: '#/components/examples/CreateEvent'
+
 
       # RESPONSES
       # -------------
@@ -3468,7 +4161,7 @@ paths:
       tags:
         - Event
       summary: Get a single 'Event'
-      description: This operation allows to get a 'Event', according to its unique identifier (ID)
+      description: This operation allows to get an `Event`, according to its unique identifier (ID)
       externalDocs:
         url: ''
       operationId: getEventByID
@@ -3518,6 +4211,118 @@ paths:
       # QUERY
       # -------------
 
+
+      # RESPONSES
+      # -------------
+
+      responses:
+        '200':
+          $ref: '#/components/responses/EventFound'
+
+        # Definition of all error statuses
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden' 
+        '404':
+          $ref: '#/components/responses/NotFound' 
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalError'
+        '501': 
+          $ref: '#/components/responses/NotImplemented'
+        '502':
+          $ref: '#/components/responses/BadGateway'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+
+        # Definition of other error status
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errors'
+
+
+# ====================================
+# PUT   #
+# ----- #
+
+    put:
+      tags:
+        - Event
+      summary: Overwrite a single 'Event'
+      description: This operation allows to overwrite an `Event`, according to its unique identifier (ID)
+      externalDocs:
+        url: ''
+      operationId: overwriteEventByID
+      security:
+        - OauthSecurity:
+            - All
+            - Application_Admin
+            - Organisation_Admin
+            - Organisation_Member
+            - Organisation_Candidate
+            - Organisation_Refused
+            - Organisation_President
+            - Organisation_VicePresident
+            - Organisation_Secretary
+            - Organisation_Treasurer
+
+      parameters:
+
+      # HEADER
+      # -------------
+
+        # Host
+        - name: Host
+          description: Network location of the URI
+          required: true
+#          nullable: false
+          in: header
+          schema:
+            type: string
+          example: ufr-api.ops.google.com
+
+      # PATH
+      # -------------
+
+        # Event Unique ID
+        - name: eventId
+          description: Technical Unique ID of the Event (Base36 encoding) (https://en.wikipedia.org/wiki/Base36)
+          required: true
+#          nullable: false
+          in: path
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 8
+          example: "1aw56"
+
+      # QUERY
+      # -------------
+
+
+      # BODY
+      # -------------
+
+      # Event details
+      requestBody:
+        description: Event detailled content
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Event'
+            examples:
+              CreateEvent:
+                $ref: '#/components/examples/CreateEvent'
 
       # RESPONSES
       # -------------
@@ -4356,6 +5161,15 @@ components:
     NewsletterFound:
       summary: >-
         Example of response to a GET of an 'Newsletter'
+      value:
+        title: "Information newsletter - n�1"
+        description: "In this newsletter, you'll find all our latest news and the list of our next **amazing** parties ! We hope you'll enjoy reading it !"
+        body: "Hello ! That's all folks !"
+        publicationDateTime: "2019-09-19T03:30:00.000Z"
+
+    OverwriteNewsletter:
+      summary: >-
+        Example of the body of a PUT of 'Newsletter'
       value:
         title: "Information newsletter - n�1"
         description: "In this newsletter, you'll find all our latest news and the list of our next **amazing** parties ! We hope you'll enjoy reading it !"
