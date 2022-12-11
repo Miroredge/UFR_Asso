@@ -1,4 +1,4 @@
--- Active: 1668187026354@@localhost@3306@ufr_asso
+-- Active: 1668639301205@@localhost@3306@ufr_asso
 
 DELETE FROM `ufr_asso`.`aso_has_evt`;
 DELETE FROM `ufr_asso`.`usr_has_aso_and_rol`;
@@ -6,6 +6,9 @@ DELETE FROM  `ufr_asso`.`rol`;
 DELETE FROM  `ufr_asso`.`aso`;
 DELETE FROM  `ufr_asso`.`usr`;
 DELETE FROM `ufr_asso`.`evt`;
+
+
+
 
 -- ------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- Users
@@ -82,11 +85,10 @@ INSERT INTO `ufr_asso`.`usr`		(PSD, LST_NAM, FST_NAM, STU_NBR, GDR, EML, PHN_NBR
 
 -- Full User 90 : Student nbr 005 / Other / Email 90 / '+330102030405' / In facebook / Accept notification / Password / Temporary password / Refuse notification / Picture
 ,	(CONV(generateId_User(), 10, 36),'FU90-S', 'FULL USER'	, '999', 'O'	, 'email_90@gmail.com', '+330102030405', TRUE, '0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF', TRUE	, FALSE	, LOAD_FILE('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\images\\profiles\\Student_Default.png')	,'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW())
+
 ;
 -- Full User TEST : Student nbr 005 / Other / Email 90 / '+330102030405' / In facebook / Accept notification / Password / Temporary password / Refuse notification / Picture
-INSERT INTO `ufr_asso`.`usr` (PSD, LST_NAM, FST_NAM, STU_NBR, GDR, EML, PHN_NBR, PHN_BOK, PWD, TMP_PWD, NTF, PRF_PIC, CRE_ID, CRE_DAT, UPD_ID, UPD_DAT) VALUES ('TEST','FU90-S', 'FULL USER', '987659', 'O', 'test@gmail.com', '+330102030405', TRUE, 'test', TRUE, FALSE, NULL,'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW());
-
-
+INSERT INTO `ufr_asso`.`usr` (PSD, LST_NAM, FST_NAM, STU_NBR, GDR, EML, PHN_NBR, PHN_BOK, PWD, TMP_PWD, NTF, PRF_PIC, CRE_ID, CRE_DAT, UPD_ID, UPD_DAT) VALUES ('TEST','TST1564', 'FULL_USER', '98367659', 'O', 'test@gmail.com', '+330102030405', TRUE, 'test', TRUE, FALSE, NULL,'INIT_SCRIPT', NOW(), 'INIT_SCRIPT', NOW());
 -- Failing flow
 -- ~~~~~~~~~~~~
 
