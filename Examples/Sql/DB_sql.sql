@@ -25,4 +25,8 @@ SELECT * FROM ASO WHERE aso.`NAM` = 'Association_TEST';
 
 
 
-UPDATE usr SET `PRF_PIC` = LOAD_FILE('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\images\\profiles\\Student_Default.png') WHERE PSD = 'NIKOK0';
+UPDATE usr SET `PRF_PIC` = LOAD_FILE('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\images\\profiles\\Base_User_Default.png') WHERE `PRF_PIC` IS NULL;
+
+
+
+DELETE FROM usr_has_aso_and_rol WHERE USR_ROW_IDT = (SELECT `ROW_IDT` FROM USR WHERE EML = '?????') AND ASO_ROW_IDT = (SELECT `ROW_IDT` FROM ASO WHERE `SIR_NBR` = '????');
