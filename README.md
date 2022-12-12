@@ -9,3 +9,5 @@
 - Créer une base de données nommée "ufr_asso"
 - Créer les différents utilisateurs : UFR_ADM, UFR_RW , UFR_R
 - changer le mot de passe de la BD dans le fichier application.properties (Mot de passe par défaut : root)
+
+- lancer le fichier TDD_Init_Script.sql
