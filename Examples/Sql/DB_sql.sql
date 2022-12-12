@@ -30,3 +30,10 @@ UPDATE usr SET `PRF_PIC` = LOAD_FILE('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\
 
 
 DELETE FROM usr_has_aso_and_rol WHERE USR_ROW_IDT = (SELECT `ROW_IDT` FROM USR WHERE EML = '?????') AND ASO_ROW_IDT = (SELECT `ROW_IDT` FROM ASO WHERE `SIR_NBR` = '????');
+
+
+SELECT aso.NAM FROM aso WHERE aso.nam NOT IN (SELECT aso.nam FROM aso INNER JOIN usr_has_aso_and_rol ON ASO_ROW_IDT = aso.ROW_IDT INNER JOIN usr ON USR_ROW_IDT = usr.ROW_IDT INNER JOIN rol ON ROL_ROW_IDT = rol.ROW_IDT WHERE usr.`EML` = 'test@gmail.com' and `ASO_ROW_IDT` IS NOT NULL and `ROL_ROW_IDT` = (SELECT `ROW_IDT` FROM ROL WHERE `NAM` = 'MEMBER'));
+
+
+
+SELECT usr.`PSD`, usr.`FST_NAM`, usr.`LST_NAM`, usr.`EML` FROM USR INNER JOIN usr_has_aso_and_rol ON USR_ROW_IDT = usr.ROW_IDT INNER JOIN aso ON ASO_ROW_IDT = aso.ROW_IDT INNER JOIN rol ON ROL_ROW_IDT = rol.ROW_IDT WHERE aso.`SIR_NBR` = '???' AND rol.`NAM` = 'MEMBER';
