@@ -16,8 +16,7 @@ import javax.validation.constraints.*;
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2022-12-12T07:32:15.929Z[GMT]")
 
-
-public class Event   {
+public class Event {
   @JsonProperty("name")
   private String name = null;
 
@@ -43,12 +42,14 @@ public class Event   {
 
   /**
    * Name of the 'Organisation'
+   * 
    * @return name
    **/
   @Schema(example = "Z'Event", required = true, description = "Name of the 'Organisation'")
-      @NotNull
+  @NotNull
 
-  @Size(min=1,max=45)   public String getName() {
+  @Size(min = 1, max = 45)
+  public String getName() {
     return name;
   }
 
@@ -62,14 +63,16 @@ public class Event   {
   }
 
   /**
-   * Date/Time of the start of the Event - UTC Date/Time - Format (ISO 8601) YYYY-MM-DDTHH24:MI:SSZ
+   * Date/Time of the start of the Event - UTC Date/Time - Format (ISO 8601)
+   * YYYY-MM-DDTHH24:MI:SSZ
+   * 
    * @return startDateTime
    **/
   @Schema(example = "2019-09-18T19:00Z", required = true, description = "Date/Time of the start of the Event - UTC Date/Time - Format (ISO 8601) YYYY-MM-DDTHH24:MI:SSZ")
-      @NotNull
+  @NotNull
 
-    @Valid
-    public OffsetDateTime getStartDateTime() {
+  @Valid
+  public OffsetDateTime getStartDateTime() {
     return startDateTime;
   }
 
@@ -83,14 +86,16 @@ public class Event   {
   }
 
   /**
-   * Date/Time of the end of the Event - UTC Date/Time - Format (ISO 8601) YYYY-MM-DDTHH24:MI:SSZ
+   * Date/Time of the end of the Event - UTC Date/Time - Format (ISO 8601)
+   * YYYY-MM-DDTHH24:MI:SSZ
+   * 
    * @return endDateTime
    **/
   @Schema(example = "2019-09-19T03:30Z", required = true, description = "Date/Time of the end of the Event - UTC Date/Time - Format (ISO 8601) YYYY-MM-DDTHH24:MI:SSZ")
-      @NotNull
+  @NotNull
 
-    @Valid
-    public OffsetDateTime getEndDateTime() {
+  @Valid
+  public OffsetDateTime getEndDateTime() {
     return endDateTime;
   }
 
@@ -105,11 +110,13 @@ public class Event   {
 
   /**
    * Location of the event
+   * 
    * @return place
    **/
   @Schema(example = "31, Rue de la Poup�e qui tousse - 41000 Blois", description = "Location of the event")
-  
-  @Size(min=1,max=200)   public String getPlace() {
+
+  @Size(min = 1, max = 200)
+  public String getPlace() {
     return place;
   }
 
@@ -125,11 +132,13 @@ public class Event   {
   /**
    * Price of the subscription (Currency : Euro)
    * minimum: 0
+   * 
    * @return price
    **/
   @Schema(example = "3.14159", description = "Price of the subscription (Currency : Euro)")
-  
-  @DecimalMin("0")  public Float getPrice() {
+
+  @DecimalMin("0")
+  public Float getPrice() {
     return price;
   }
 
@@ -143,19 +152,20 @@ public class Event   {
   }
 
   /**
-   * Description of the event. It can use the markdown syntax (https://www.markdownguide.org/cheat-sheet/)
+   * Description of the event. It can use the markdown syntax
+   * (https://www.markdownguide.org/cheat-sheet/)
+   * 
    * @return description
    **/
   @Schema(example = "It will be a **marvelous** *Event* ! [Z'Event](https://zevent.fr/)", description = "Description of the event. It can use the markdown syntax (https://www.markdownguide.org/cheat-sheet/)")
-  
-    public String getDescription() {
+
+  public String getDescription() {
     return description;
   }
 
   public void setDescription(String description) {
     this.description = description;
   }
-
 
   @Override
   public boolean equals(java.lang.Object o) {
@@ -183,7 +193,7 @@ public class Event   {
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class Event {\n");
-    
+
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
     sb.append("    startDateTime: ").append(toIndentedString(startDateTime)).append("\n");
     sb.append("    endDateTime: ").append(toIndentedString(endDateTime)).append("\n");
